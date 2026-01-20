@@ -20,6 +20,7 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
+  animation: fadeIn 0.8s ease-out;
 }
 
 a {
@@ -37,6 +38,12 @@ a {
   padding: 20px 48px;
   background: linear-gradient(180deg, rgba(7, 7, 7, 0.95), rgba(7, 7, 7, 0.6));
   backdrop-filter: blur(10px);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.site-header:hover {
+  background: linear-gradient(180deg, rgba(7, 7, 7, 0.98), rgba(7, 7, 7, 0.75));
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
 }
 
 .header-left {
@@ -62,11 +69,28 @@ a {
 
 .main-nav a {
   transition: color 0.2s ease;
+  position: relative;
 }
 
 .main-nav a:hover,
 .main-nav a.active {
   color: var(--text);
+}
+
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+  width: 100%;
 }
 
 .header-right {
@@ -82,6 +106,12 @@ a {
   background: rgba(255, 255, 255, 0.08);
   padding: 8px 12px;
   border-radius: 20px;
+transition: border 0.3s ease, background 0.3s ease;
+}
+
+.search:focus-within {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .search input {
@@ -110,6 +140,11 @@ a {
   display: grid;
   place-items: center;
   font-weight: 600;
+  transition: transform 0.25s ease;
+}
+
+.profile:hover .avatar {
+  transform: scale(1.05);
 }
 
 .hero {
@@ -120,12 +155,14 @@ a {
   background: linear-gradient(120deg, rgba(7, 7, 7, 0.2), rgba(7, 7, 7, 0.9)),
     url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1800&q=80")
       center/cover no-repeat;
+  animation: heroGlow 12s ease-in-out infinite;
 }
 
 .hero-content {
   max-width: 600px;
   display: grid;
   gap: 16px;
+  animation: slideUp 0.9s ease-out;
 }
 
 .pill {
@@ -139,6 +176,7 @@ a {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 1px;
+  animation: pulse 3s ease-in-out infinite;
 }
 
 .hero h1 {
@@ -168,16 +206,23 @@ a {
   border: none;
   font-weight: 600;
   cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .btn.primary {
   background: var(--text);
   color: #111;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 
 .btn.ghost {
   background: rgba(255, 255, 255, 0.12);
   color: var(--text);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
 }
 
 .hero-meta {
@@ -222,6 +267,21 @@ a {
   gap: 14px;
   overflow-x: auto;
   padding-bottom: 6px;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.card-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.card-strip::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.card-strip::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
 }
 
 .card {
@@ -233,6 +293,14 @@ a {
   align-items: end;
   font-weight: 600;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+  scroll-snap-align: start;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .top-ten .ranked {
@@ -261,6 +329,12 @@ a {
   padding: 20px;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.25s ease, border 0.25s ease;
+}
+
+.info-grid div:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .info-grid p {
@@ -303,5 +377,45 @@ a {
   .row,
   .site-footer {
     padding: 28px 24px;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroGlow {
+  0%,
+  100% {
+    filter: brightness(0.95);
+  }
+  50% {
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(229, 9, 20, 0);
   }
 }
