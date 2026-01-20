@@ -19,6 +19,7 @@
           <a href="#new">New &amp; Hot</a>
           <a href="#top10">Top 10</a>
           <a href="#publishing">Publishing</a>
+          <a href="#community">Community</a>
         </nav>
       </div>
       <div class="header-right">
@@ -27,9 +28,16 @@
           <input type="text" placeholder="Titles, genres, creators" />
         </div>
         <span class="icon">🔔</span>
-        <div class="profile">
+        <div class="profile" data-menu>
           <span class="avatar">LF</span>
           <span class="caret">▾</span>
+          <div class="profile-menu" data-menu-panel>
+            <a href="#profile">Profile</a>
+            <a href="#list">My List</a>
+            <a href="#billing">Billing</a>
+            <a href="#settings">Settings</a>
+            <button type="button">Sign Out</button>
+          </div>
         </div>
       </div>
     </header>
@@ -68,10 +76,16 @@
 
       <section class="row" id="new">
         <div class="row-header">
-          <h2>Trending Now</h2>
-          <a class="row-link" href="#">See all</a>
+          <div>
+            <h2>Trending Now</h2>
+            <span class="row-subtitle">High-traction stories ready for paywall release</span>
+          </div>
+          <div class="row-actions">
+            <button class="nav-btn" data-scroll-left>◀</button>
+            <button class="nav-btn" data-scroll-right>▶</button>
+          </div>
         </div>
-        <div class="card-strip">
+        <div class="card-strip" data-carousel>
           <article class="card">The Glass Orchard</article>
           <article class="card">Signal to the Sea</article>
           <article class="card">Inkbound Circuit</article>
@@ -83,10 +97,16 @@
 
       <section class="row" id="series">
         <div class="row-header">
-          <h2>Continue Reading</h2>
-          <a class="row-link" href="#">Manage</a>
+          <div>
+            <h2>Continue Reading</h2>
+            <span class="row-subtitle">Pick up exactly where you left off</span>
+          </div>
+          <div class="row-actions">
+            <button class="nav-btn" data-scroll-left>◀</button>
+            <button class="nav-btn" data-scroll-right>▶</button>
+          </div>
         </div>
-        <div class="card-strip">
+        <div class="card-strip" data-carousel>
           <article class="card">Harborlight — Ep. 22</article>
           <article class="card">The Silent Archive — Ep. 6</article>
           <article class="card">Cosmic Blueprints — S2</article>
@@ -97,10 +117,16 @@
 
       <section class="row" id="top10">
         <div class="row-header">
-          <h2>Top 10 Zone</h2>
-          <span class="row-subtitle">Highest rated creators this week</span>
+          <div>
+            <h2>Top 10 Zone</h2>
+            <span class="row-subtitle">Highest rated creators this week</span>
+          </div>
+          <div class="row-actions">
+            <button class="nav-btn" data-scroll-left>◀</button>
+            <button class="nav-btn" data-scroll-right>▶</button>
+          </div>
         </div>
-        <div class="card-strip top-ten">
+        <div class="card-strip top-ten" data-carousel>
           <article class="card ranked"><span class="rank">1</span>Rhapsody of Ember</article>
           <article class="card ranked"><span class="rank">2</span>Blue Hour Letters</article>
           <article class="card ranked"><span class="rank">3</span>Low Tide Legends</article>
@@ -111,10 +137,16 @@
 
       <section class="row" id="essays">
         <div class="row-header">
-          <h2>Genre Curation</h2>
-          <span class="row-subtitle">Expert editors spotlight the best voices</span>
+          <div>
+            <h2>Genre Curation</h2>
+            <span class="row-subtitle">Expert editors spotlight the best voices</span>
+          </div>
+          <div class="row-actions">
+            <button class="nav-btn" data-scroll-left>◀</button>
+            <button class="nav-btn" data-scroll-right>▶</button>
+          </div>
         </div>
-        <div class="card-strip">
+        <div class="card-strip" data-carousel>
           <article class="card">Speculative Futures</article>
           <article class="card">Quiet Realism</article>
           <article class="card">Visual Verse</article>
@@ -125,8 +157,10 @@
 
       <section class="row" id="publishing">
         <div class="row-header">
-          <h2>Publishing Pathways</h2>
-          <span class="row-subtitle">Digital launches and physical releases</span>
+          <div>
+            <h2>Publishing Pathways</h2>
+            <span class="row-subtitle">Digital launches and physical releases</span>
+          </div>
         </div>
         <div class="info-grid">
           <div>
@@ -146,15 +180,30 @@
 
       <section class="row" id="community">
         <div class="row-header">
-          <h2>Creator Chat Lounge</h2>
-          <span class="row-subtitle">Feedback rooms, mentors, and DMs</span>
+          <div>
+            <h2>Creator Chat Lounge</h2>
+            <span class="row-subtitle">Feedback rooms, mentors, and DMs</span>
+          </div>
         </div>
-        <div class="card-strip">
-          <article class="card">Live Rooms</article>
-          <article class="card">DM Threads</article>
-          <article class="card">Resource Vault</article>
-          <article class="card">Mentor Pods</article>
-          <article class="card">Launch Support</article>
+        <div class="chat-panel">
+          <div class="chat-feed" data-chat>
+            <div class="chat-message">
+              <strong>Ari Nova</strong>
+              <p>Anyone have tips for pacing cliffhangers?</p>
+            </div>
+            <div class="chat-message">
+              <strong>Jun Park</strong>
+              <p>I used mini-resets every 3 episodes and it helped retention.</p>
+            </div>
+            <div class="chat-message">
+              <strong>Yara Bell</strong>
+              <p>Launching a fantasy anthology next week — collabs welcome!</p>
+            </div>
+          </div>
+          <form class="chat-input" data-chat-form>
+            <input type="text" placeholder="Share feedback, ask a question, or send a note" />
+            <button class="btn primary" type="submit">Send</button>
+          </form>
         </div>
       </section>
     </main>
@@ -171,5 +220,7 @@
         <a href="#">Jobs</a>
       </div>
     </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>
