@@ -106,7 +106,7 @@ a {
   background: rgba(255, 255, 255, 0.08);
   padding: 8px 12px;
   border-radius: 20px;
-  transition: border 0.3s ease, background 0.3s ease;
+transition: border 0.3s ease, background 0.3s ease;
 }
 
 .search:focus-within {
