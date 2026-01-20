@@ -23,7 +23,7 @@
         </nav>
       </div>
       <div class="header-right">
-        <div class="search">
+        <div class="search" data-search>
           <span class="icon">🔍</span>
           <input type="text" placeholder="Titles, genres, creators" />
         </div>
@@ -43,6 +43,9 @@
     </header>
 
     <main id="home">
+      <div class="search-status" data-search-status hidden>
+        No matches yet — try another title or creator.
+      </div>
       <section class="hero">
         <div class="hero-content">
           <span class="pill">Top 10 Creator Spotlight</span>

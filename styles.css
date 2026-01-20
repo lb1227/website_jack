@@ -114,6 +114,15 @@ input {
   transition: border 0.3s ease, background 0.3s ease;
 }
 
+.search-status {
+  margin: 20px 48px 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 .search:focus-within {
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -349,6 +358,10 @@ input {
   scroll-snap-align: start;
 }
 
+.card.is-hidden {
+  display: none;
+}
+
 .card:hover {
   transform: scale(1.05);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
@@ -476,6 +489,10 @@ input {
   .row,
   .site-footer {
     padding: 28px 24px;
+  }
+
+  .search-status {
+    margin: 16px 24px 0;
   }
 
   .chat-input {

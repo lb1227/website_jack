@@ -50,3 +50,27 @@ if (chatForm && chatFeed) {
     input.value = '';
   });
 }
+
+const searchInput = document.querySelector('[data-search] input');
+const searchStatus = document.querySelector('[data-search-status]');
+const cards = Array.from(document.querySelectorAll('.card'));
+
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim().toLowerCase();
+    let matches = 0;
+
+    cards.forEach((card) => {
+      const text = card.textContent.toLowerCase();
+      const isMatch = !query || text.includes(query);
+      card.classList.toggle('is-hidden', !isMatch);
+      if (isMatch) {
+        matches += 1;
+      }
+    });
+
+    if (searchStatus) {
+      searchStatus.hidden = query.length === 0 || matches > 0;
+    }
+  });
+}
