@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LitFlix Settings</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="subpage">
+    <header class="site-header">
+      <div class="header-left">
+        <div class="logo">LitFlix</div>
+        <nav class="main-nav">
+          <a href="index.html">Home</a>
+          <a href="reading.html">Reader</a>
+          <a href="publish.html">Publish</a>
+          <a href="account.html">Account</a>
+          <a class="active" href="settings.html">Settings</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <div class="profile" data-menu>
+          <span class="avatar">LF</span>
+          <span class="caret">▾</span>
+          <div class="profile-menu" data-menu-panel>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <button type="button">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="settings">
+      <section class="page-hero">
+        <div>
+          <span class="pill">Account Settings</span>
+          <h1>Personalize your LitFlix experience</h1>
+          <p class="hero-subtitle">Manage privacy, notifications, and reader preferences.</p>
+        </div>
+        <button class="btn primary">Save Changes</button>
+      </section>
+
+      <section class="settings-grid">
+        <div class="settings-card">
+          <h2>Profile Visibility</h2>
+          <label class="toggle-row">
+            <span>Show reading stats publicly</span>
+            <input type="checkbox" checked />
+          </label>
+          <label class="toggle-row">
+            <span>Display follower count</span>
+            <input type="checkbox" checked />
+          </label>
+        </div>
+        <div class="settings-card">
+          <h2>Notifications</h2>
+          <label class="toggle-row">
+            <span>New chapter alerts</span>
+            <input type="checkbox" checked />
+          </label>
+          <label class="toggle-row">
+            <span>Creator chat mentions</span>
+            <input type="checkbox" />
+          </label>
+          <label class="toggle-row">
+            <span>Publishing milestones</span>
+            <input type="checkbox" checked />
+          </label>
+        </div>
+        <div class="settings-card">
+          <h2>Reader Preferences</h2>
+          <label>
+            Font size
+            <select>
+              <option>Medium</option>
+              <option>Small</option>
+              <option>Large</option>
+            </select>
+          </label>
+          <label>
+            Theme
+            <select>
+              <option>Dark</option>
+              <option>Sepia</option>
+              <option>Light</option>
+            </select>
+          </label>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
