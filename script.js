@@ -75,24 +75,28 @@ if (searchInput) {
   });
 }
 
-const fullscreenToggle = document.querySelector('[data-reader-fullscreen-toggle]');
+const fullscreenToggles = document.querySelectorAll('[data-reader-fullscreen-toggle]');
 const fullscreenOverlay = document.querySelector('[data-reader-fullscreen]');
 const fullscreenClose = document.querySelector('[data-reader-fullscreen-close]');
 
-if (fullscreenToggle && fullscreenOverlay && fullscreenClose) {
+if (fullscreenToggles.length && fullscreenOverlay && fullscreenClose) {
   const setFullscreenState = (isOpen) => {
     fullscreenOverlay.hidden = !isOpen;
     fullscreenOverlay.setAttribute('aria-hidden', String(!isOpen));
     document.body.classList.toggle('reader-fullscreen-open', isOpen);
-    fullscreenToggle.textContent = isOpen ? 'Fullscreen On' : 'Fullscreen';
+    fullscreenToggles.forEach((toggle) => {
+      toggle.textContent = isOpen ? 'Fullscreen On' : 'Fullscreen';
+    });
   };
 
-  fullscreenToggle.addEventListener('click', () => {
-    const shouldOpen = fullscreenOverlay.hidden;
-    setFullscreenState(shouldOpen);
-    if (shouldOpen) {
-      fullscreenOverlay.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  fullscreenToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const shouldOpen = fullscreenOverlay.hidden;
+      setFullscreenState(shouldOpen);
+      if (shouldOpen) {
+        fullscreenOverlay.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
   });
 
   fullscreenClose.addEventListener('click', () => {
@@ -105,6 +109,21 @@ if (fullscreenToggle && fullscreenOverlay && fullscreenClose) {
     }
   });
 }
+
+
+const profileMenus = document.querySelectorAll('[data-menu-panel]');
+profileMenus.forEach((menuPanel) => {
+  const hasCreatorModeLink = Array.from(menuPanel.querySelectorAll('a')).some((link) =>
+    link.getAttribute('href') === 'publish.html',
+  );
+
+  if (!hasCreatorModeLink) {
+    const creatorModeLink = document.createElement('a');
+    creatorModeLink.href = 'publish.html';
+    creatorModeLink.textContent = 'Creator Mode';
+    menuPanel.prepend(creatorModeLink);
+  }
+});
 
 
 const creatorFullscreenToggle = document.querySelector('[data-creator-fullscreen-toggle]');
