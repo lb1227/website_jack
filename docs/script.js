@@ -137,6 +137,7 @@ const carouselRows = Array.from(document.querySelectorAll('.row')).filter((row) 
 
 if (carouselRows.length) {
   document.body.classList.add('rows-focus-enabled');
+  let lastSnapTime = 0;
 
   const updateRowFocus = () => {
     const viewportCenter = window.innerHeight * 0.5;
@@ -160,18 +161,26 @@ if (carouselRows.length) {
   };
 
   const applyScrollResistance = (event) => {
-    if (!Number.isFinite(event.deltaY) || Math.abs(event.deltaY) < 3) return;
+    if (!Number.isFinite(event.deltaY) || Math.abs(event.deltaY) < 14) return;
 
     const focusedRow = document.querySelector('.row.is-scroll-focus');
     if (!focusedRow) return;
 
-    const rect = focusedRow.getBoundingClientRect();
-    const rowCenter = rect.top + (rect.height / 2);
-    const distanceFromCenter = Math.abs(rowCenter - (window.innerHeight * 0.5));
-
-    if (distanceFromCenter <= 180) {
+    const now = Date.now();
+    if (now - lastSnapTime < 460) {
       event.preventDefault();
-      window.scrollBy({ top: event.deltaY * 0.38, behavior: 'auto' });
+      return;
+    }
+
+    const focusedIndex = carouselRows.indexOf(focusedRow);
+    const direction = event.deltaY > 0 ? 1 : -1;
+    const nextIndex = Math.min(carouselRows.length - 1, Math.max(0, focusedIndex + direction));
+    const nextRow = carouselRows[nextIndex];
+
+    if (nextRow && nextRow !== focusedRow) {
+      event.preventDefault();
+      lastSnapTime = now;
+      nextRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
