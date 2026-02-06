@@ -497,12 +497,47 @@ input {
 }
 
 .reader-hero {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1.4fr minmax(220px, 0.8fr);
   gap: 32px;
-  padding: 32px;
+  padding: 38px;
   border-radius: 20px;
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01));
+  background:
+    radial-gradient(circle at top right, rgba(229, 9, 20, 0.2), transparent 38%),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.42);
+}
+
+.reader-hero-main {
+  display: grid;
+  gap: 14px;
+}
+
+.chapter-progress {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.chapter-progress-track {
+  width: min(420px, 100%);
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.chapter-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f97316, #e50914);
+}
+
+.chapter-progress p {
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .reader-actions {
@@ -514,8 +549,16 @@ input {
 
 .reader-meta {
   display: grid;
-  gap: 16px;
+  align-content: start;
+  gap: 12px;
   min-width: 200px;
+}
+
+.reader-meta > div {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
 }
 
 .reader-layout {
@@ -530,6 +573,8 @@ input {
   border-radius: 16px;
   display: grid;
   gap: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  height: fit-content;
 }
 
 .chapter-list ul {
@@ -542,6 +587,10 @@ input {
 .chapter-list li.active {
   color: var(--text);
   font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 8px 10px;
 }
 
 .full {
@@ -549,12 +598,48 @@ input {
 }
 
 .reading-pane {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 16px;
-  padding: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border-radius: 18px;
+  padding: 32px;
   display: grid;
-  gap: 16px;
-  line-height: 1.8;
+  gap: 20px;
+  line-height: 1.95;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.32);
+}
+
+.reading-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reading-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.reading-tools .btn {
+  padding: 8px 14px;
+}
+
+.reading-pane p {
+  max-width: 70ch;
+  font-size: 1.04rem;
+}
+
+.reading-pane blockquote {
+  border-left: 3px solid rgba(229, 9, 20, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0 12px 12px 0;
+  padding: 14px 18px;
+  color: #f8d6d7;
+  max-width: 68ch;
 }
 
 .reader-footer {
@@ -917,6 +1002,10 @@ input {
 
   .reader-footer {
     flex-direction: column;
+  }
+
+  .reading-header {
+    align-items: flex-start;
   }
 
   .auth-links {
