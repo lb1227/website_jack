@@ -15,54 +15,43 @@ scrollButtons.forEach((button) => {
 
 const profile = document.querySelector('[data-menu]');
 
-const pageSections = Array.from(document.querySelectorAll('main > section'));
+const highlightedRows = Array.from(document.querySelectorAll('.row')).filter((row) => row.querySelector('[data-carousel]'));
 
-if (pageSections.length > 1) {
-  let isSectionScrollLocked = false;
+if (highlightedRows.length) {
+  const setHighlightedRow = () => {
+    const viewportCenter = window.innerHeight * 0.5;
+    let activeRow = highlightedRows[0];
+    let minDistance = Number.POSITIVE_INFINITY;
 
-  const getNearestSectionIndex = () => {
-    const probe = window.scrollY + (window.innerHeight * 0.35);
-    let nearestIndex = 0;
-    let nearestDistance = Number.POSITIVE_INFINITY;
+    highlightedRows.forEach((row) => {
+      const rect = row.getBoundingClientRect();
+      const rowCenter = rect.top + (rect.height * 0.5);
+      const distance = Math.abs(rowCenter - viewportCenter);
 
-    pageSections.forEach((section, index) => {
-      const distance = Math.abs(section.offsetTop - probe);
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearestIndex = index;
+      if (distance < minDistance) {
+        minDistance = distance;
+        activeRow = row;
       }
     });
 
-    return nearestIndex;
+    highlightedRows.forEach((row) => {
+      row.classList.toggle('is-active-row', row === activeRow);
+    });
   };
 
-  window.addEventListener('wheel', (event) => {
-    if (event.ctrlKey || event.shiftKey || isSectionScrollLocked) return;
-
-    const targetElement = event.target;
-    const isInteractiveElement = targetElement instanceof Element
-      && !!targetElement.closest('input, textarea, select, [contenteditable="true"]');
-
-    if (isInteractiveElement || Math.abs(event.deltaY) < 10) return;
-
-    const currentIndex = getNearestSectionIndex();
-    const direction = event.deltaY > 0 ? 1 : -1;
-    const targetIndex = Math.max(0, Math.min(pageSections.length - 1, currentIndex + direction));
-
-    if (targetIndex === currentIndex) return;
-
-    event.preventDefault();
-    isSectionScrollLocked = true;
-
-    pageSections[targetIndex].scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+  let scheduled = false;
+  const scheduleHighlightUpdate = () => {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(() => {
+      setHighlightedRow();
+      scheduled = false;
     });
+  };
 
-    window.setTimeout(() => {
-      isSectionScrollLocked = false;
-    }, 650);
-  }, { passive: false });
+  window.addEventListener('scroll', scheduleHighlightUpdate, { passive: true });
+  window.addEventListener('resize', scheduleHighlightUpdate);
+  setHighlightedRow();
 }
 
 if (profile) {
