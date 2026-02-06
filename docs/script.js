@@ -14,6 +14,57 @@ scrollButtons.forEach((button) => {
 });
 
 const profile = document.querySelector('[data-menu]');
+
+const pageSections = Array.from(document.querySelectorAll('main > section'));
+
+if (pageSections.length > 1) {
+  let isSectionScrollLocked = false;
+
+  const getNearestSectionIndex = () => {
+    const probe = window.scrollY + (window.innerHeight * 0.35);
+    let nearestIndex = 0;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    pageSections.forEach((section, index) => {
+      const distance = Math.abs(section.offsetTop - probe);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+
+    return nearestIndex;
+  };
+
+  window.addEventListener('wheel', (event) => {
+    if (event.ctrlKey || event.shiftKey || isSectionScrollLocked) return;
+
+    const targetElement = event.target;
+    const isInteractiveElement = targetElement instanceof Element
+      && !!targetElement.closest('input, textarea, select, [contenteditable="true"]');
+
+    if (isInteractiveElement || Math.abs(event.deltaY) < 10) return;
+
+    const currentIndex = getNearestSectionIndex();
+    const direction = event.deltaY > 0 ? 1 : -1;
+    const targetIndex = Math.max(0, Math.min(pageSections.length - 1, currentIndex + direction));
+
+    if (targetIndex === currentIndex) return;
+
+    event.preventDefault();
+    isSectionScrollLocked = true;
+
+    pageSections[targetIndex].scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+
+    window.setTimeout(() => {
+      isSectionScrollLocked = false;
+    }, 650);
+  }, { passive: false });
+}
+
 if (profile) {
   const panel = profile.querySelector('[data-menu-panel]');
   profile.addEventListener('click', () => {

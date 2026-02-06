@@ -325,7 +325,7 @@ input {
 .card-strip {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(300px, 300px);
+  grid-auto-columns: minmax(360px, 360px);
   gap: 14px;
   overflow-x: auto;
   overflow-y: hidden;
@@ -356,7 +356,7 @@ input {
   background-size: cover;
   background-position: center;
   border-radius: 10px;
-  min-height: 240px;
+  min-height: 280px;
   padding: 18px;
   display: grid;
   align-items: end;
@@ -390,7 +390,7 @@ input {
 }
 
 .top-ten {
-  grid-auto-columns: minmax(340px, 340px);
+  grid-auto-columns: minmax(400px, 400px);
 }
 
 .rank {
