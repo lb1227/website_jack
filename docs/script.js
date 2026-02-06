@@ -74,3 +74,61 @@ if (searchInput) {
     }
   });
 }
+
+const fullscreenToggle = document.querySelector('[data-reader-fullscreen-toggle]');
+const fullscreenOverlay = document.querySelector('[data-reader-fullscreen]');
+const fullscreenClose = document.querySelector('[data-reader-fullscreen-close]');
+
+if (fullscreenToggle && fullscreenOverlay && fullscreenClose) {
+  const setFullscreenState = (isOpen) => {
+    fullscreenOverlay.hidden = !isOpen;
+    fullscreenOverlay.setAttribute('aria-hidden', String(!isOpen));
+    document.body.classList.toggle('reader-fullscreen-open', isOpen);
+    fullscreenToggle.textContent = isOpen ? 'Fullscreen On' : 'Fullscreen';
+  };
+
+  fullscreenToggle.addEventListener('click', () => {
+    const shouldOpen = fullscreenOverlay.hidden;
+    setFullscreenState(shouldOpen);
+    if (shouldOpen) {
+      fullscreenOverlay.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  fullscreenClose.addEventListener('click', () => {
+    setFullscreenState(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !fullscreenOverlay.hidden) {
+      setFullscreenState(false);
+    }
+  });
+}
+
+
+const creatorFullscreenToggle = document.querySelector('[data-creator-fullscreen-toggle]');
+const creatorFullscreenOverlay = document.querySelector('[data-creator-fullscreen]');
+const creatorFullscreenClose = document.querySelector('[data-creator-fullscreen-close]');
+
+if (creatorFullscreenToggle && creatorFullscreenOverlay && creatorFullscreenClose) {
+  const setCreatorFullscreenState = (isOpen) => {
+    creatorFullscreenOverlay.hidden = !isOpen;
+    creatorFullscreenOverlay.setAttribute('aria-hidden', String(!isOpen));
+    document.body.classList.toggle('creator-fullscreen-open', isOpen);
+  };
+
+  creatorFullscreenToggle.addEventListener('click', () => {
+    setCreatorFullscreenState(true);
+  });
+
+  creatorFullscreenClose.addEventListener('click', () => {
+    setCreatorFullscreenState(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !creatorFullscreenOverlay.hidden) {
+      setCreatorFullscreenState(false);
+    }
+  });
+}

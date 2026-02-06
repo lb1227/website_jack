@@ -31,18 +31,26 @@
       </div>
     </header>
 
-    <main class="publish">
-      <section class="page-hero">
+    <main class="publish creator-studio">
+      <section class="page-hero creator-hero">
         <div>
-          <span class="pill">Publishing Studio</span>
-          <h1>Launch a New Story</h1>
-          <p class="hero-subtitle">Upload chapters, set paywalls, and schedule releases.</p>
+          <span class="pill">Creator Studio</span>
+          <h1>Build Your Next Chapter</h1>
+          <p class="hero-subtitle">Write, package, and schedule releases with the same immersive layout readers get.</p>
+          <div class="creator-hero-stats">
+            <p><strong>3</strong> drafts in progress</p>
+            <p><strong>Friday</strong> next scheduled drop</p>
+          </div>
         </div>
-        <button class="btn primary">Save Draft</button>
+        <div class="creator-hero-actions">
+          <button class="btn ghost" type="button" data-creator-fullscreen-toggle>Focus Writing Mode</button>
+          <button class="btn primary">Save Draft</button>
+        </div>
       </section>
 
-      <section class="publish-layout">
-        <form class="publish-form">
+      <section class="publish-layout creator-layout">
+        <form class="publish-form creator-form">
+          <h2>Story Setup</h2>
           <label>
             Title
             <input type="text" placeholder="Rhapsody of Ember" />
@@ -59,7 +67,11 @@
           </label>
           <label>
             Cover Summary
-            <textarea rows="5" placeholder="Share the hook that will appear on the cover."></textarea>
+            <textarea rows="4" placeholder="Share the hook that will appear on the cover."></textarea>
+          </label>
+          <label>
+            Chapter Draft
+            <textarea rows="8" placeholder="Draft chapter opening lines here..."></textarea>
           </label>
           <label>
             Monetization
@@ -82,19 +94,38 @@
           <button class="btn primary" type="submit">Publish Story</button>
         </form>
 
-        <aside class="publish-panel">
-          <h2>Publishing Checklist</h2>
+        <aside class="publish-panel creator-panel">
+          <h2>Launch Checklist</h2>
           <ul>
             <li>Upload cover art (1600x2400)</li>
-            <li>Add chapter previews</li>
+            <li>Set chapter previews</li>
             <li>Enable reader comments</li>
             <li>Connect payout details</li>
           </ul>
+          <div class="info-card">
+            <h3>Creator Insight</h3>
+            <p>Readers stay 22% longer when chapter notes include a behind-the-scenes line.</p>
+          </div>
           <div class="info-card">
             <h3>Next Milestone</h3>
             <p>Reach 10k reads to unlock print-on-demand support.</p>
           </div>
         </aside>
+      </section>
+
+      <section class="creator-fullscreen" data-creator-fullscreen hidden aria-hidden="true">
+        <div class="reader-fullscreen-topbar">
+          <p>Focus Writing Mode • Draft Editor</p>
+          <button class="btn ghost" type="button" data-creator-fullscreen-close>Exit Focus Mode</button>
+        </div>
+        <div class="creator-fullscreen-panel">
+          <h2>Draft Chapter</h2>
+          <textarea rows="20" placeholder="Write without distractions..."></textarea>
+          <div class="creator-fullscreen-actions">
+            <button class="btn ghost" type="button">Insert Scene Break</button>
+            <button class="btn primary" type="button">Save Snapshot</button>
+          </div>
+        </div>
       </section>
     </main>
 
