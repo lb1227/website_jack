@@ -346,7 +346,11 @@ input {
 }
 
 .card {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  background-image:
+    linear-gradient(0deg, rgba(11, 15, 35, 0.92) 0%, rgba(11, 15, 35, 0.1) 65%),
+    var(--card-image, linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)));
+  background-size: cover;
+  background-position: center;
   border-radius: 10px;
   min-height: 160px;
   padding: 18px;
@@ -356,6 +360,10 @@ input {
   border: 1px solid rgba(255, 255, 255, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
   scroll-snap-align: start;
+}
+
+.card-title {
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
 }
 
 .card.is-hidden {
