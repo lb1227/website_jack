@@ -74,3 +74,34 @@ if (searchInput) {
     }
   });
 }
+
+const fullscreenToggle = document.querySelector('[data-reader-fullscreen-toggle]');
+const fullscreenOverlay = document.querySelector('[data-reader-fullscreen]');
+const fullscreenClose = document.querySelector('[data-reader-fullscreen-close]');
+
+if (fullscreenToggle && fullscreenOverlay && fullscreenClose) {
+  const setFullscreenState = (isOpen) => {
+    fullscreenOverlay.hidden = !isOpen;
+    fullscreenOverlay.setAttribute('aria-hidden', String(!isOpen));
+    document.body.classList.toggle('reader-fullscreen-open', isOpen);
+    fullscreenToggle.textContent = isOpen ? 'Fullscreen On' : 'Fullscreen';
+  };
+
+  fullscreenToggle.addEventListener('click', () => {
+    const shouldOpen = fullscreenOverlay.hidden;
+    setFullscreenState(shouldOpen);
+    if (shouldOpen) {
+      fullscreenOverlay.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  fullscreenClose.addEventListener('click', () => {
+    setFullscreenState(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !fullscreenOverlay.hidden) {
+      setFullscreenState(false);
+    }
+  });
+}
