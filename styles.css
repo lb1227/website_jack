@@ -300,7 +300,7 @@ input {
 }
 
 .row.is-active-row .card-strip {
-  transform: scale(1.035);
+  transform: scale(1.053);
   filter: saturate(1.06) brightness(1.03);
 }
 
