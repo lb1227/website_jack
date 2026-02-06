@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PenSup Publishing Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="subpage">
+    <header class="site-header">
+      <div class="header-left">
+        <div class="logo">PenSup</div>
+        <nav class="main-nav">
+          <a href="index.html">Home</a>
+          <a href="reading.html">Reader</a>
+          <a class="active" href="publish.html">Publish</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="account.html">Account</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <div class="profile" data-menu>
+          <span class="avatar">LF</span>
+          <span class="caret">▾</span>
+          <div class="profile-menu" data-menu-panel>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Publishing Settings</a>
+            <button type="button">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="publish">
+      <section class="page-hero">
+        <div>
+          <span class="pill">Publishing Studio</span>
+          <h1>Launch a New Story</h1>
+          <p class="hero-subtitle">Upload chapters, set paywalls, and schedule releases.</p>
+        </div>
+        <button class="btn primary">Save Draft</button>
+      </section>
+
+      <section class="publish-layout">
+        <form class="publish-form">
+          <label>
+            Title
+            <input type="text" placeholder="Rhapsody of Ember" />
+          </label>
+          <label>
+            Genre
+            <select>
+              <option>Epic Fantasy</option>
+              <option>Romance</option>
+              <option>Science Fiction</option>
+              <option>Poetry</option>
+              <option>Comics</option>
+            </select>
+          </label>
+          <label>
+            Cover Summary
+            <textarea rows="5" placeholder="Share the hook that will appear on the cover."></textarea>
+          </label>
+          <label>
+            Monetization
+            <div class="toggle-row">
+              <span>Unlock paywall after chapter</span>
+              <input type="number" min="1" value="12" />
+            </div>
+          </label>
+          <label>
+            Schedule
+            <div class="toggle-row">
+              <span>Release cadence</span>
+              <select>
+                <option>Weekly</option>
+                <option>Twice a week</option>
+                <option>Daily</option>
+              </select>
+            </div>
+          </label>
+          <button class="btn primary" type="submit">Publish Story</button>
+        </form>
+
+        <aside class="publish-panel">
+          <h2>Publishing Checklist</h2>
+          <ul>
+            <li>Upload cover art (1600x2400)</li>
+            <li>Add chapter previews</li>
+            <li>Enable reader comments</li>
+            <li>Connect payout details</li>
+          </ul>
+          <div class="info-card">
+            <h3>Next Milestone</h3>
+            <p>Reach 10k reads to unlock print-on-demand support.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

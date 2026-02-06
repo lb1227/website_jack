@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PenSup Billing</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="subpage">
+    <header class="site-header">
+      <div class="header-left">
+        <div class="logo">PenSup</div>
+        <nav class="main-nav">
+          <a href="index.html">Home</a>
+          <a href="reading.html">Reader</a>
+          <a href="publish.html">Publish</a>
+          <a href="account.html">Account</a>
+          <a class="active" href="billing.html">Billing</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <div class="profile" data-menu>
+          <span class="avatar">LF</span>
+          <span class="caret">▾</span>
+          <div class="profile-menu" data-menu-panel>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <button type="button">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="billing">
+      <section class="page-hero">
+        <div>
+          <span class="pill">Billing &amp; Subscriptions</span>
+          <h1>Your membership plan</h1>
+          <p class="hero-subtitle">Manage payment methods, payouts, and invoices.</p>
+        </div>
+        <button class="btn primary">Update Payment</button>
+      </section>
+
+      <section class="billing-grid">
+        <div class="account-card">
+          <h2>Current Plan</h2>
+          <p>Creator Pro • $24 / month</p>
+          <p>Next renewal: Oct 15</p>
+        </div>
+        <div class="account-card">
+          <h2>Payout Method</h2>
+          <p>Bank transfer ending •••• 4821</p>
+          <p>Next payout: $2,460</p>
+        </div>
+        <div class="account-card">
+          <h2>Invoices</h2>
+          <p>September 2024 • $24</p>
+          <p>August 2024 • $24</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

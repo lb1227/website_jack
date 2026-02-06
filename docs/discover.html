@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PenSup Discover</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="subpage">
+    <header class="site-header">
+      <div class="header-left">
+        <div class="logo">PenSup</div>
+        <nav class="main-nav">
+          <a href="index.html">Home</a>
+          <a class="active" href="discover.html">Discover</a>
+          <a href="reading.html">Reader</a>
+          <a href="publish.html">Publish</a>
+          <a href="account.html">Account</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <div class="search" data-search>
+          <span class="icon">🔍</span>
+          <input type="text" placeholder="Search genres, tags, creators" />
+        </div>
+        <a class="btn ghost" href="login.html">Log In</a>
+      </div>
+    </header>
+
+    <main class="discover">
+      <section class="page-hero">
+        <div>
+          <span class="pill">Discover</span>
+          <h1>Find your next binge read</h1>
+          <p class="hero-subtitle">Filter by genre, format, and popularity.</p>
+        </div>
+        <button class="btn primary">Apply Filters</button>
+      </section>
+
+      <section class="filter-bar">
+        <div>
+          <label>Genre</label>
+          <select>
+            <option>All</option>
+            <option>Epic Fantasy</option>
+            <option>Romance</option>
+            <option>Science Fiction</option>
+            <option>Poetry</option>
+            <option>Comics</option>
+          </select>
+        </div>
+        <div>
+          <label>Format</label>
+          <select>
+            <option>All</option>
+            <option>Novel</option>
+            <option>Essay</option>
+            <option>Comic</option>
+            <option>Poetry</option>
+          </select>
+        </div>
+        <div>
+          <label>Sort</label>
+          <select>
+            <option>Trending</option>
+            <option>Highest Rated</option>
+            <option>Newest</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="discover-grid">
+        <a class="card" href="story.html">Rhapsody of Ember</a>
+        <a class="card" href="story.html">Signal to the Sea</a>
+        <a class="card" href="story.html">Inkbound Circuit</a>
+        <a class="card" href="story.html">Paper Gardens</a>
+        <a class="card" href="story.html">Neon Caravan</a>
+        <a class="card" href="story.html">Harborlight</a>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
