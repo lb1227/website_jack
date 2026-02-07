@@ -15,6 +15,10 @@
   padding: 0;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   font-family: "Helvetica Neue", "Segoe UI", sans-serif;
   background: var(--bg);
