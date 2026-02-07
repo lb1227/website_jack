@@ -23,133 +23,79 @@
 
     <main class="profile-page">
       <section class="profile-hero">
-        <div class="profile-banner">
-          <div class="banner-overlay">
-            <h1>Untitled</h1>
-            <p class="hero-subtitle">First Tag • Second Tag • Third Tag</p>
+        <div class="profile-hero-card">
+          <div class="profile-avatar">
+            <img
+              src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=240&q=80"
+              alt="PiruMi profile portrait"
+            />
           </div>
-          <label class="upload-btn edit-only">
-            Change banner
-            <input type="file" accept="image/*" />
-          </label>
-        </div>
-
-        <div class="profile-summary">
-          <div class="profile-card">
-            <div class="profile-picture">
-              <img
-              />
-              <label class="upload-btn small edit-only">
-                Update photo
-                <input type="file" accept="image/*" />
-              </label>
-            </div>
-            <div class="profile-details">
-              <p class="handle view-only">@</p>
-              <p class="bio view-only">
-                *Nothing here yet*
-              </p>
-              <div class="profile-tags view-only">
-                <span>First Tag</span>
-                <span>Second Tag</span>
-                <span>Third Tag</span>
-              </div>
-              <div class="profile-form edit-only">
-                <label>
-                  Display name
-                  <input type="text" placeholder="Untitled" />
-                </label>
-                <label>
-                  Handle
-                  <input type="text" placeholder="@yourname" />
-                </label>
-                <label class="profile-form-wide">
-                  Bio
-                  <textarea rows="3" placeholder="Share a short intro"></textarea>
-                </label>
-                <label class="profile-form-wide">
-                  Tags
-                  <input type="text" placeholder="Fantasy, Audio, Romance" />
-                </label>
-              </div>
-            </div>
+          <h1>PiruMi</h1>
+          <p class="profile-meta">ca Riah (Mimi) | LeBlanc • (NB) They/He • Digital Comic artist • 3D animator</p>
+          <a class="profile-link" href="https://linktr.ee/pirumi">https://linktr.ee/pirumi</a>
+          <div class="profile-counts">
+            <span><strong>Series</strong> 4</span>
+            <span><strong>Followers</strong> 3,093</span>
           </div>
           <div class="profile-actions">
-            <button class="btn ghost" data-edit-profile-toggle>Edit Profile</button>
-            <button class="btn edit-only" data-edit-profile-save>Save Changes</button>
-            <button class="btn ghost edit-only" data-edit-profile-cancel>Cancel</button>
+            <button class="btn follow">Follow</button>
+            <button class="icon-btn" aria-label="Instagram">◎</button>
+            <button class="icon-btn" aria-label="Patreon">P</button>
           </div>
-
         </div>
       </section>
 
-      <section class="profile-stats">
-        <div class="stat-card">
-          <h2>0</h2>
-          <p>Followers</p>
+      <section class="profile-series">
+        <div class="section-header">
+          <h2>Series</h2>
         </div>
-        <div class="stat-card">
-          <h2>0</h2>
-          <p>Following</p>
-        </div>
-        <div class="stat-card">
-          <h2>0</h2>
-          <p>Works</p>
-        </div>
-        <div class="stat-card">
-          <h2>5.0</h2>
-          <p>Creator Rating</p>
+        <div class="series-grid">
+          <article class="series-card">
+            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=400&q=80" alt="The Thief's Heir cover art" />
+            <div>
+              <p class="series-meta">CANVAS · Drama</p>
+              <h3>The Thief's Heir</h3>
+            </div>
+          </article>
+          <article class="series-card">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" alt="Demon for Hire cover art" />
+            <div>
+              <p class="series-meta">CANVAS · Thriller</p>
+              <h3>Demon for Hire</h3>
+            </div>
+          </article>
+          <article class="series-card">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=400&q=80" alt="Voltaic Punks cover art" />
+            <div>
+              <p class="series-meta">CANVAS · Superhero</p>
+              <h3>Voltaic Punks</h3>
+            </div>
+          </article>
         </div>
       </section>
 
       <section class="profile-feed">
-        <div class="feed-header">
-          <div>
-            <h2>Feed</h2>
+        <div class="section-header">
+          <h2>Feed</h2>
+        </div>
+        <article class="feed-card">
+          <div class="feed-body">
+            <div class="feed-author">
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=120&q=80" alt="" />
+              <div>
+                <h3>PiruMi</h3>
+                <p>1 hour ago</p>
+              </div>
+            </div>
+            <p>
+              Okay, here is all of the stuff I've asked about my style finalized. How's the new nose and the more
+              exaggerated proportions? Are they unnoticeable? Does ...
+            </p>
           </div>
-          <button class="btn">New Post</button>
-        </div>
-        <div class="feed-grid">
-          <article class="feed-card">
-            <div class="feed-media">
-              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80" alt="Moody forest landscape" />
-            </div>
-            <div class="feed-body">
-              <div class="feed-meta">
-                <span>Just now</span>
-                <span>•</span>
-                <span>Draft update</span>
-              </div>
-              <p>Wrapped chapter 6 and mapped the next three scenes. Feeling great about the pacing.</p>
-            </div>
-          </article>
-          <article class="feed-card">
-            <div class="feed-media">
-              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80" alt="Laptop with notes" />
-            </div>
-            <div class="feed-body">
-              <div class="feed-meta">
-                <span>2 days ago</span>
-                <span>•</span>
-                <span>Behind the scenes</span>
-              </div>
-              <p>Sketching new cover ideas today. Dropping a few moodboard shots for feedback.</p>
-            </div>
-          </article>
-          <article class="feed-card">
-            <div class="feed-media">
-              <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1400&q=80" alt="Notebook and pen" />
-            </div>
-            <div class="feed-body">
-              <div class="feed-meta">
-                <span>Last week</span>
-                <span>•</span>
-                <span>Release note</span>
-              </div>
-              <p>Episode 12 is live! Thank you for the support—drop your thoughts in the comments.</p>
-            </div>
-          </article>
-        </div>
+          <div class="feed-media">
+            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1400&q=80" alt="Character art post" />
+          </div>
+        </article>
       </section>
     </main>
 
