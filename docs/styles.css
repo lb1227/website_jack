@@ -1084,6 +1084,7 @@ input {
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.2s ease, background 0.2s ease, border-radius 0.2s ease;
+  position: relative;
 }
 
 .discord-server-icon span {
@@ -1115,12 +1116,26 @@ input {
   letter-spacing: 0.05em;
 }
 
+.discord-server-plus {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 0.7rem;
+  display: grid;
+  place-items: center;
+}
+
 .discord-separator {
-  width: 34px;
-  height: 2px;
+  width: 22px;
+  height: 1px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.16);
-  margin: 2px 0;
+  margin: 4px 0;
 }
 
 .discord-server-spacer {
@@ -1168,6 +1183,38 @@ input {
 .discord-dm-section {
   display: grid;
   gap: 10px;
+}
+
+.discord-dm-pool {
+  display: grid;
+  gap: 8px;
+}
+
+.discord-dm-pool-list {
+  display: grid;
+  gap: 8px;
+}
+
+.discord-dm-pool-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.discord-dm-pool-item span:last-child {
+  font-size: 0.9rem;
+}
+
+.discord-dm-pool-item:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .discord-section-title {
