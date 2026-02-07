@@ -51,12 +51,12 @@
       </section>
 
       <section class="publish-tabs" aria-label="Publish steps">
-        <button class="publish-tab active" type="button"><span>1</span> Details</button>
-        <button class="publish-tab" type="button"><span>2</span> Content</button>
-        <button class="publish-tab" type="button"><span>3</span> Pricing</button>
+        <button class="publish-tab active" type="button" data-publish-tab><span>1</span> Details</button>
+        <button class="publish-tab" type="button" data-publish-tab><span>2</span> Content</button>
+        <button class="publish-tab" type="button" data-publish-tab><span>3</span> Pricing</button>
       </section>
 
-      <section class="publish-card publish-details">
+      <section class="publish-card publish-details" data-publish-step>
         <div class="publish-card-header">
           <h2>Book details</h2>
           <p>Set up your listing the way it will appear to readers.</p>
@@ -135,10 +135,13 @@
               <input type="text" placeholder="18+" />
             </label>
           </div>
+          <div class="publish-form-actions">
+            <button class="publish-button" type="button" data-publish-next>Save &amp; continue</button>
+          </div>
         </form>
       </section>
 
-      <section class="publish-card publish-content">
+      <section class="publish-card publish-content" data-publish-step hidden>
         <div class="publish-card-header">
           <h2>Content plan</h2>
           <p>Upload your manuscript, art, and schedule for how chapters will go live.</p>
@@ -176,10 +179,13 @@
             <span>Reader notes</span>
             <textarea rows="3" placeholder="Share any author notes or launch details for readers."></textarea>
           </label>
+          <div class="publish-form-actions">
+            <button class="publish-button" type="button" data-publish-next>Save &amp; continue</button>
+          </div>
         </form>
       </section>
 
-      <section class="publish-card publish-pricing">
+      <section class="publish-card publish-pricing" data-publish-step hidden>
         <div class="publish-card-header">
           <h2>Pricing</h2>
           <p>Define the price, discounts, and reader access options.</p>
@@ -217,6 +223,9 @@
             <span>Royalty split notes</span>
             <textarea rows="3" placeholder="Document revenue sharing or collaborator splits."></textarea>
           </label>
+          <div class="publish-form-actions">
+            <button class="publish-button publish-button-secondary" type="button">Finish setup</button>
+          </div>
         </form>
       </section>
     </main>
