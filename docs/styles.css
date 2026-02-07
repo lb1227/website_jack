@@ -1081,6 +1081,7 @@ input {
   place-items: center;
   text-align: center;
   gap: 18px;
+  position: relative;
 }
 
 .profile-hero-card {
@@ -1125,6 +1126,74 @@ input {
 }
 
 .profile-status {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.profile-auth-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(7, 7, 7, 0.6);
+  backdrop-filter: blur(6px);
+}
+
+.profile-auth-window {
+  width: min(820px, 100%);
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 28px;
+  display: grid;
+  gap: 16px;
+  box-shadow: 0 26px 40px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-eyebrow {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+}
+
+.auth-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.auth-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.auth-card {
+  background: var(--surface-alt);
+  border-radius: 16px;
+  padding: 20px;
+  display: grid;
+  gap: 12px;
+  text-align: left;
+}
+
+.auth-card label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.auth-card input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--text);
+}
+
+.auth-status {
   color: var(--muted);
   font-size: 0.9rem;
 }

@@ -34,11 +34,45 @@
           </div>
           <p class="profile-status" data-profile-status></p>
         </div>
+        <div class="profile-auth-overlay" data-auth-overlay hidden>
+          <div class="profile-auth-window">
+            <p class="auth-eyebrow">Welcome to PensUp</p>
+            <h2>Sign in to finish your profile</h2>
+            <p class="auth-subtitle">Your profile stays hidden until you sign in.</p>
+            <div class="auth-grid">
+              <form class="auth-card" data-auth-form="signin">
+                <h3>Sign in</h3>
+                <label>
+                  Username
+                  <input type="text" name="signinUsername" autocomplete="username" required data-auth-input="signin-username" />
+                </label>
+                <label>
+                  Password
+                  <input type="password" name="signinPassword" autocomplete="current-password" required data-auth-input="signin-password" />
+                </label>
+                <button class="btn" type="submit">Sign in</button>
+              </form>
+              <form class="auth-card" data-auth-form="signup">
+                <h3>Create account</h3>
+                <label>
+                  Username
+                  <input type="text" name="signupUsername" autocomplete="username" required data-auth-input="signup-username" />
+                </label>
+                <label>
+                  Password
+                  <input type="password" name="signupPassword" autocomplete="new-password" required data-auth-input="signup-password" />
+                </label>
+                <button class="btn ghost" type="submit">Sign up</button>
+              </form>
+            </div>
+            <p class="auth-status" data-auth-status></p>
+          </div>
+        </div>
       </section>
 
-      <section class="profile-setup">
+      <section class="profile-setup" data-profile-setup hidden>
         <div class="section-header">
-          <h2>Sign in or sign up</h2>
+          <h2>Profile details</h2>
         </div>
         <form class="profile-form" data-profile-form>
           <label>
