@@ -224,6 +224,8 @@ const profileAvatarImage = document.querySelector('[data-profile-avatar-image]')
 const profileHeroCard = document.querySelector('[data-profile-hero]');
 const profileEditButton = document.querySelector('[data-profile-edit]');
 const profileCancelButton = document.querySelector('[data-profile-cancel]');
+const profileWorkCount = document.querySelector('[data-profile-count="works"]');
+const profileFollowerCount = document.querySelector('[data-profile-count="followers"]');
 const authOverlay = document.querySelector('[data-auth-overlay]');
 const authStatus = document.querySelector('[data-auth-status]');
 const authForms = document.querySelectorAll('[data-auth-form]');
@@ -354,6 +356,21 @@ const savePublishedWork = (work) => {
 const profileSeriesSection = document.querySelector('[data-profile-series]');
 const profileSeriesGrid = document.querySelector('[data-series-grid]');
 
+const updateProfileCounts = () => {
+  if (!profileWorkCount && !profileFollowerCount) return;
+  const username = localStorage.getItem(signedInKey);
+  const works = loadPublishedWorks().filter((entry) => entry.username && entry.username === username);
+  if (profileWorkCount) {
+    profileWorkCount.textContent = username ? String(works.length) : '0';
+  }
+  if (profileFollowerCount) {
+    const storedFollowers = localStorage.getItem('pensupFollowers');
+    const parsedFollowers = storedFollowers ? Number.parseInt(storedFollowers, 10) : 0;
+    const followerCount = Number.isFinite(parsedFollowers) ? parsedFollowers : 0;
+    profileFollowerCount.textContent = username ? String(followerCount) : '0';
+  }
+};
+
 const updateProfileSeries = () => {
   if (!profileSeriesSection || !profileSeriesGrid) return;
   const username = localStorage.getItem(signedInKey);
@@ -361,6 +378,7 @@ const updateProfileSeries = () => {
   const hasWorks = Boolean(username && works.length);
   profileSeriesSection.hidden = !hasWorks;
   profileSeriesGrid.innerHTML = '';
+  updateProfileCounts();
   if (!hasWorks) return;
 
   works.forEach((work, index) => {
