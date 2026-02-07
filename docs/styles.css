@@ -1101,12 +1101,30 @@ input {
   border: 2px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  padding: 0;
+  cursor: default;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
 }
 
 .profile-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.profile-avatar.is-editable {
+  cursor: pointer;
+  border-color: rgba(255, 59, 59, 0.6);
+  box-shadow: 0 0 16px rgba(255, 59, 59, 0.35);
+}
+
+.profile-avatar.is-editable:hover {
+  transform: translateY(-2px);
+}
+
+.profile-avatar.is-editable:focus-visible {
+  outline: 2px solid rgba(255, 59, 59, 0.7);
+  outline-offset: 4px;
 }
 
 .profile-hero-card.is-blank [data-profile-display="name"],
@@ -1271,6 +1289,16 @@ input {
   border-radius: 10px;
   padding: 10px 12px;
   color: var(--text);
+}
+
+.profile-form input[type="file"] {
+  padding: 8px 10px;
+}
+
+.profile-form input[readonly],
+.profile-form textarea[readonly] {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .profile-form-actions {
