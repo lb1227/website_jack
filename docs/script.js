@@ -8,7 +8,8 @@ scrollButtons.forEach((button) => {
     const carousel = container.querySelector('[data-carousel]');
     if (!carousel) return;
     const direction = button.hasAttribute('data-scroll-left') ? -1 : 1;
-    const scrollAmount = carousel.clientWidth * 0.8;
+    const isHeroCarousel = carousel.classList.contains('hero-strip');
+    const scrollAmount = carousel.clientWidth * (isHeroCarousel ? 1 : 0.8);
     carousel.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
   });
 });

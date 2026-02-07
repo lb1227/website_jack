@@ -309,16 +309,20 @@ input {
 }
 
 .hero-strip {
-  grid-auto-columns: minmax(100%, 100%);
-  gap: 24px;
+  grid-auto-columns: minmax(100vw, 100vw);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  gap: 0;
   scroll-snap-type: x mandatory;
   padding-bottom: 12px;
+  scroll-padding-left: 0;
 }
 
 .hero-card {
   min-height: 520px;
   padding: 48px;
-  border-radius: 20px;
+  border-radius: 0;
   background-image:
     linear-gradient(120deg, rgba(7, 7, 7, 0.15), rgba(7, 7, 7, 0.85)),
     var(--card-image, linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)));
