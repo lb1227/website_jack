@@ -40,7 +40,7 @@
             <h2>Sign in to finish your profile</h2>
             <p class="auth-subtitle">Your profile stays hidden until you sign in.</p>
             <div class="auth-grid">
-              <form class="auth-card" data-auth-form="signin">
+              <form class="auth-card" data-auth-form="signin" data-auth-panel="signin">
                 <h3>Sign in</h3>
                 <label>
                   Username
@@ -50,9 +50,12 @@
                   Password
                   <input type="password" name="signinPassword" autocomplete="current-password" required data-auth-input="signin-password" />
                 </label>
-                <button class="btn" type="submit">Sign in</button>
+                <div class="auth-card-actions">
+                  <button class="btn" type="submit">Sign in</button>
+                  <button class="btn ghost" type="button" data-auth-toggle="signup">Create account</button>
+                </div>
               </form>
-              <form class="auth-card" data-auth-form="signup">
+              <form class="auth-card" data-auth-form="signup" data-auth-panel="signup" hidden>
                 <h3>Create account</h3>
                 <label>
                   Username
@@ -62,7 +65,10 @@
                   Password
                   <input type="password" name="signupPassword" autocomplete="new-password" required data-auth-input="signup-password" />
                 </label>
-                <button class="btn ghost" type="submit">Sign up</button>
+                <div class="auth-card-actions">
+                  <button class="btn" type="submit">Create account</button>
+                  <button class="btn ghost" type="button" data-auth-toggle="signin">Back to sign in</button>
+                </div>
               </form>
             </div>
             <p class="auth-status" data-auth-status></p>
