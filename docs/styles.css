@@ -1095,12 +1095,21 @@ input {
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
 }
 
 .profile-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.profile-hero-card.is-blank [data-profile-display="name"],
+.profile-hero-card.is-blank .profile-meta,
+.profile-hero-card.is-blank .profile-bio,
+.profile-hero-card.is-blank .profile-counts,
+.profile-hero-card.is-blank .profile-status {
+  display: none;
 }
 
 .profile-meta {

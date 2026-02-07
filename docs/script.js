@@ -121,6 +121,7 @@ const profileStatus = document.querySelector('[data-profile-status]');
 const profileNameDisplays = document.querySelectorAll('[data-profile-display="name"]');
 const profileTagsDisplay = document.querySelector('[data-profile-display="tags"]');
 const profileBioDisplay = document.querySelector('[data-profile-display="bio"]');
+const profileHeroCard = document.querySelector('[data-profile-hero]');
 
 if (profileForm) {
   const nameInput = profileForm.querySelector('[data-profile-input="name"]');
@@ -129,53 +130,63 @@ if (profileForm) {
   const resetButton = profileForm.querySelector('[data-profile-reset]');
   const storageKey = 'pensupProfile';
   const defaults = {
-    name: 'Your Profile',
-    tags: 'Add tags to help readers find you.',
-    bio: 'Set your bio from the sign in form below.',
+    name: '',
+    tags: '',
+    bio: '',
   };
 
   const applyProfile = (profile) => {
     profileNameDisplays.forEach((element) => {
-      element.textContent = profile.name;
+      element.textContent = profile.name || '';
     });
     if (profileTagsDisplay) {
-      profileTagsDisplay.textContent = profile.tags;
+      profileTagsDisplay.textContent = profile.tags || '';
     }
     if (profileBioDisplay) {
-      profileBioDisplay.textContent = profile.bio;
+      profileBioDisplay.textContent = profile.bio || '';
     }
   };
 
   const updateStatus = (message) => {
     if (profileStatus) {
-      profileStatus.textContent = message;
+      profileStatus.textContent = message || '';
     }
   };
 
   const loadProfile = () => {
     const stored = localStorage.getItem(storageKey);
-    if (!stored) return { ...defaults };
+    if (!stored) return { profile: { ...defaults }, isStored: false };
     try {
       const parsed = JSON.parse(stored);
       return {
-        name: parsed.name || defaults.name,
-        tags: parsed.tags || defaults.tags,
-        bio: parsed.bio || defaults.bio,
+        profile: {
+          name: parsed.name || defaults.name,
+          tags: parsed.tags || defaults.tags,
+          bio: parsed.bio || defaults.bio,
+        },
+        isStored: true,
       };
     } catch (error) {
-      return { ...defaults };
+      return { profile: { ...defaults }, isStored: false };
     }
   };
 
   const setInputs = (profile) => {
-    if (nameInput) nameInput.value = profile.name === defaults.name ? '' : profile.name;
-    if (tagsInput) tagsInput.value = profile.tags === defaults.tags ? '' : profile.tags;
-    if (bioInput) bioInput.value = profile.bio === defaults.bio ? '' : profile.bio;
+    if (nameInput) nameInput.value = profile.name;
+    if (tagsInput) tagsInput.value = profile.tags;
+    if (bioInput) bioInput.value = profile.bio;
   };
 
-  const initialProfile = loadProfile();
+  const setBlankState = (profile, isStored) => {
+    if (!profileHeroCard) return;
+    const isBlank = !isStored && !profile.name && !profile.tags && !profile.bio;
+    profileHeroCard.classList.toggle('is-blank', isBlank);
+  };
+
+  const { profile: initialProfile, isStored } = loadProfile();
   applyProfile(initialProfile);
   setInputs(initialProfile);
+  setBlankState(initialProfile, isStored);
 
   profileForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -187,6 +198,7 @@ if (profileForm) {
     localStorage.setItem(storageKey, JSON.stringify(profile));
     applyProfile(profile);
     updateStatus('Profile saved locally on this device.');
+    setBlankState(profile, true);
   });
 
   if (resetButton) {
@@ -194,7 +206,8 @@ if (profileForm) {
       localStorage.removeItem(storageKey);
       applyProfile(defaults);
       setInputs(defaults);
-      updateStatus('Profile reset. Add your details to save again.');
+      updateStatus('');
+      setBlankState(defaults, false);
     });
   }
 }
