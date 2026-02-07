@@ -165,6 +165,25 @@ profileMenus.forEach((menuPanel) => {
   }
 });
 
+const headerRight = document.querySelector('.header-right');
+if (headerRight) {
+  const creatorModeButton = headerRight.querySelector('[data-creator-mode-link]');
+  if (!creatorModeButton) {
+    const publishLink = headerRight.querySelector('a[href="publish.html#vcreator"]');
+    const creatorLink = document.createElement('a');
+    creatorLink.href = 'publish.html#vcreator';
+    creatorLink.className = 'btn ghost header-btn';
+    creatorLink.textContent = 'Creator Mode';
+    creatorLink.setAttribute('data-creator-mode-link', '');
+
+    if (publishLink) {
+      publishLink.insertAdjacentElement('afterend', creatorLink);
+    } else {
+      headerRight.prepend(creatorLink);
+    }
+  }
+}
+
 
 const creatorFullscreenToggle = document.querySelector('[data-creator-fullscreen-toggle]');
 const creatorFullscreenOverlay = document.querySelector('[data-creator-fullscreen]');
