@@ -309,18 +309,24 @@ input {
 }
 
 .hero-strip {
-  grid-auto-columns: minmax(100vw, 100vw);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100vw;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  gap: 0;
+
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  gap: 0;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 12px;
   scroll-padding-left: 0;
+  padding-bottom: 12px;
 }
 
 .hero-card {
-  width: 100%;
+  width: 100vw;
+  scroll-snap-align: start;
   min-height: 520px;
   padding: 48px;
   border-radius: 0;
