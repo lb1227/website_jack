@@ -1330,6 +1330,8 @@ input {
 }
 
 .feed-header {
+  place-items: center;
+  text-align: center;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
