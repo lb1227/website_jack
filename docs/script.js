@@ -231,11 +231,13 @@ const authStatus = document.querySelector('[data-auth-status]');
 const authForms = document.querySelectorAll('[data-auth-form]');
 const authPanels = document.querySelectorAll('[data-auth-panel]');
 const authToggles = document.querySelectorAll('[data-auth-toggle]');
+const authButtons = document.querySelectorAll('[data-auth-button]');
 const logoutButtons = document.querySelectorAll('[data-logout]');
 const storageKey = 'pensupProfile';
 const accountKey = 'pensupAccount';
 const signedInKey = 'pensupSignedIn';
 const publishedKey = 'pensupPublishedWorks';
+const authPromptKey = 'pensupAuthPrompt';
 const defaults = {
   name: '',
   tags: 'nothing · here · yet',
@@ -286,6 +288,15 @@ const updateAuthStatus = (message) => {
   if (authStatus) {
     authStatus.textContent = message || '';
   }
+};
+
+const updateAuthButtons = (signedIn) => {
+  if (!authButtons.length) return;
+  authButtons.forEach((button) => {
+    button.textContent = signedIn ? 'Log out' : 'Log in';
+    button.setAttribute('aria-label', signedIn ? 'Log out' : 'Log in');
+    button.dataset.authState = signedIn ? 'signed-in' : 'signed-out';
+  });
 };
 
 const setAuthPanel = (panel) => {
@@ -432,6 +443,7 @@ const updateAuthUI = (signedIn) => {
   if (authOverlay) {
     authOverlay.hidden = signedIn;
   }
+  updateAuthButtons(signedIn);
   if (profileForm) {
     const editableFields = profileForm.querySelectorAll('input, textarea');
     editableFields.forEach((field) => {
@@ -445,6 +457,20 @@ const updateAuthUI = (signedIn) => {
     profileAvatarButton.classList.toggle('is-editable', signedIn);
   }
   updateProfileSeries();
+};
+
+const handleAuthPrompt = () => {
+  if (!authOverlay) return;
+  const shouldPrompt = localStorage.getItem(authPromptKey) === 'true';
+  if (!shouldPrompt) return;
+  localStorage.removeItem(authPromptKey);
+  if (!isSignedIn()) {
+    authOverlay.hidden = false;
+    setAuthPanel('signin');
+  }
+  if (profileHeroCard) {
+    profileHeroCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 };
 
 const handleLogout = () => {
@@ -482,6 +508,7 @@ updateFeaturedHero();
 if (authPanels.length) {
   setAuthPanel('signin');
 }
+handleAuthPrompt();
 
 if (profileForm) {
   const nameInput = profileForm.querySelector('[data-profile-input="name"]');
@@ -573,6 +600,19 @@ if (logoutButtons.length) {
   logoutButtons.forEach((button) => {
     button.addEventListener('click', () => {
       handleLogout();
+    });
+  });
+}
+
+if (authButtons.length) {
+  authButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (isSignedIn()) {
+        handleLogout();
+        return;
+      }
+      localStorage.setItem(authPromptKey, 'true');
+      window.location.href = 'profile.html#profile';
     });
   });
 }
