@@ -116,37 +116,85 @@ if (searchInput) {
   });
 }
 
-const profilePage = document.querySelector('.profile-page');
-const editProfileToggle = document.querySelector('[data-edit-profile-toggle]');
-const editProfileSave = document.querySelector('[data-edit-profile-save]');
-const editProfileCancel = document.querySelector('[data-edit-profile-cancel]');
+const profileForm = document.querySelector('[data-profile-form]');
+const profileStatus = document.querySelector('[data-profile-status]');
+const profileNameDisplays = document.querySelectorAll('[data-profile-display="name"]');
+const profileTagsDisplay = document.querySelector('[data-profile-display="tags"]');
+const profileBioDisplay = document.querySelector('[data-profile-display="bio"]');
 
-if (profilePage && editProfileToggle) {
-  const setEditState = (isEditing) => {
-    profilePage.classList.toggle('is-editing', isEditing);
-    editProfileToggle.setAttribute('aria-expanded', String(isEditing));
-    if (isEditing) {
-      const firstInput = profilePage.querySelector('.profile-form input, .profile-form textarea');
-      if (firstInput) {
-        firstInput.focus();
-      }
+if (profileForm) {
+  const nameInput = profileForm.querySelector('[data-profile-input="name"]');
+  const tagsInput = profileForm.querySelector('[data-profile-input="tags"]');
+  const bioInput = profileForm.querySelector('[data-profile-input="bio"]');
+  const resetButton = profileForm.querySelector('[data-profile-reset]');
+  const storageKey = 'pensupProfile';
+  const defaults = {
+    name: 'Your Profile',
+    tags: 'Add tags to help readers find you.',
+    bio: 'Set your bio from the sign in form below.',
+  };
+
+  const applyProfile = (profile) => {
+    profileNameDisplays.forEach((element) => {
+      element.textContent = profile.name;
+    });
+    if (profileTagsDisplay) {
+      profileTagsDisplay.textContent = profile.tags;
+    }
+    if (profileBioDisplay) {
+      profileBioDisplay.textContent = profile.bio;
     }
   };
 
-  editProfileToggle.addEventListener('click', () => {
-    const isEditing = !profilePage.classList.contains('is-editing');
-    setEditState(isEditing);
+  const updateStatus = (message) => {
+    if (profileStatus) {
+      profileStatus.textContent = message;
+    }
+  };
+
+  const loadProfile = () => {
+    const stored = localStorage.getItem(storageKey);
+    if (!stored) return { ...defaults };
+    try {
+      const parsed = JSON.parse(stored);
+      return {
+        name: parsed.name || defaults.name,
+        tags: parsed.tags || defaults.tags,
+        bio: parsed.bio || defaults.bio,
+      };
+    } catch (error) {
+      return { ...defaults };
+    }
+  };
+
+  const setInputs = (profile) => {
+    if (nameInput) nameInput.value = profile.name === defaults.name ? '' : profile.name;
+    if (tagsInput) tagsInput.value = profile.tags === defaults.tags ? '' : profile.tags;
+    if (bioInput) bioInput.value = profile.bio === defaults.bio ? '' : profile.bio;
+  };
+
+  const initialProfile = loadProfile();
+  applyProfile(initialProfile);
+  setInputs(initialProfile);
+
+  profileForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const profile = {
+      name: nameInput?.value.trim() || defaults.name,
+      tags: tagsInput?.value.trim() || defaults.tags,
+      bio: bioInput?.value.trim() || defaults.bio,
+    };
+    localStorage.setItem(storageKey, JSON.stringify(profile));
+    applyProfile(profile);
+    updateStatus('Profile saved locally on this device.');
   });
 
-  if (editProfileSave) {
-    editProfileSave.addEventListener('click', () => {
-      setEditState(false);
-    });
-  }
-
-  if (editProfileCancel) {
-    editProfileCancel.addEventListener('click', () => {
-      setEditState(false);
+  if (resetButton) {
+    resetButton.addEventListener('click', () => {
+      localStorage.removeItem(storageKey);
+      applyProfile(defaults);
+      setInputs(defaults);
+      updateStatus('Profile reset. Add your details to save again.');
     });
   }
 }
