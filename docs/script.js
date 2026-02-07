@@ -133,7 +133,7 @@ const accountKey = 'pensupAccount';
 const signedInKey = 'pensupSignedIn';
 const defaults = {
   name: '',
-  tags: '*** dot *** dot ***',
+  tags: 'nothing · here · yet',
   bio: 'nothing here yet',
   avatar: '',
 };
@@ -153,9 +153,9 @@ const applyProfile = (profile) => {
   const displayName = document.querySelector('[data-profile-display="name"]');
   const displayTags = document.querySelector('[data-profile-display="tags"]');
   const displayBio = document.querySelector('[data-profile-display="bio"]');
-  const safeName = profile.name?.trim() || 'Your name';
-  const safeTags = profile.tags?.trim() || 'Add your favorite genres and tags.';
-  const safeBio = profile.bio?.trim() || 'Share a quick bio about what you write.';
+  const safeName = profile.name?.trim() || 'Username';
+  const safeTags = profile.tags?.trim() || 'anything · you · want';
+  const safeBio = profile.bio?.trim() || 'empty for now';
 
   if (profileForm) {
     const nameInput = profileForm.querySelector('[data-profile-input="name"]');
