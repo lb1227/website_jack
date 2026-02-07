@@ -92,22 +92,27 @@ if (chatForm && chatFeed) {
   });
 }
 
-const chatOverlay = document.querySelector('[data-chat-overlay]');
-const chatToggleButtons = document.querySelectorAll('[data-chat-toggle]');
-const chatCloseButton = document.querySelector('[data-chat-close]');
-const chatListItems = document.querySelectorAll('.chat-server-icon[data-chat-title]');
-const chatThreadTitle = document.querySelector('[data-chat-thread-title]');
-const chatThreadStatus = document.querySelector('[data-chat-thread-status]');
-const chatThreadFeed = document.querySelector('[data-chat-thread-feed]');
-const chatOverlayForm = document.querySelector('[data-chat-overlay-form]');
+const chatIncludeTargets = document.querySelectorAll('[data-chat-include]');
+let chatOverlayEscapeBound = false;
 
-const setChatOverlayOpen = (isOpen) => {
-  if (!chatOverlay) return;
-  chatOverlay.hidden = !isOpen;
-  document.body.classList.toggle('chat-overlay-open', isOpen);
-};
+const setupChatOverlay = (root = document) => {
+  const chatOverlay = root.querySelector('[data-chat-overlay]');
+  if (!chatOverlay || chatOverlay.dataset.bound === 'true') return;
+  chatOverlay.dataset.bound = 'true';
 
-if (chatOverlay) {
+  const chatToggleButtons = root.querySelectorAll('[data-chat-toggle]');
+  const chatCloseButton = chatOverlay.querySelector('[data-chat-close]');
+  const chatListItems = chatOverlay.querySelectorAll('.chat-server-icon[data-chat-title]');
+  const chatThreadTitle = chatOverlay.querySelector('[data-chat-thread-title]');
+  const chatThreadStatus = chatOverlay.querySelector('[data-chat-thread-status]');
+  const chatThreadFeed = chatOverlay.querySelector('[data-chat-thread-feed]');
+  const chatOverlayForm = chatOverlay.querySelector('[data-chat-overlay-form]');
+
+  const setChatOverlayOpen = (isOpen) => {
+    chatOverlay.hidden = !isOpen;
+    document.body.classList.toggle('chat-overlay-open', isOpen);
+  };
+
   chatToggleButtons.forEach((button) => {
     button.addEventListener('click', () => {
       setChatOverlayOpen(chatOverlay.hidden);
@@ -126,41 +131,67 @@ if (chatOverlay) {
     }
   });
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !chatOverlay.hidden) {
-      setChatOverlayOpen(false);
-    }
-  });
-}
-
-if (chatListItems.length) {
-  chatListItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      chatListItems.forEach((entry) => entry.classList.remove('active'));
-      item.classList.add('active');
-      if (chatThreadTitle) {
-        chatThreadTitle.textContent = item.getAttribute('data-chat-title') || item.textContent.trim();
-      }
-      if (chatThreadStatus) {
-        chatThreadStatus.textContent = item.getAttribute('data-chat-status') || '';
+  if (!chatOverlayEscapeBound) {
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      const activeOverlay = document.querySelector('[data-chat-overlay]');
+      if (activeOverlay && !activeOverlay.hidden) {
+        activeOverlay.hidden = true;
+        document.body.classList.remove('chat-overlay-open');
       }
     });
-  });
+    chatOverlayEscapeBound = true;
+  }
+
+  if (chatListItems.length) {
+    chatListItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        chatListItems.forEach((entry) => entry.classList.remove('active'));
+        item.classList.add('active');
+        if (chatThreadTitle) {
+          chatThreadTitle.textContent = item.getAttribute('data-chat-title') || item.textContent.trim();
+        }
+        if (chatThreadStatus) {
+          chatThreadStatus.textContent = item.getAttribute('data-chat-status') || '';
+        }
+      });
+    });
+  }
+
+  if (chatOverlayForm && chatThreadFeed) {
+    chatOverlayForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const input = chatOverlayForm.querySelector('input');
+      if (!input || !input.value.trim()) return;
+      const message = document.createElement('div');
+      message.className = 'chat-thread-message';
+      message.innerHTML = `<strong>You</strong><p>${input.value.trim()}</p>`;
+      chatThreadFeed.appendChild(message);
+      chatThreadFeed.scrollTop = chatThreadFeed.scrollHeight;
+      input.value = '';
+    });
+  }
+};
+
+if (chatIncludeTargets.length) {
+  fetch('messages.html')
+    .then((response) => response.text())
+    .then((html) => {
+      const parser = new DOMParser();
+      const sharedDoc = parser.parseFromString(html, 'text/html');
+      const sharedChat = sharedDoc.querySelector('#shared-chat-overlay');
+      if (!sharedChat) return;
+      chatIncludeTargets.forEach((target) => {
+        target.innerHTML = sharedChat.innerHTML;
+        setupChatOverlay(target);
+      });
+    })
+    .catch((error) => {
+      console.error('Unable to load shared chat overlay.', error);
+    });
 }
 
-if (chatOverlayForm && chatThreadFeed) {
-  chatOverlayForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const input = chatOverlayForm.querySelector('input');
-    if (!input || !input.value.trim()) return;
-    const message = document.createElement('div');
-    message.className = 'chat-thread-message';
-    message.innerHTML = `<strong>You</strong><p>${input.value.trim()}</p>`;
-    chatThreadFeed.appendChild(message);
-    chatThreadFeed.scrollTop = chatThreadFeed.scrollHeight;
-    input.value = '';
-  });
-}
+setupChatOverlay();
 
 const searchInput = document.querySelector('[data-search] input');
 const searchStatus = document.querySelector('[data-search-status]');
