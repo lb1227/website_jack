@@ -1279,76 +1279,128 @@ input {
 
 .publish-page {
   display: grid;
-  gap: 32px;
+  gap: 24px;
 }
 
-.publish-hero {
-  display: grid;
-  gap: 16px;
-  padding: 32px;
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at top right, rgba(229, 9, 20, 0.2), transparent 45%),
-    linear-gradient(130deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.4);
-}
-
-.publish-hero p {
-  color: var(--muted);
-  max-width: 640px;
-}
-
-.publish-pillars {
+.publish-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-.publish-pill {
-  padding: 6px 12px;
+.publish-header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+}
+
+.publish-header p {
+  color: var(--muted);
+}
+
+.publish-button {
+  border: none;
+  background: #7fd1ff;
+  color: #081018;
+  padding: 10px 18px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(127, 209, 255, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.publish-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+.publish-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(127, 209, 255, 0.35);
+}
+
+.publish-button-secondary {
+  background: #6dc4ff;
+  padding: 8px 16px;
 }
 
 .publish-card {
-  background: var(--surface-alt);
-  padding: 20px;
-  border-radius: 16px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  padding: 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: grid;
-  gap: 12px;
+  gap: 16px;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
 }
 
-.publish-card p,
-.publish-card li {
+.publish-card-header p {
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.publish-form {
+  display: grid;
+  gap: 16px;
+}
+
+.publish-form label {
+  display: grid;
+  gap: 8px;
   color: var(--muted);
   font-size: 0.95rem;
 }
 
-.publish-card ul {
-  display: grid;
-  gap: 8px;
-  padding-left: 18px;
+.publish-form input,
+.publish-form select,
+.publish-form textarea {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--text);
 }
 
-.publish-steps {
+.publish-form textarea {
+  resize: vertical;
+}
+
+.publish-form-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
 }
 
-.publish-step {
+.publish-tabs {
   display: grid;
-  gap: 8px;
-  padding: 16px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.publish-tab {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.publish-tab span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(127, 209, 255, 0.2);
+  color: #9ad9ff;
+  font-size: 0.85rem;
+}
+
+.publish-tab.active {
+  border-color: rgba(127, 209, 255, 0.8);
+  box-shadow: 0 10px 20px rgba(127, 209, 255, 0.2);
 }
 
 @media (max-width: 900px) {
