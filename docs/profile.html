@@ -28,7 +28,7 @@
             <h1>Untitled</h1>
             <p class="hero-subtitle">First Tag • Second Tag • Third Tag</p>
           </div>
-          <label class="upload-btn">
+          <label class="upload-btn edit-only">
             Change banner
             <input type="file" accept="image/*" />
           </label>
@@ -39,7 +39,7 @@
             <div class="profile-picture">
               <img
               />
-              <label class="upload-btn small">
+              <label class="upload-btn small edit-only">
                 Update photo
                 <input type="file" accept="image/*" />
               </label>
@@ -56,7 +56,37 @@
               </div>
             </div>
           </div>
+          <div class="profile-actions">
+            <button class="btn ghost" data-edit-profile-toggle>Edit Profile</button>
+            <button class="btn edit-only" data-edit-profile-save>Save Changes</button>
+            <button class="btn ghost edit-only" data-edit-profile-cancel>Cancel</button>
+          </div>
 
+        </div>
+      </section>
+
+      <section class="profile-edit edit-only" aria-live="polite">
+        <div class="profile-panel">
+          <h2>Edit Profile Details</h2>
+          <div class="profile-form">
+            <label>
+              Display name
+              <input type="text" placeholder="Untitled" />
+            </label>
+            <label>
+              Handle
+              <input type="text" placeholder="@yourname" />
+            </label>
+            <label class="profile-form-wide">
+              Bio
+              <textarea rows="3" placeholder="Share a short intro"></textarea>
+            </label>
+            <label class="profile-form-wide">
+              Tags
+              <input type="text" placeholder="Fantasy, Audio, Romance" />
+            </label>
+          </div>
+          <p class="profile-hint">Edits are previewed here and saved to your profile.</p>
         </div>
       </section>
 
@@ -79,54 +109,55 @@
         </div>
       </section>
 
-      <section class="profile-grid">
-        <div class="profile-panel">
-          <h2>About</h2>
-          <p>
-            *Nothing Here Yet
-          </p>
-          <div class="profile-badges">
-            <span>Top 1% Creator</span>
-            <span>Mentor</span>
-            <span>Audio Host</span>
+      <section class="profile-feed">
+        <div class="feed-header">
+          <div>
+            <h2>Your Feed</h2>
+            <p class="feed-subtitle">Posts you share show up here for your followers.</p>
           </div>
+          <button class="btn">New Post</button>
         </div>
-
-        <div class="profile-panel">
-          <h2>Featured Works</h2>
-          <div class="works-grid">
-            <article class="work-card">
-              <h3>Aurora Tide</h3>
-              <p>120 chapters • 1.4M reads</p>
-              <button class="btn ghost">Read</button>
-            </article>
-            <article class="work-card">
-              <h3>The Moonlit Pact</h3>
-              <p>58 chapters • 640k reads</p>
-              <button class="btn ghost">Read</button>
-            </article>
-            <article class="work-card">
-              <h3>Glassfire Letters</h3>
-              <p>Drafting • 15 chapters</p>
-              <button class="btn ghost">Preview</button>
-            </article>
-          </div>
-        </div>
-
-        <div class="profile-panel">
-          <h2>Community</h2>
-          <div class="profile-pillars">
-            <div>
-              <h3>Creator Circle</h3>
-              <p>7 pods • 35 peers • 12 collabs</p>
+        <div class="feed-grid">
+          <article class="feed-card">
+            <div class="feed-media">
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80" alt="Moody forest landscape" />
             </div>
-            <div>
-              <h3>Reader Clubs</h3>
-              <p>4 active clubs • 5.3k members</p>
+            <div class="feed-body">
+              <div class="feed-meta">
+                <span>Just now</span>
+                <span>•</span>
+                <span>Draft update</span>
+              </div>
+              <p>Wrapped chapter 6 and mapped the next three scenes. Feeling great about the pacing.</p>
             </div>
-          </div>
+          </article>
+          <article class="feed-card">
+            <div class="feed-media">
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80" alt="Laptop with notes" />
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta">
+                <span>2 days ago</span>
+                <span>•</span>
+                <span>Behind the scenes</span>
+              </div>
+              <p>Sketching new cover ideas today. Dropping a few moodboard shots for feedback.</p>
+            </div>
+          </article>
+          <article class="feed-card">
+            <div class="feed-media">
+              <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1400&q=80" alt="Notebook and pen" />
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta">
+                <span>Last week</span>
+                <span>•</span>
+                <span>Release note</span>
+              </div>
+              <p>Episode 12 is live! Thank you for the support—drop your thoughts in the comments.</p>
+            </div>
+          </article>
         </div>
-
       </section>
     </main>
 
