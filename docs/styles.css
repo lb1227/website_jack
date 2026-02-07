@@ -280,6 +280,13 @@ input {
   background: transparent;
 }
 
+.hero.has-featured-cover {
+  background: linear-gradient(120deg, rgba(7, 10, 16, 0.94), rgba(7, 10, 16, 0.5)), var(--featured-cover);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .hero-carousel {
   display: grid;
   gap: 24px;

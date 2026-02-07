@@ -346,6 +346,23 @@ const loadPublishedWorks = () => {
   }
 };
 
+const featuredHero = document.querySelector('[data-featured-hero]');
+
+const updateFeaturedHero = () => {
+  if (!featuredHero) return;
+  const username = localStorage.getItem(signedInKey);
+  const works = loadPublishedWorks();
+  const candidateWorks = username ? works.filter((work) => work.username === username) : works;
+  const workWithCover = candidateWorks.find((work) => work.cover);
+  if (!workWithCover) {
+    featuredHero.classList.remove('has-featured-cover');
+    featuredHero.style.removeProperty('--featured-cover');
+    return;
+  }
+  featuredHero.style.setProperty('--featured-cover', `url("${workWithCover.cover}")`);
+  featuredHero.classList.add('has-featured-cover');
+};
+
 const savePublishedWork = (work) => {
   if (!work) return;
   const works = loadPublishedWorks();
@@ -461,6 +478,7 @@ const signedIn = isSignedIn();
 setBlankState(initialProfile, isStored, signedIn);
 updateAuthUI(signedIn);
 setEditState(false);
+updateFeaturedHero();
 if (authPanels.length) {
   setAuthPanel('signin');
 }
@@ -749,5 +767,6 @@ if (publishFinishButton) {
       createdAt: new Date().toISOString(),
     };
     savePublishedWork(work);
+    updateFeaturedHero();
   });
 }
