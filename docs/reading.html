@@ -168,6 +168,61 @@
       </section>
     </main>
 
+    <button class="chat-fab" type="button" data-chat-toggle aria-label="Open chat">
+      <span aria-hidden="true">💬</span>
+    </button>
+    <div class="chat-overlay" data-chat-overlay hidden>
+      <div class="chat-shell" role="dialog" aria-modal="true" aria-label="PensUp chat">
+        <header class="chat-shell-header">
+          <div>
+            <p class="chat-shell-title">PensUp Chat</p>
+            <p class="chat-shell-subtitle">Groups and DMs across your stories.</p>
+          </div>
+          <button class="chat-shell-close" type="button" data-chat-close aria-label="Close chat">✕</button>
+        </header>
+        <div class="chat-shell-body">
+          <aside class="chat-sidebar">
+            <div class="chat-tabs">
+              <button class="chat-tab active" type="button" data-chat-tab="groups">Groups</button>
+              <button class="chat-tab" type="button" data-chat-tab="dms">Direct</button>
+            </div>
+            <div class="chat-lists">
+              <div class="chat-list" data-chat-panel="groups">
+                <button class="chat-list-item active" type="button" data-chat-title="Writer Circle" data-chat-status="3 online">Writer Circle</button>
+                <button class="chat-list-item" type="button" data-chat-title="Launch Crew" data-chat-status="8 online">Launch Crew</button>
+                <button class="chat-list-item" type="button" data-chat-title="Critique Lab" data-chat-status="2 online">Critique Lab</button>
+              </div>
+              <div class="chat-list" data-chat-panel="dms" hidden>
+                <button class="chat-list-item" type="button" data-chat-title="Jun Park" data-chat-status="Typing...">Jun Park</button>
+                <button class="chat-list-item" type="button" data-chat-title="Yara Bell" data-chat-status="Online">Yara Bell</button>
+                <button class="chat-list-item" type="button" data-chat-title="Mentor Pod" data-chat-status="Away">Mentor Pod</button>
+              </div>
+            </div>
+          </aside>
+          <section class="chat-thread">
+            <div class="chat-thread-header">
+              <p class="chat-thread-title" data-chat-thread-title>Writer Circle</p>
+              <span class="chat-thread-status" data-chat-thread-status>3 online</span>
+            </div>
+            <div class="chat-thread-feed" data-chat-thread-feed>
+              <div class="chat-thread-message">
+                <strong>Sam</strong>
+                <p>Can we sync on chapter swaps tonight?</p>
+              </div>
+              <div class="chat-thread-message">
+                <strong>You</strong>
+                <p>I can hop in after 7pm. Let’s do it.</p>
+              </div>
+            </div>
+            <form class="chat-thread-input" data-chat-overlay-form>
+              <input type="text" placeholder="Message the channel" />
+              <button class="btn primary" type="submit">Send</button>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>

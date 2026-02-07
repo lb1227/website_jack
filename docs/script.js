@@ -92,6 +92,98 @@ if (chatForm && chatFeed) {
   });
 }
 
+const chatOverlay = document.querySelector('[data-chat-overlay]');
+const chatToggleButtons = document.querySelectorAll('[data-chat-toggle]');
+const chatCloseButton = document.querySelector('[data-chat-close]');
+const chatTabs = document.querySelectorAll('[data-chat-tab]');
+const chatPanels = document.querySelectorAll('[data-chat-panel]');
+const chatListItems = document.querySelectorAll('.chat-list-item[data-chat-title]');
+const chatThreadTitle = document.querySelector('[data-chat-thread-title]');
+const chatThreadStatus = document.querySelector('[data-chat-thread-status]');
+const chatThreadFeed = document.querySelector('[data-chat-thread-feed]');
+const chatOverlayForm = document.querySelector('[data-chat-overlay-form]');
+
+const setChatOverlayOpen = (isOpen) => {
+  if (!chatOverlay) return;
+  chatOverlay.hidden = !isOpen;
+  document.body.classList.toggle('chat-overlay-open', isOpen);
+};
+
+if (chatOverlay) {
+  chatToggleButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      setChatOverlayOpen(chatOverlay.hidden);
+    });
+  });
+
+  if (chatCloseButton) {
+    chatCloseButton.addEventListener('click', () => {
+      setChatOverlayOpen(false);
+    });
+  }
+
+  chatOverlay.addEventListener('click', (event) => {
+    if (event.target === chatOverlay) {
+      setChatOverlayOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !chatOverlay.hidden) {
+      setChatOverlayOpen(false);
+    }
+  });
+}
+
+if (chatTabs.length && chatPanels.length) {
+  const setChatTab = (target) => {
+    chatTabs.forEach((tab) => {
+      tab.classList.toggle('active', tab.getAttribute('data-chat-tab') === target);
+    });
+    chatPanels.forEach((panel) => {
+      panel.hidden = panel.getAttribute('data-chat-panel') !== target;
+    });
+  };
+
+  chatTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-chat-tab');
+      if (target) {
+        setChatTab(target);
+      }
+    });
+  });
+}
+
+if (chatListItems.length) {
+  chatListItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      chatListItems.forEach((entry) => entry.classList.remove('active'));
+      item.classList.add('active');
+      if (chatThreadTitle) {
+        chatThreadTitle.textContent = item.getAttribute('data-chat-title') || item.textContent.trim();
+      }
+      if (chatThreadStatus) {
+        chatThreadStatus.textContent = item.getAttribute('data-chat-status') || '';
+      }
+    });
+  });
+}
+
+if (chatOverlayForm && chatThreadFeed) {
+  chatOverlayForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = chatOverlayForm.querySelector('input');
+    if (!input || !input.value.trim()) return;
+    const message = document.createElement('div');
+    message.className = 'chat-thread-message';
+    message.innerHTML = `<strong>You</strong><p>${input.value.trim()}</p>`;
+    chatThreadFeed.appendChild(message);
+    chatThreadFeed.scrollTop = chatThreadFeed.scrollHeight;
+    input.value = '';
+  });
+}
+
 const searchInput = document.querySelector('[data-search] input');
 const searchStatus = document.querySelector('[data-search-status]');
 const cards = Array.from(document.querySelectorAll('.card'));
@@ -132,6 +224,7 @@ const logoutButtons = document.querySelectorAll('[data-logout]');
 const storageKey = 'pensupProfile';
 const accountKey = 'pensupAccount';
 const signedInKey = 'pensupSignedIn';
+const publishedKey = 'pensupPublishedWorks';
 const defaults = {
   name: '',
   tags: 'nothing · here · yet',
@@ -231,6 +324,60 @@ const loadProfile = () => {
   }
 };
 
+const loadPublishedWorks = () => {
+  const stored = localStorage.getItem(publishedKey);
+  if (!stored) return [];
+  try {
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const savePublishedWork = (work) => {
+  if (!work) return;
+  const works = loadPublishedWorks();
+  works.unshift(work);
+  localStorage.setItem(publishedKey, JSON.stringify(works));
+};
+
+const profileSeriesSection = document.querySelector('[data-profile-series]');
+const profileSeriesGrid = document.querySelector('[data-series-grid]');
+
+const updateProfileSeries = () => {
+  if (!profileSeriesSection || !profileSeriesGrid) return;
+  const username = localStorage.getItem(signedInKey);
+  const works = loadPublishedWorks().filter((entry) => entry.username && entry.username === username);
+  const hasWorks = Boolean(username && works.length);
+  profileSeriesSection.hidden = !hasWorks;
+  profileSeriesGrid.innerHTML = '';
+  if (!hasWorks) return;
+
+  works.forEach((work, index) => {
+    const card = document.createElement('div');
+    card.className = 'series-card';
+    const image = document.createElement('img');
+    const fallbackSeed = `${work.title || 'series'}-${index}`;
+    image.src = work.cover || `https://picsum.photos/seed/${encodeURIComponent(fallbackSeed)}/200/200`;
+    image.alt = work.title || work.series || 'Published work cover';
+    const meta = document.createElement('div');
+    const metaLabel = document.createElement('p');
+    metaLabel.className = 'series-meta';
+    metaLabel.textContent = work.series ? 'Series' : 'Standalone';
+    const title = document.createElement('h3');
+    title.textContent = work.series || work.title || 'Untitled work';
+    const subtitle = document.createElement('p');
+    subtitle.textContent = work.series ? work.title || 'New installment' : 'Published work';
+    meta.appendChild(metaLabel);
+    meta.appendChild(title);
+    meta.appendChild(subtitle);
+    card.appendChild(image);
+    card.appendChild(meta);
+    profileSeriesGrid.appendChild(card);
+  });
+};
+
 const setBlankState = (profile, isStored, signedIn) => {
   if (!profileHeroCard) return;
   const isBlank = !signedIn || (!isStored && !profile.name && !profile.tags && !profile.bio);
@@ -253,6 +400,7 @@ const updateAuthUI = (signedIn) => {
   if (profileAvatarButton) {
     profileAvatarButton.classList.toggle('is-editable', signedIn);
   }
+  updateProfileSeries();
 };
 
 const handleLogout = () => {
@@ -554,5 +702,25 @@ if (publishSteps.length && publishTabs.length) {
       if (tabIndex > maxUnlockedIndex) return;
       updatePublishSteps(tabIndex);
     });
+  });
+}
+
+const publishFinishButton = document.querySelector('[data-publish-finish]');
+const publishSeriesInput = document.querySelector('[data-publish-series]');
+const publishTitleInput = document.querySelector('[data-publish-title]');
+const publishCoverInput = document.querySelector('[data-publish-cover]');
+
+if (publishFinishButton) {
+  publishFinishButton.addEventListener('click', () => {
+    const username = localStorage.getItem(signedInKey);
+    if (!username) return;
+    const work = {
+      username,
+      series: publishSeriesInput?.value.trim() || '',
+      title: publishTitleInput?.value.trim() || 'Untitled work',
+      cover: publishCoverInput?.value.trim() || '',
+      createdAt: new Date().toISOString(),
+    };
+    savePublishedWork(work);
   });
 }
