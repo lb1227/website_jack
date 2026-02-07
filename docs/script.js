@@ -150,6 +150,13 @@ const setAvatar = (avatar) => {
 };
 
 const applyProfile = (profile) => {
+  const displayName = document.querySelector('[data-profile-display="name"]');
+  const displayTags = document.querySelector('[data-profile-display="tags"]');
+  const displayBio = document.querySelector('[data-profile-display="bio"]');
+  const safeName = profile.name?.trim() || 'Your name';
+  const safeTags = profile.tags?.trim() || 'Add your favorite genres and tags.';
+  const safeBio = profile.bio?.trim() || 'Share a quick bio about what you write.';
+
   if (profileForm) {
     const nameInput = profileForm.querySelector('[data-profile-input="name"]');
     const tagsInput = profileForm.querySelector('[data-profile-input="tags"]');
@@ -158,6 +165,9 @@ const applyProfile = (profile) => {
     if (tagsInput) tagsInput.value = profile.tags || '';
     if (bioInput) bioInput.value = profile.bio || '';
   }
+  if (displayName) displayName.textContent = safeName;
+  if (displayTags) displayTags.textContent = safeTags;
+  if (displayBio) displayBio.textContent = safeBio;
   setAvatar(profile.avatar);
 };
 
