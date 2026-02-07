@@ -173,3 +173,49 @@ if (creatorFullscreenToggle && creatorFullscreenOverlay && creatorFullscreenClos
     }
   });
 }
+
+const publishSteps = Array.from(document.querySelectorAll('[data-publish-step]'));
+const publishTabs = Array.from(document.querySelectorAll('[data-publish-tab]'));
+
+if (publishSteps.length && publishTabs.length) {
+  const nextButtons = Array.from(document.querySelectorAll('[data-publish-next]'));
+  let currentStepIndex = 0;
+  let maxUnlockedIndex = 0;
+
+  const updatePublishSteps = (index) => {
+    currentStepIndex = index;
+    publishSteps.forEach((step, stepIndex) => {
+      step.hidden = stepIndex !== index;
+    });
+    publishTabs.forEach((tab, tabIndex) => {
+      const isActive = tabIndex === index;
+      const isLocked = tabIndex > maxUnlockedIndex;
+      tab.classList.toggle('active', isActive);
+      tab.disabled = isLocked;
+      tab.setAttribute('aria-disabled', String(isLocked));
+      tab.setAttribute('aria-selected', String(isActive));
+    });
+  };
+
+  const unlockStep = (index) => {
+    maxUnlockedIndex = Math.max(maxUnlockedIndex, index);
+  };
+
+  updatePublishSteps(0);
+
+  nextButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextIndex = Math.min(currentStepIndex + 1, publishSteps.length - 1);
+      unlockStep(nextIndex);
+      updatePublishSteps(nextIndex);
+      publishSteps[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  publishTabs.forEach((tab, tabIndex) => {
+    tab.addEventListener('click', () => {
+      if (tabIndex > maxUnlockedIndex) return;
+      updatePublishSteps(tabIndex);
+    });
+  });
+}

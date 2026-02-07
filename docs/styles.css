@@ -1373,6 +1373,11 @@ input {
   gap: 16px;
 }
 
+.publish-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .publish-tabs {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -1407,6 +1412,13 @@ input {
 .publish-tab.active {
   border-color: rgba(255, 107, 107, 0.8);
   box-shadow: 0 10px 20px rgba(255, 107, 107, 0.2);
+}
+
+.publish-tab[aria-disabled="true"],
+.publish-tab:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 @media (max-width: 900px) {
