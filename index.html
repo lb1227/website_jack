@@ -3,16 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PenSup</title>
+    <title>PensUp</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="site-header">
       <div class="header-left">
-        <div class="logo">PenSup</div>
+        <div class="logo">PensUp</div>
         <nav class="main-nav">
-          <a class="active" href="#home">Home</a>
-          <a href="reading.html">Reader</a>
+          <a class="active" href="index.html#home">Home</a>
+          <a href="index.html#main-home">Main Home Page</a>
+          <a href="index.html#leaderboard">Leaderboard</a>
+          <a href="index.html#profile">My Profile</a>
         </nav>
       </div>
       <div class="header-right">
@@ -34,7 +36,7 @@
       <div class="search-status" data-search-status hidden>
         No matches yet — try another title or creator.
       </div>
-      <section class="hero">
+      <section class="hero" id="main-home">
         <div class="hero-content">
           <span class="pill">Top 10 Creator Spotlight</span>
           <h1>Rhapsody of Ember</h1>
@@ -106,7 +108,7 @@
         </div>
       </section>
 
-      <section class="row" id="top10">
+      <section class="row" id="leaderboard">
         <div class="row-header">
           <div>
             <h2>Top 10 Zone</h2>
@@ -197,11 +199,33 @@
           </form>
         </div>
       </section>
+      <section class="row" id="profile">
+        <div class="row-header">
+          <div>
+            <h2>My Profile</h2>
+            <span class="row-subtitle">Track your reading streaks and creator stats in one place</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div>
+            <h3>Reading Streak</h3>
+            <p>12 consecutive days of reading curated stories.</p>
+          </div>
+          <div>
+            <h3>Creator Followed</h3>
+            <p>24 favorite creators and rising talents tracked.</p>
+          </div>
+          <div>
+            <h3>Leaderboard Rank</h3>
+            <p>Currently ranked #8 among weekly top readers.</p>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
       <div>
-        <strong>PenSup</strong>
+        <strong>PensUp</strong>
         <p>Where curated storytelling meets binge culture.</p>
       </div>
       <div class="footer-links">

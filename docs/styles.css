@@ -40,7 +40,7 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 48px;
+  padding: 24px 56px;
   background: linear-gradient(180deg, rgba(7, 7, 7, 0.95), rgba(7, 7, 7, 0.6));
   backdrop-filter: blur(10px);
   transition: background 0.4s ease, box-shadow 0.4s ease;
@@ -58,7 +58,7 @@ input {
 }
 
 .logo {
-  font-size: 1.8rem;
+  font-size: 2.1rem;
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 1px;
@@ -67,14 +67,16 @@ input {
 .main-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
-  font-size: 0.95rem;
+  gap: 24px;
+  font-size: 1.05rem;
   color: var(--muted);
 }
 
 .main-nav a {
   transition: color 0.2s ease;
   position: relative;
+  padding: 6px 4px;
+  font-weight: 600;
 }
 
 .main-nav a:hover,
