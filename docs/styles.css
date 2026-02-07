@@ -213,14 +213,25 @@ input {
 }
 
 .hero {
-  min-height: 75vh;
+  padding: 120px 48px 40px;
+  background: transparent;
+}
+
+.hero-carousel {
+  display: grid;
+  gap: 24px;
+}
+
+.hero-carousel-header {
   display: flex;
-  align-items: flex-end;
-  padding: 140px 48px 80px;
-  background: linear-gradient(120deg, rgba(7, 7, 7, 0.2), rgba(7, 7, 7, 0.9)),
-    url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1800&q=80")
-      center/cover no-repeat;
-  animation: heroGlow 12s ease-in-out infinite;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.hero-carousel-header h1 {
+  font-size: 3rem;
+  line-height: 1.1;
 }
 
 .hero-content {
@@ -295,6 +306,28 @@ input {
   flex-wrap: wrap;
   gap: 24px;
   margin-top: 10px;
+}
+
+.hero-strip {
+  grid-auto-columns: minmax(100%, 100%);
+  gap: 24px;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 12px;
+}
+
+.hero-card {
+  min-height: 520px;
+  padding: 48px;
+  border-radius: 20px;
+  background-image:
+    linear-gradient(120deg, rgba(7, 7, 7, 0.15), rgba(7, 7, 7, 0.85)),
+    var(--card-image, linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)));
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+}
+
+.hero-card h2 {
+  font-size: 2.6rem;
+  line-height: 1.1;
 }
 
 .meta-label {

@@ -3,9 +3,9 @@ const scrollButtons = document.querySelectorAll('[data-scroll-left], [data-scrol
 
 scrollButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    const row = button.closest('.row');
-    if (!row) return;
-    const carousel = row.querySelector('[data-carousel]');
+    const container = button.closest('.row, .hero-carousel');
+    if (!container) return;
+    const carousel = container.querySelector('[data-carousel]');
     if (!carousel) return;
     const direction = button.hasAttribute('data-scroll-left') ? -1 : 1;
     const scrollAmount = carousel.clientWidth * 0.8;
