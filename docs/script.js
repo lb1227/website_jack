@@ -121,8 +121,11 @@ const profileStatus = document.querySelector('[data-profile-status]');
 const profileNameDisplays = document.querySelectorAll('[data-profile-display="name"]');
 const profileTagsDisplay = document.querySelector('[data-profile-display="tags"]');
 const profileBioDisplay = document.querySelector('[data-profile-display="bio"]');
+const profileAvatarButton = document.querySelector('[data-profile-avatar]');
+const profileAvatarImage = document.querySelector('[data-profile-avatar-image]');
 const profileHeroCard = document.querySelector('[data-profile-hero]');
 const profileSetupSection = document.querySelector('[data-profile-setup]');
+const profileEditButton = document.querySelector('[data-profile-edit]');
 const authOverlay = document.querySelector('[data-auth-overlay]');
 const authStatus = document.querySelector('[data-auth-status]');
 const authForms = document.querySelectorAll('[data-auth-form]');
@@ -135,6 +138,18 @@ const defaults = {
   name: '',
   tags: '',
   bio: '',
+  avatar: '',
+};
+
+const setAvatar = (avatar) => {
+  if (!profileAvatarImage) return;
+  if (avatar) {
+    profileAvatarImage.src = avatar;
+    profileAvatarImage.hidden = false;
+  } else {
+    profileAvatarImage.removeAttribute('src');
+    profileAvatarImage.hidden = true;
+  }
 };
 
 const applyProfile = (profile) => {
@@ -147,6 +162,7 @@ const applyProfile = (profile) => {
   if (profileBioDisplay) {
     profileBioDisplay.textContent = profile.bio || '';
   }
+  setAvatar(profile.avatar);
 };
 
 const updateStatus = (message) => {
@@ -199,6 +215,7 @@ const loadProfile = () => {
         name: parsed.name || defaults.name,
         tags: parsed.tags || defaults.tags,
         bio: parsed.bio || defaults.bio,
+        avatar: parsed.avatar || defaults.avatar,
       },
       isStored: true,
     };
@@ -235,15 +252,68 @@ if (profileForm) {
   const nameInput = profileForm.querySelector('[data-profile-input="name"]');
   const tagsInput = profileForm.querySelector('[data-profile-input="tags"]');
   const bioInput = profileForm.querySelector('[data-profile-input="bio"]');
+  const avatarInput = profileForm.querySelector('[data-profile-input="avatar"]');
   const resetButton = profileForm.querySelector('[data-profile-reset]');
+  let isEditing = false;
+  let avatarData = initialProfile.avatar || defaults.avatar;
 
   const setInputs = (profile) => {
     if (nameInput) nameInput.value = profile.name;
     if (tagsInput) tagsInput.value = profile.tags;
     if (bioInput) bioInput.value = profile.bio;
+    if (avatarInput) avatarInput.value = '';
+    avatarData = profile.avatar || defaults.avatar;
+    setAvatar(avatarData);
   };
 
   setInputs(initialProfile);
+
+  const setEditState = (nextState) => {
+    isEditing = nextState;
+    if (nameInput) nameInput.readOnly = !isEditing;
+    if (tagsInput) tagsInput.readOnly = !isEditing;
+    if (bioInput) bioInput.readOnly = !isEditing;
+    if (avatarInput) avatarInput.disabled = !isEditing;
+    if (profileAvatarButton) {
+      profileAvatarButton.classList.toggle('is-editable', isEditing);
+    }
+    if (profileEditButton) {
+      profileEditButton.textContent = isEditing ? 'Finish editing' : 'Edit profile';
+    }
+  };
+
+  setEditState(false);
+
+  if (profileEditButton) {
+    profileEditButton.addEventListener('click', () => {
+      if (!isSignedIn()) {
+        updateStatus('Sign in to edit your profile.');
+        return;
+      }
+      setEditState(!isEditing);
+    });
+  }
+
+  if (profileAvatarButton && avatarInput) {
+    profileAvatarButton.addEventListener('click', () => {
+      if (!isEditing) return;
+      avatarInput.click();
+    });
+  }
+
+  if (avatarInput) {
+    avatarInput.addEventListener('change', () => {
+      const file = avatarInput.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        const result = typeof reader.result === 'string' ? reader.result : '';
+        avatarData = result;
+        setAvatar(avatarData);
+      });
+      reader.readAsDataURL(file);
+    });
+  }
 
   profileForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -251,11 +321,13 @@ if (profileForm) {
       name: nameInput?.value.trim() || defaults.name,
       tags: tagsInput?.value.trim() || defaults.tags,
       bio: bioInput?.value.trim() || defaults.bio,
+      avatar: avatarData || defaults.avatar,
     };
     localStorage.setItem(storageKey, JSON.stringify(profile));
     applyProfile(profile);
     updateStatus('Profile saved locally on this device.');
     setBlankState(profile, true, true);
+    setEditState(false);
   });
 
   if (resetButton) {
@@ -265,6 +337,7 @@ if (profileForm) {
       setInputs(defaults);
       updateStatus('');
       setBlankState(defaults, false, isSignedIn());
+      setEditState(false);
     });
   }
 }
@@ -310,6 +383,7 @@ authForms.forEach((form) => {
         name: username,
         tags: currentProfile.tags || defaults.tags,
         bio: currentProfile.bio || defaults.bio,
+        avatar: currentProfile.avatar || defaults.avatar,
       };
       localStorage.setItem(storageKey, JSON.stringify(profile));
       applyProfile(profile);

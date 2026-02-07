@@ -24,13 +24,19 @@
     <main class="profile-page">
       <section class="profile-hero">
         <div class="profile-hero-card" data-profile-hero>
-          <div class="profile-avatar" data-profile-avatar aria-hidden="true"></div>
+          <button class="profile-avatar" type="button" data-profile-avatar aria-label="Update profile photo">
+            <img data-profile-avatar-image alt="Profile photo" hidden />
+          </button>
           <h1 data-profile-display="name">Profile</h1>
           <p class="profile-meta" data-profile-display="tags"></p>
           <p class="profile-bio" data-profile-display="bio"></p>
           <div class="profile-counts">
             <span><strong>Works</strong> 0</span>
             <span><strong>Followers</strong> 0</span>
+          </div>
+          <div class="profile-actions">
+            <button class="btn ghost" type="button" data-profile-edit>Edit profile</button>
+            <button class="btn glow-danger" type="button" data-profile-share>Share profile</button>
           </div>
           <p class="profile-status" data-profile-status></p>
         </div>
@@ -73,6 +79,34 @@
             <p class="auth-status" data-auth-status></p>
           </div>
         </div>
+      </section>
+
+      <section class="profile-setup" data-profile-setup>
+        <div class="section-header">
+          <h2>Edit details</h2>
+        </div>
+        <form class="profile-form" data-profile-form>
+          <label>
+            Display name
+            <input type="text" name="displayName" data-profile-input="name" readonly />
+          </label>
+          <label>
+            Genres & tags
+            <input type="text" name="genres" data-profile-input="tags" readonly />
+          </label>
+          <label>
+            Bio
+            <textarea name="bio" rows="3" data-profile-input="bio" readonly></textarea>
+          </label>
+          <label>
+            Profile photo
+            <input type="file" name="avatar" accept="image/*" data-profile-input="avatar" disabled />
+          </label>
+          <div class="profile-form-actions">
+            <button class="btn primary" type="submit">Save changes</button>
+            <button class="btn ghost" type="button" data-profile-reset>Reset</button>
+          </div>
+        </form>
       </section>
 
       <section class="profile-series">
