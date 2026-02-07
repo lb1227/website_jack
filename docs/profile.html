@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PensUp Profile</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="subpage">
+    <header class="site-header">
+      <div class="header-center">
+        <nav class="main-nav">
+          <a href="index.html#home">Home</a>
+          <a href="index.html#main-home">Main Home Page</a>
+          <a class="logo-button" href="index.html">PensUp</a>
+          <a href="index.html#leaderboard">Leaderboard</a>
+          <a href="profile.html" class="active">My Profile</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <div class="profile" data-menu>
+          <span class="avatar">LF</span>
+          <span class="caret">▾</span>
+          <div class="profile-menu" data-menu-panel>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <button type="button">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="profile-page">
+      <section class="profile-hero">
+        <div class="profile-banner">
+          <div class="banner-overlay">
+            <h1>Layla Frost</h1>
+            <p class="hero-subtitle">Fantasy storyteller • Moonlit vibes • Based in Oslo</p>
+          </div>
+          <label class="upload-btn">
+            Change banner
+            <input type="file" accept="image/*" />
+          </label>
+        </div>
+
+        <div class="profile-summary">
+          <div class="profile-card">
+            <div class="profile-picture">
+              <img
+                src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=facearea&w=300&q=80"
+                alt="Layla Frost"
+              />
+              <label class="upload-btn small">
+                Update photo
+                <input type="file" accept="image/*" />
+              </label>
+            </div>
+            <div>
+              <p class="handle">@laylafrost</p>
+              <p class="bio">
+                World-builder obsessed with cosmic myths, coastal fog, and found-family crews. Currently
+                polishing a trilogy and hosting weekly creator salons.
+              </p>
+              <div class="profile-tags">
+                <span>Epic Fantasy</span>
+                <span>Urban Myth</span>
+                <span>Audio-first</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="btn primary">Follow</button>
+            <button class="btn">Message</button>
+            <button class="btn ghost">Share</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="profile-stats">
+        <div class="stat-card">
+          <h2>214k</h2>
+          <p>Followers</p>
+        </div>
+        <div class="stat-card">
+          <h2>892</h2>
+          <p>Following</p>
+        </div>
+        <div class="stat-card">
+          <h2>18</h2>
+          <p>Works</p>
+        </div>
+        <div class="stat-card">
+          <h2>4.9</h2>
+          <p>Creator Rating</p>
+        </div>
+      </section>
+
+      <section class="profile-grid">
+        <div class="profile-panel">
+          <h2>About</h2>
+          <p>
+            Layla crafts atmospheric worlds filled with resilient heroines and soft-hearted villains.
+            Her serialized saga "Aurora Tide" has been featured in the top 10 on PensUp for eight
+            straight weeks.
+          </p>
+          <div class="profile-badges">
+            <span>Top 1% Creator</span>
+            <span>Mentor</span>
+            <span>Audio Host</span>
+          </div>
+        </div>
+
+        <div class="profile-panel">
+          <h2>Highlights</h2>
+          <ul class="profile-list">
+            <li>Weekly live reads every Thursday.</li>
+            <li>Limited merch drop arriving next month.</li>
+            <li>Collabing with 3 illustrators on the next cover set.</li>
+          </ul>
+        </div>
+
+        <div class="profile-panel">
+          <h2>Featured Works</h2>
+          <div class="works-grid">
+            <article class="work-card">
+              <h3>Aurora Tide</h3>
+              <p>120 chapters • 1.4M reads</p>
+              <button class="btn ghost">Read</button>
+            </article>
+            <article class="work-card">
+              <h3>The Moonlit Pact</h3>
+              <p>58 chapters • 640k reads</p>
+              <button class="btn ghost">Read</button>
+            </article>
+            <article class="work-card">
+              <h3>Glassfire Letters</h3>
+              <p>Drafting • 15 chapters</p>
+              <button class="btn ghost">Preview</button>
+            </article>
+          </div>
+        </div>
+
+        <div class="profile-panel">
+          <h2>Activity</h2>
+          <div class="activity-list">
+            <div>
+              <strong>New chapter uploaded</strong>
+              <p>"Aurora Tide" • 2 hours ago</p>
+            </div>
+            <div>
+              <strong>Hosted Creator Salon</strong>
+              <p>Topic: Building soft magic systems • Yesterday</p>
+            </div>
+            <div>
+              <strong>Hit 200k followers</strong>
+              <p>Milestone celebration • 3 days ago</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-panel">
+          <h2>Community</h2>
+          <div class="profile-pillars">
+            <div>
+              <h3>Creator Circle</h3>
+              <p>7 pods • 35 peers • 12 collabs</p>
+            </div>
+            <div>
+              <h3>Reader Clubs</h3>
+              <p>4 active clubs • 5.3k members</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-panel">
+          <h2>Links &amp; Availability</h2>
+          <div class="profile-links">
+            <a class="btn ghost" href="#">Website</a>
+            <a class="btn ghost" href="#">Newsletter</a>
+            <a class="btn ghost" href="#">Media Kit</a>
+          </div>
+          <p class="availability">Open for collaborations in Q4 • Response time: 24 hrs</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
