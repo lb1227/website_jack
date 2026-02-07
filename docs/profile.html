@@ -51,7 +51,22 @@
                 </label>
                 <div class="auth-card-actions">
                   <button class="btn" type="submit">Sign in</button>
-                  <button class="btn ghost" type="button" data-auth-toggle="signup">Create account</button>
+                  <button class="btn ghost glow-danger" type="button" data-auth-toggle="signup">Create account</button>
+                </div>
+              </form>
+              <form class="auth-card" data-auth-form="signup" data-auth-panel="signup" hidden>
+                <h3>Create account</h3>
+                <label>
+                  Username
+                  <input type="text" name="signupUsername" autocomplete="username" required data-auth-input="signup-username" />
+                </label>
+                <label>
+                  Password
+                  <input type="password" name="signupPassword" autocomplete="new-password" required data-auth-input="signup-password" />
+                </label>
+                <div class="auth-card-actions">
+                  <button class="btn glow-danger" type="submit">Create account</button>
+                  <button class="btn ghost" type="button" data-auth-toggle="signin">Back to sign in</button>
                 </div>
               </form>
             </div>
