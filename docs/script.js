@@ -95,9 +95,7 @@ if (chatForm && chatFeed) {
 const chatOverlay = document.querySelector('[data-chat-overlay]');
 const chatToggleButtons = document.querySelectorAll('[data-chat-toggle]');
 const chatCloseButton = document.querySelector('[data-chat-close]');
-const chatTabs = document.querySelectorAll('[data-chat-tab]');
-const chatPanels = document.querySelectorAll('[data-chat-panel]');
-const chatListItems = document.querySelectorAll('.chat-list-item[data-chat-title]');
+const chatListItems = document.querySelectorAll('.chat-server-icon[data-chat-title]');
 const chatThreadTitle = document.querySelector('[data-chat-thread-title]');
 const chatThreadStatus = document.querySelector('[data-chat-thread-status]');
 const chatThreadFeed = document.querySelector('[data-chat-thread-feed]');
@@ -132,26 +130,6 @@ if (chatOverlay) {
     if (event.key === 'Escape' && !chatOverlay.hidden) {
       setChatOverlayOpen(false);
     }
-  });
-}
-
-if (chatTabs.length && chatPanels.length) {
-  const setChatTab = (target) => {
-    chatTabs.forEach((tab) => {
-      tab.classList.toggle('active', tab.getAttribute('data-chat-tab') === target);
-    });
-    chatPanels.forEach((panel) => {
-      panel.hidden = panel.getAttribute('data-chat-panel') !== target;
-    });
-  };
-
-  chatTabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const target = tab.getAttribute('data-chat-tab');
-      if (target) {
-        setChatTab(target);
-      }
-    });
   });
 }
 
