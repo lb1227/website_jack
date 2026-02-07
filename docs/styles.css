@@ -1133,9 +1133,13 @@ input {
 }
 
 .profile-inline-form {
-  display: grid;
+  display: none;
   gap: 14px;
   width: min(540px, 100%);
+}
+
+.profile-hero-card.is-editing .profile-inline-form {
+  display: grid;
 }
 
 .profile-inline-hint {

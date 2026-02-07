@@ -121,6 +121,8 @@ const profileStatus = document.querySelector('[data-profile-status]');
 const profileAvatarButton = document.querySelector('[data-profile-avatar]');
 const profileAvatarImage = document.querySelector('[data-profile-avatar-image]');
 const profileHeroCard = document.querySelector('[data-profile-hero]');
+const profileEditButton = document.querySelector('[data-profile-edit]');
+const profileCancelButton = document.querySelector('[data-profile-cancel]');
 const authOverlay = document.querySelector('[data-auth-overlay]');
 const authStatus = document.querySelector('[data-auth-status]');
 const authForms = document.querySelectorAll('[data-auth-form]');
@@ -242,11 +244,20 @@ const updateAuthUI = (signedIn) => {
   }
 };
 
+const setEditState = (isEditing) => {
+  if (!profileHeroCard) return;
+  profileHeroCard.classList.toggle('is-editing', isEditing);
+  if (profileEditButton) {
+    profileEditButton.textContent = isEditing ? 'Close editor' : 'Edit profile';
+  }
+};
+
 const { profile: initialProfile, isStored } = loadProfile();
 applyProfile(initialProfile);
 const signedIn = isSignedIn();
 setBlankState(initialProfile, isStored, signedIn);
 updateAuthUI(signedIn);
+setEditState(false);
 if (authPanels.length) {
   setAuthPanel('signin');
 }
@@ -305,6 +316,7 @@ if (profileForm) {
     applyProfile(profile);
     updateStatus('Profile saved locally on this device.');
     setBlankState(profile, true, true);
+    setEditState(false);
   });
 
   if (resetButton) {
@@ -314,8 +326,25 @@ if (profileForm) {
       setInputs(defaults);
       updateStatus('');
       setBlankState(defaults, false, isSignedIn());
+      setEditState(false);
     });
   }
+}
+
+if (profileEditButton) {
+  profileEditButton.addEventListener('click', () => {
+    if (!isSignedIn()) {
+      updateStatus('Sign in to edit your profile.');
+      return;
+    }
+    setEditState(!profileHeroCard?.classList.contains('is-editing'));
+  });
+}
+
+if (profileCancelButton) {
+  profileCancelButton.addEventListener('click', () => {
+    setEditState(false);
+  });
 }
 
 const completeAuth = (message, username) => {
