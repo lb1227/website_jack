@@ -126,6 +126,8 @@ const profileSetupSection = document.querySelector('[data-profile-setup]');
 const authOverlay = document.querySelector('[data-auth-overlay]');
 const authStatus = document.querySelector('[data-auth-status]');
 const authForms = document.querySelectorAll('[data-auth-form]');
+const authPanels = document.querySelectorAll('[data-auth-panel]');
+const authToggles = document.querySelectorAll('[data-auth-toggle]');
 
 if (profileForm) {
   const nameInput = profileForm.querySelector('[data-profile-input="name"]');
@@ -163,6 +165,12 @@ if (profileForm) {
     if (authStatus) {
       authStatus.textContent = message || '';
     }
+  };
+
+  const setAuthPanel = (panel) => {
+    authPanels.forEach((authPanel) => {
+      authPanel.hidden = authPanel.getAttribute('data-auth-panel') !== panel;
+    });
   };
 
   const loadAccount = () => {
@@ -232,6 +240,7 @@ if (profileForm) {
   const signedIn = isSignedIn();
   setBlankState(initialProfile, isStored, signedIn);
   updateAuthUI(signedIn);
+  setAuthPanel('signin');
 
   profileForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -299,6 +308,15 @@ if (profileForm) {
       if (passwordInput) passwordInput.value = '';
       updateAuthUI(true);
       setBlankState(loadProfile().profile, true, true);
+    });
+  });
+
+  authToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const target = toggle.getAttribute('data-auth-toggle');
+      if (!target) return;
+      updateAuthStatus('');
+      setAuthPanel(target);
     });
   });
 }
