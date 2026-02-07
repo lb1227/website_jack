@@ -116,6 +116,41 @@ if (searchInput) {
   });
 }
 
+const profilePage = document.querySelector('.profile-page');
+const editProfileToggle = document.querySelector('[data-edit-profile-toggle]');
+const editProfileSave = document.querySelector('[data-edit-profile-save]');
+const editProfileCancel = document.querySelector('[data-edit-profile-cancel]');
+
+if (profilePage && editProfileToggle) {
+  const setEditState = (isEditing) => {
+    profilePage.classList.toggle('is-editing', isEditing);
+    editProfileToggle.setAttribute('aria-expanded', String(isEditing));
+    if (isEditing) {
+      const firstInput = profilePage.querySelector('.profile-form input, .profile-form textarea');
+      if (firstInput) {
+        firstInput.focus();
+      }
+    }
+  };
+
+  editProfileToggle.addEventListener('click', () => {
+    const isEditing = !profilePage.classList.contains('is-editing');
+    setEditState(isEditing);
+  });
+
+  if (editProfileSave) {
+    editProfileSave.addEventListener('click', () => {
+      setEditState(false);
+    });
+  }
+
+  if (editProfileCancel) {
+    editProfileCancel.addEventListener('click', () => {
+      setEditState(false);
+    });
+  }
+}
+
 const fullscreenToggle = document.querySelector('[data-reader-fullscreen-toggle]');
 const fullscreenOverlay = document.querySelector('[data-reader-fullscreen]');
 const fullscreenClose = document.querySelector('[data-reader-fullscreen-close]');
