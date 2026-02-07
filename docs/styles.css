@@ -1127,24 +1127,56 @@ input {
   outline-offset: 4px;
 }
 
-.profile-hero-card.is-blank [data-profile-display="name"],
-.profile-hero-card.is-blank .profile-meta,
-.profile-hero-card.is-blank .profile-bio,
 .profile-hero-card.is-blank .profile-counts,
 .profile-hero-card.is-blank .profile-status {
   display: none;
 }
 
-.profile-meta {
+.profile-inline-form {
+  display: grid;
+  gap: 14px;
+  width: min(540px, 100%);
+}
+
+.profile-inline-hint {
   color: var(--muted);
-  max-width: 680px;
   font-size: 0.95rem;
 }
 
-.profile-bio {
+.profile-inline-field {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.profile-inline-field input,
+.profile-inline-field textarea {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 14px;
   color: var(--text);
-  max-width: 680px;
   font-size: 1rem;
+}
+
+.profile-inline-field input::placeholder,
+.profile-inline-field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.profile-inline-field input[type="file"] {
+  padding: 8px 10px;
+}
+
+.profile-hero-card.is-locked .profile-inline-form {
+  opacity: 0.7;
+}
+
+.profile-hero-card.is-locked .profile-inline-form input,
+.profile-hero-card.is-locked .profile-inline-form textarea {
+  cursor: not-allowed;
 }
 
 .profile-status {
@@ -1258,47 +1290,6 @@ input {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
-}
-
-.profile-setup {
-  display: grid;
-  gap: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 24px;
-}
-
-.profile-form {
-  background: var(--surface-alt);
-  border-radius: 16px;
-  padding: 24px;
-  display: grid;
-  gap: 16px;
-}
-
-.profile-form label {
-  display: grid;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.profile-form input,
-.profile-form textarea {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid transparent;
-  border-radius: 10px;
-  padding: 10px 12px;
-  color: var(--text);
-}
-
-.profile-form input[type="file"] {
-  padding: 8px 10px;
-}
-
-.profile-form input[readonly],
-.profile-form textarea[readonly] {
-  opacity: 0.7;
-  cursor: not-allowed;
 }
 
 .profile-form-actions {
