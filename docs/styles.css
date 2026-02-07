@@ -1141,7 +1141,7 @@ input {
 }
 
 .profile-auth-window {
-  width: min(820px, 100%);
+  width: min(410px, 100%);
   background: var(--surface);
   border-radius: 20px;
   padding: 28px;
@@ -1197,6 +1197,16 @@ input {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.btn.glow-danger {
+  background: #ff3b3b;
+  color: #fff;
+  box-shadow: 0 0 16px rgba(255, 59, 59, 0.6), 0 12px 24px rgba(255, 59, 59, 0.35);
+}
+
+.btn.glow-danger:hover {
+  box-shadow: 0 0 22px rgba(255, 59, 59, 0.8), 0 14px 28px rgba(255, 59, 59, 0.4);
 }
 
 .auth-status {
