@@ -31,47 +31,182 @@
       </div>
     </header>
 
-    <main class="messages">
-      <section class="page-hero">
-        <div>
-          <span class="pill">Creator Inbox</span>
-          <h1>Messages</h1>
-          <p class="hero-subtitle">Stay connected with collaborators and readers.</p>
-        </div>
-        <button class="btn primary">New Message</button>
-      </section>
+    <main class="messages discord-messages">
+      <section class="discord-shell">
+        <aside class="discord-servers" aria-label="Server list">
+          <button class="discord-server-icon home active" type="button" aria-label="Direct Messages">
+            <span class="discord-logo">PU</span>
+          </button>
+          <span class="discord-separator" aria-hidden="true"></span>
+          <button class="discord-server-icon" type="button" aria-label="Writer Circle">
+            <span>WC</span>
+          </button>
+          <button class="discord-server-icon" type="button" aria-label="Launch Crew">
+            <span>LC</span>
+          </button>
+          <button class="discord-server-icon" type="button" aria-label="Critique Lab">
+            <span>CL</span>
+          </button>
+          <button class="discord-server-icon" type="button" aria-label="Jun Park">
+            <span>JP</span>
+          </button>
+          <div class="discord-server-spacer"></div>
+          <button class="discord-server-icon explore" type="button" aria-label="Explore servers">
+            <span>🧭</span>
+          </button>
+          <button class="discord-server-icon add" type="button" aria-label="Add a server">
+            <span>＋</span>
+          </button>
+        </aside>
 
-      <section class="messages-layout">
-        <aside class="messages-list">
-          <div class="message-item active">
-            <strong>Jun Park</strong>
-            <p>Feedback on Chapter 10</p>
+        <aside class="discord-dms" aria-label="Direct messages">
+          <div class="discord-search">
+            <input type="text" placeholder="Find or start a conversation" />
           </div>
-          <div class="message-item">
-            <strong>Yara Bell</strong>
-            <p>Collab anthology details</p>
+          <div class="discord-nav">
+            <button class="discord-nav-item">Friends</button>
+            <button class="discord-nav-item">Nitro</button>
+            <button class="discord-nav-item">Message Requests</button>
           </div>
-          <div class="message-item">
-            <strong>Mentor Pod</strong>
-            <p>Weekly critique schedule</p>
+          <div class="discord-dm-section">
+            <p class="discord-section-title">Direct Messages</p>
+            <button class="discord-dm-item active">
+              <span class="dm-avatar">JP</span>
+              <div>
+                <strong>Jun Park</strong>
+                <span>Feedback on Chapter 10</span>
+              </div>
+            </button>
+            <button class="discord-dm-item">
+              <span class="dm-avatar alt">YB</span>
+              <div>
+                <strong>Yara Bell</strong>
+                <span>Collab anthology details</span>
+              </div>
+            </button>
+            <button class="discord-dm-item">
+              <span class="dm-avatar alt-two">MP</span>
+              <div>
+                <strong>Mentor Pod</strong>
+                <span>Weekly critique schedule</span>
+              </div>
+            </button>
+            <button class="discord-dm-item">
+              <span class="dm-avatar alt-three">SL</span>
+              <div>
+                <strong>Seb &amp; Luna</strong>
+                <span>New cover ideas</span>
+              </div>
+            </button>
+          </div>
+          <div class="discord-user">
+            <span class="dm-avatar user">LF</span>
+            <div>
+              <strong>Luke Frost</strong>
+              <span>Listening to edits</span>
+            </div>
+            <div class="discord-user-actions">
+              <button type="button">🎧</button>
+              <button type="button">⚙️</button>
+            </div>
           </div>
         </aside>
-        <div class="message-thread">
-          <div class="chat-feed">
-            <div class="chat-message">
-              <strong>Jun Park</strong>
-              <p>Loved the cliffhanger. Maybe add more sensory detail?</p>
+
+        <section class="discord-chat" aria-label="Chat thread">
+          <header class="discord-chat-header">
+            <div>
+              <h2># feedback</h2>
+              <p>Jun Park • Draft review</p>
             </div>
-            <div class="chat-message">
-              <strong>You</strong>
-              <p>Great note — I’ll add a scene in the market before the gate reveal.</p>
+            <div class="discord-chat-actions">
+              <button type="button">🔔</button>
+              <button type="button">📌</button>
+              <button type="button">🧵</button>
+              <button type="button">🔍</button>
+            </div>
+          </header>
+          <div class="discord-chat-feed">
+            <article class="discord-message">
+              <span class="dm-avatar">JP</span>
+              <div>
+                <div class="discord-message-header">
+                  <strong>Jun Park</strong>
+                  <span>Today at 2:45 PM</span>
+                </div>
+                <p>Loved the cliffhanger. Maybe add more sensory detail?</p>
+              </div>
+            </article>
+            <article class="discord-message">
+              <span class="dm-avatar user">LF</span>
+              <div>
+                <div class="discord-message-header">
+                  <strong>You</strong>
+                  <span>Today at 2:48 PM</span>
+                </div>
+                <p>Great note — I’ll add a scene in the market before the gate reveal.</p>
+              </div>
+            </article>
+            <article class="discord-message">
+              <span class="dm-avatar alt">YB</span>
+              <div>
+                <div class="discord-message-header">
+                  <strong>Yara Bell</strong>
+                  <span>Today at 2:52 PM</span>
+                </div>
+                <p>Want me to drop in the revised dialogue beats later tonight?</p>
+              </div>
+            </article>
+          </div>
+          <form class="discord-chat-input">
+            <button type="button" aria-label="Add attachment">＋</button>
+            <input type="text" placeholder="Message @Jun Park" />
+            <button type="submit">Send</button>
+          </form>
+        </section>
+
+        <aside class="discord-members" aria-label="Member list">
+          <div class="discord-member-group">
+            <p>Online — 4</p>
+            <div class="discord-member">
+              <span class="dm-avatar">JP</span>
+              <div>
+                <strong>Jun Park</strong>
+                <span>Typing...</span>
+              </div>
+            </div>
+            <div class="discord-member">
+              <span class="dm-avatar alt">YB</span>
+              <div>
+                <strong>Yara Bell</strong>
+                <span>Reviewing draft</span>
+              </div>
+            </div>
+            <div class="discord-member">
+              <span class="dm-avatar alt-two">MP</span>
+              <div>
+                <strong>Mentor Pod</strong>
+                <span>In a call</span>
+              </div>
             </div>
           </div>
-          <form class="chat-input">
-            <input type="text" placeholder="Type a reply" />
-            <button class="btn primary" type="submit">Send</button>
-          </form>
-        </div>
+          <div class="discord-member-group">
+            <p>Offline — 2</p>
+            <div class="discord-member">
+              <span class="dm-avatar alt-three">SL</span>
+              <div>
+                <strong>Seb &amp; Luna</strong>
+                <span>Last seen 1h ago</span>
+              </div>
+            </div>
+            <div class="discord-member">
+              <span class="dm-avatar alt-four">AR</span>
+              <div>
+                <strong>Aria Renee</strong>
+                <span>Offline</span>
+              </div>
+            </div>
+          </div>
+        </aside>
       </section>
     </main>
 
