@@ -277,7 +277,7 @@ input {
 
 .hero {
   padding: 120px 48px 40px;
-  background: transparent;
+  background: linear-gradient(120deg, rgba(7, 10, 16, 0.92), rgba(7, 10, 16, 0.6));
 }
 
 .hero.has-featured-cover {
