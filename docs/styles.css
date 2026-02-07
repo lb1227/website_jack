@@ -220,6 +220,7 @@ input {
 .hero-carousel {
   display: grid;
   gap: 24px;
+  min-height: 100vh;
 }
 
 .hero-carousel-header {
@@ -311,23 +312,24 @@ input {
 .hero-strip {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 100vw;
+  grid-auto-columns: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   gap: 0;
 
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
   scroll-padding-left: 0;
-  padding-bottom: 12px;
+  padding-bottom: 0;
+  min-height: calc(100vh - 220px);
 }
 
 .hero-card {
-  width: 100vw;
+  width: 100%;
   scroll-snap-align: start;
-  min-height: 520px;
+  min-height: 100%;
   padding: 48px;
   border-radius: 0;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
