@@ -133,8 +133,8 @@ const accountKey = 'pensupAccount';
 const signedInKey = 'pensupSignedIn';
 const defaults = {
   name: '',
-  tags: '',
-  bio: '',
+  tags: '*** dot *** dot ***',
+  bio: 'nothing here yet',
   avatar: '',
 };
 
@@ -314,6 +314,7 @@ if (profileForm) {
     };
     localStorage.setItem(storageKey, JSON.stringify(profile));
     applyProfile(profile);
+    setInputs(profile);
     updateStatus('Profile saved locally on this device.');
     setBlankState(profile, true, true);
     setEditState(false);
@@ -372,6 +373,14 @@ authForms.forEach((form) => {
 
     if (type === 'signup') {
       localStorage.setItem(accountKey, JSON.stringify({ username, password }));
+      const profile = {
+        name: username,
+        tags: defaults.tags,
+        bio: defaults.bio,
+        avatar: defaults.avatar,
+      };
+      localStorage.setItem(storageKey, JSON.stringify(profile));
+      applyProfile(profile);
       completeAuth('Account created successfully.', username);
     } else {
       const account = loadAccount();
