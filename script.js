@@ -172,7 +172,7 @@ if (headerRight) {
     const publishLink = headerRight.querySelector('a[href="publish.html#vcreator"]');
     const creatorLink = document.createElement('a');
     creatorLink.href = 'publish.html#vcreator';
-    creatorLink.className = 'btn ghost header-btn';
+    creatorLink.className = 'btn primary header-btn';
     creatorLink.textContent = 'Creator Mode';
     creatorLink.setAttribute('data-creator-mode-link', '');
 
