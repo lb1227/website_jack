@@ -128,6 +128,7 @@ const authStatus = document.querySelector('[data-auth-status]');
 const authForms = document.querySelectorAll('[data-auth-form]');
 const authPanels = document.querySelectorAll('[data-auth-panel]');
 const authToggles = document.querySelectorAll('[data-auth-toggle]');
+const logoutButtons = document.querySelectorAll('[data-logout]');
 const storageKey = 'pensupProfile';
 const accountKey = 'pensupAccount';
 const signedInKey = 'pensupSignedIn';
@@ -254,6 +255,23 @@ const updateAuthUI = (signedIn) => {
   }
 };
 
+const handleLogout = () => {
+  localStorage.removeItem(accountKey);
+  setSignedIn(null);
+  updateAuthStatus('Signed out.');
+  updateStatus('Signed out.');
+  updateAuthUI(false);
+  setEditState(false);
+  const { profile, isStored } = loadProfile();
+  setBlankState(profile, isStored, false);
+  if (authOverlay) {
+    authOverlay.hidden = false;
+  }
+  if (authPanels.length) {
+    setAuthPanel('signin');
+  }
+};
+
 const setEditState = (isEditing) => {
   if (!profileHeroCard) return;
   profileHeroCard.classList.toggle('is-editing', isEditing);
@@ -355,6 +373,14 @@ if (profileEditButton) {
 if (profileCancelButton) {
   profileCancelButton.addEventListener('click', () => {
     setEditState(false);
+  });
+}
+
+if (logoutButtons.length) {
+  logoutButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      handleLogout();
+    });
   });
 }
 

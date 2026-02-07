@@ -1292,6 +1292,11 @@ input {
   box-shadow: 0 0 22px rgba(255, 59, 59, 0.8), 0 14px 28px rgba(255, 59, 59, 0.4);
 }
 
+.logout-button {
+  border-radius: 999px;
+  padding: 10px 18px;
+}
+
 .auth-status {
   color: var(--muted);
   font-size: 0.9rem;
