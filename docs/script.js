@@ -128,90 +128,114 @@ const authStatus = document.querySelector('[data-auth-status]');
 const authForms = document.querySelectorAll('[data-auth-form]');
 const authPanels = document.querySelectorAll('[data-auth-panel]');
 const authToggles = document.querySelectorAll('[data-auth-toggle]');
+const storageKey = 'pensupProfile';
+const accountKey = 'pensupAccount';
+const signedInKey = 'pensupSignedIn';
+const defaults = {
+  name: '',
+  tags: '',
+  bio: '',
+};
+
+const applyProfile = (profile) => {
+  profileNameDisplays.forEach((element) => {
+    element.textContent = profile.name || '';
+  });
+  if (profileTagsDisplay) {
+    profileTagsDisplay.textContent = profile.tags || '';
+  }
+  if (profileBioDisplay) {
+    profileBioDisplay.textContent = profile.bio || '';
+  }
+};
+
+const updateStatus = (message) => {
+  if (profileStatus) {
+    profileStatus.textContent = message || '';
+  }
+};
+
+const updateAuthStatus = (message) => {
+  if (authStatus) {
+    authStatus.textContent = message || '';
+  }
+};
+
+const setAuthPanel = (panel) => {
+  authPanels.forEach((authPanel) => {
+    authPanel.hidden = authPanel.getAttribute('data-auth-panel') !== panel;
+  });
+};
+
+const loadAccount = () => {
+  const stored = localStorage.getItem(accountKey);
+  if (!stored) return null;
+  try {
+    const parsed = JSON.parse(stored);
+    if (!parsed.username || !parsed.password) return null;
+    return parsed;
+  } catch (error) {
+    return null;
+  }
+};
+
+const isSignedIn = () => Boolean(localStorage.getItem(signedInKey));
+
+const setSignedIn = (username) => {
+  if (username) {
+    localStorage.setItem(signedInKey, username);
+  } else {
+    localStorage.removeItem(signedInKey);
+  }
+};
+
+const loadProfile = () => {
+  const stored = localStorage.getItem(storageKey);
+  if (!stored) return { profile: { ...defaults }, isStored: false };
+  try {
+    const parsed = JSON.parse(stored);
+    return {
+      profile: {
+        name: parsed.name || defaults.name,
+        tags: parsed.tags || defaults.tags,
+        bio: parsed.bio || defaults.bio,
+      },
+      isStored: true,
+    };
+  } catch (error) {
+    return { profile: { ...defaults }, isStored: false };
+  }
+};
+
+const setBlankState = (profile, isStored, signedIn) => {
+  if (!profileHeroCard) return;
+  const isBlank = !signedIn || (!isStored && !profile.name && !profile.tags && !profile.bio);
+  profileHeroCard.classList.toggle('is-blank', isBlank);
+};
+
+const updateAuthUI = (signedIn) => {
+  if (authOverlay) {
+    authOverlay.hidden = signedIn;
+  }
+  if (profileSetupSection) {
+    profileSetupSection.hidden = !signedIn;
+  }
+};
+
+const { profile: initialProfile, isStored } = loadProfile();
+applyProfile(initialProfile);
+const signedIn = isSignedIn();
+setBlankState(initialProfile, isStored, signedIn);
+updateAuthUI(signedIn);
+if (authPanels.length) {
+  setAuthPanel('signin');
+}
 
 if (profileForm) {
   const nameInput = profileForm.querySelector('[data-profile-input="name"]');
   const tagsInput = profileForm.querySelector('[data-profile-input="tags"]');
   const bioInput = profileForm.querySelector('[data-profile-input="bio"]');
   const resetButton = profileForm.querySelector('[data-profile-reset]');
-  const storageKey = 'pensupProfile';
-  const accountKey = 'pensupAccount';
-  const signedInKey = 'pensupSignedIn';
-  const defaults = {
-    name: '',
-    tags: '',
-    bio: '',
-  };
-
-  const applyProfile = (profile) => {
-    profileNameDisplays.forEach((element) => {
-      element.textContent = profile.name || '';
-    });
-    if (profileTagsDisplay) {
-      profileTagsDisplay.textContent = profile.tags || '';
-    }
-    if (profileBioDisplay) {
-      profileBioDisplay.textContent = profile.bio || '';
-    }
-  };
-
-  const updateStatus = (message) => {
-    if (profileStatus) {
-      profileStatus.textContent = message || '';
-    }
-  };
-
-  const updateAuthStatus = (message) => {
-    if (authStatus) {
-      authStatus.textContent = message || '';
-    }
-  };
-
-  const setAuthPanel = (panel) => {
-    authPanels.forEach((authPanel) => {
-      authPanel.hidden = authPanel.getAttribute('data-auth-panel') !== panel;
-    });
-  };
-
-  const loadAccount = () => {
-    const stored = localStorage.getItem(accountKey);
-    if (!stored) return null;
-    try {
-      const parsed = JSON.parse(stored);
-      if (!parsed.username || !parsed.password) return null;
-      return parsed;
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const isSignedIn = () => Boolean(localStorage.getItem(signedInKey));
-
-  const setSignedIn = (username) => {
-    if (username) {
-      localStorage.setItem(signedInKey, username);
-    } else {
-      localStorage.removeItem(signedInKey);
-    }
-  };
-
-  const loadProfile = () => {
-    const stored = localStorage.getItem(storageKey);
-    if (!stored) return { profile: { ...defaults }, isStored: false };
-    try {
-      const parsed = JSON.parse(stored);
-      return {
-        profile: {
-          name: parsed.name || defaults.name,
-          tags: parsed.tags || defaults.tags,
-          bio: parsed.bio || defaults.bio,
-        },
-        isStored: true,
-      };
-    } catch (error) {
-      return { profile: { ...defaults }, isStored: false };
-    }
-  };
 
   const setInputs = (profile) => {
     if (nameInput) nameInput.value = profile.name;
@@ -219,28 +243,7 @@ if (profileForm) {
     if (bioInput) bioInput.value = profile.bio;
   };
 
-  const setBlankState = (profile, isStored, signedIn) => {
-    if (!profileHeroCard) return;
-    const isBlank = !signedIn || (!isStored && !profile.name && !profile.tags && !profile.bio);
-    profileHeroCard.classList.toggle('is-blank', isBlank);
-  };
-
-  const updateAuthUI = (signedIn) => {
-    if (authOverlay) {
-      authOverlay.hidden = signedIn;
-    }
-    if (profileSetupSection) {
-      profileSetupSection.hidden = !signedIn;
-    }
-  };
-
-  const { profile: initialProfile, isStored } = loadProfile();
-  applyProfile(initialProfile);
   setInputs(initialProfile);
-  const signedIn = isSignedIn();
-  setBlankState(initialProfile, isStored, signedIn);
-  updateAuthUI(signedIn);
-  setAuthPanel('signin');
 
   profileForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -264,62 +267,67 @@ if (profileForm) {
       setBlankState(defaults, false, isSignedIn());
     });
   }
+}
 
-  authForms.forEach((form) => {
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const type = form.getAttribute('data-auth-form');
-      const usernameInput = form.querySelector('input[type="text"]');
-      const passwordInput = form.querySelector('input[type="password"]');
-      const username = usernameInput?.value.trim();
-      const password = passwordInput?.value.trim();
+const completeAuth = (message, username) => {
+  setSignedIn(username);
+  updateAuthStatus(message);
+  updateStatus(message);
+  setAuthPanel('signin');
+  updateAuthUI(true);
+  setBlankState(loadProfile().profile, true, true);
+};
 
-      if (!username || !password) {
-        updateAuthStatus('Please enter a username and password.');
+authForms.forEach((form) => {
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const type = form.getAttribute('data-auth-form');
+    const usernameInput = form.querySelector('input[type="text"]');
+    const passwordInput = form.querySelector('input[type="password"]');
+    const username = usernameInput?.value.trim();
+    const password = passwordInput?.value.trim();
+
+    if (!username || !password) {
+      updateAuthStatus('Please enter a username and password.');
+      return;
+    }
+
+    if (type === 'signup') {
+      localStorage.setItem(accountKey, JSON.stringify({ username, password }));
+      completeAuth('Account created successfully.', username);
+    } else {
+      const account = loadAccount();
+      if (!account || account.username !== username || account.password !== password) {
+        updateAuthStatus('Cannot find that account. Please create one first.');
         return;
       }
+      completeAuth('Signed in successfully.', username);
+    }
 
-      if (type === 'signup') {
-        localStorage.setItem(accountKey, JSON.stringify({ username, password }));
-        setSignedIn(username);
-        updateAuthStatus('Account created. You are now signed in.');
-      } else {
-        const account = loadAccount();
-        if (!account || account.username !== username || account.password !== password) {
-          updateAuthStatus('We could not find that account. Please sign up first.');
-          return;
-        }
-        setSignedIn(username);
-        updateAuthStatus('Signed in successfully.');
-      }
+    const { profile: currentProfile } = loadProfile();
+    if (!currentProfile.name && username) {
+      const profile = {
+        name: username,
+        tags: currentProfile.tags || defaults.tags,
+        bio: currentProfile.bio || defaults.bio,
+      };
+      localStorage.setItem(storageKey, JSON.stringify(profile));
+      applyProfile(profile);
+    }
 
-      if (!nameInput?.value.trim()) {
-        const profile = {
-          name: username,
-          tags: tagsInput?.value.trim() || defaults.tags,
-          bio: bioInput?.value.trim() || defaults.bio,
-        };
-        localStorage.setItem(storageKey, JSON.stringify(profile));
-        applyProfile(profile);
-        setInputs(profile);
-      }
-
-      if (usernameInput) usernameInput.value = '';
-      if (passwordInput) passwordInput.value = '';
-      updateAuthUI(true);
-      setBlankState(loadProfile().profile, true, true);
-    });
+    if (usernameInput) usernameInput.value = '';
+    if (passwordInput) passwordInput.value = '';
   });
+});
 
-  authToggles.forEach((toggle) => {
-    toggle.addEventListener('click', () => {
-      const target = toggle.getAttribute('data-auth-toggle');
-      if (!target) return;
-      updateAuthStatus('');
-      setAuthPanel(target);
-    });
+authToggles.forEach((toggle) => {
+  toggle.addEventListener('click', () => {
+    const target = toggle.getAttribute('data-auth-toggle');
+    if (!target) return;
+    updateAuthStatus('');
+    setAuthPanel(target);
   });
-}
+});
 
 const fullscreenToggle = document.querySelector('[data-reader-fullscreen-toggle]');
 const fullscreenOverlay = document.querySelector('[data-reader-fullscreen]');
