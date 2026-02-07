@@ -1010,6 +1010,213 @@ input {
   gap: 20px;
 }
 
+.profile-hero {
+  display: grid;
+  gap: 24px;
+}
+
+.profile-banner {
+  position: relative;
+  min-height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 28px;
+  display: flex;
+  align-items: flex-end;
+  background: linear-gradient(120deg, rgba(7, 7, 7, 0.2), rgba(7, 7, 7, 0.9)),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80")
+      center/cover no-repeat;
+}
+
+.banner-overlay {
+  max-width: 520px;
+  display: grid;
+  gap: 8px;
+  background: rgba(7, 7, 7, 0.55);
+  padding: 16px 20px;
+  border-radius: 16px;
+}
+
+.upload-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--text);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.upload-btn.small {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+}
+
+.upload-btn input {
+  display: none;
+}
+
+.profile-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  background: var(--surface-alt);
+  padding: 20px;
+  border-radius: 18px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.profile-picture {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.handle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.bio {
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-tags span {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.8rem;
+}
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--surface-alt);
+  padding: 18px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.stat-card h2 {
+  font-size: 1.6rem;
+}
+
+.stat-card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.profile-panel {
+  background: var(--surface-alt);
+  padding: 20px;
+  border-radius: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.profile-badges,
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-badges span {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.profile-list {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+}
+
+.works-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.work-card {
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  display: grid;
+  gap: 6px;
+}
+
+.work-card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.activity-list {
+  display: grid;
+  gap: 12px;
+  color: var(--muted);
+}
+
+.profile-pillars {
+  display: grid;
+  gap: 12px;
+}
+
+.profile-pillars h3 {
+  margin-bottom: 6px;
+}
+
+.availability {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 @media (max-width: 900px) {
   .site-header {
     grid-template-columns: 1fr;
