@@ -101,6 +101,23 @@ input {
   color: var(--text);
 }
 
+.main-nav .nav-cta {
+  background: var(--accent);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 999px;
+  box-shadow: 0 10px 20px rgba(229, 9, 20, 0.25);
+}
+
+.main-nav .nav-cta::after {
+  display: none;
+}
+
+.main-nav .nav-cta:hover {
+  color: #fff;
+  box-shadow: 0 14px 24px rgba(229, 9, 20, 0.35);
+}
+
 .main-nav a::after {
   content: "";
   position: absolute;
@@ -1258,6 +1275,80 @@ input {
 .availability {
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+.publish-page {
+  display: grid;
+  gap: 32px;
+}
+
+.publish-hero {
+  display: grid;
+  gap: 16px;
+  padding: 32px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(229, 9, 20, 0.2), transparent 45%),
+    linear-gradient(130deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.4);
+}
+
+.publish-hero p {
+  color: var(--muted);
+  max-width: 640px;
+}
+
+.publish-pillars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.publish-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.85rem;
+}
+
+.publish-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.publish-card {
+  background: var(--surface-alt);
+  padding: 20px;
+  border-radius: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.publish-card p,
+.publish-card li {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.publish-card ul {
+  display: grid;
+  gap: 8px;
+  padding-left: 18px;
+}
+
+.publish-steps {
+  display: grid;
+  gap: 16px;
+}
+
+.publish-step {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 @media (max-width: 900px) {
