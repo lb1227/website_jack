@@ -1988,63 +1988,68 @@ body.creator-fullscreen-open {
 
 .chat-shell-body {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 88px 1fr;
   min-height: 0;
 }
 
 .chat-sidebar {
-  padding: 18px;
+  padding: 16px 12px;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: grid;
-  gap: 16px;
+  gap: 12px;
   background: rgba(11, 13, 21, 0.9);
+  justify-items: center;
 }
 
-.chat-tabs {
+.chat-server-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.chat-tab {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.chat-tab.active {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.chat-lists {
-  display: grid;
-  gap: 10px;
+  gap: 12px;
   overflow-y: auto;
+  padding-right: 2px;
 }
 
-.chat-list {
-  display: grid;
-  gap: 8px;
-}
-
-.chat-list-item {
-  text-align: left;
-  padding: 10px 12px;
-  border-radius: 12px;
+.chat-server-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
   border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text);
   cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
-.chat-list-item.active {
-  background: rgba(88, 101, 242, 0.18);
-  border-color: rgba(88, 101, 242, 0.4);
+.chat-server-icon:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.chat-server-icon.active {
+  background: rgba(88, 101, 242, 0.2);
+  border-color: rgba(88, 101, 242, 0.55);
+  box-shadow: 0 10px 20px rgba(88, 101, 242, 0.25);
+}
+
+.chat-server-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba(255, 94, 120, 0.95), rgba(88, 101, 242, 0.95));
+  color: #fff;
+}
+
+.chat-server-divider {
+  width: 40px;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 4px auto;
 }
 
 .chat-thread {
@@ -2116,6 +2121,15 @@ body.chat-overlay-open {
   .chat-sidebar {
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 16px;
+  }
+
+  .chat-server-list {
+    grid-auto-flow: column;
+    grid-auto-columns: min-content;
+    align-items: center;
+    overflow-x: auto;
+    padding-bottom: 6px;
   }
 
   .chat-shell {
