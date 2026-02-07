@@ -27,26 +27,47 @@
           <div class="profile-avatar">
             <img
               src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=240&q=80"
-              alt="PiruMi profile portrait"
+              alt="PensUp profile portrait"
             />
           </div>
-          <h1>***</h1>
-          <p class="profile-meta">Tag 1 | Tag 2 • Tag 3 • Tag 4</p>
+          <h1 data-profile-display="name">Your Profile</h1>
+          <p class="profile-meta" data-profile-display="tags">Add tags to help readers find you.</p>
+          <p class="profile-bio" data-profile-display="bio">Set your bio from the sign in form below.</p>
           <div class="profile-counts">
             <span><strong>Works</strong> 0</span>
             <span><strong>Followers</strong> 0</span>
           </div>
-          <div class="profile-actions">
-            <button class="btn follow">Follow</button>
-            <button class="icon-btn" aria-label="Instagram">◎</button>
-            <button class="icon-btn" aria-label="Patreon">P</button>
-          </div>
+          <p class="profile-status" data-profile-status>Saved locally on this device.</p>
         </div>
+      </section>
+
+      <section class="profile-setup">
+        <div class="section-header">
+          <h2>Sign in or sign up</h2>
+        </div>
+        <form class="profile-form" data-profile-form>
+          <label>
+            Display name
+            <input type="text" name="displayName" placeholder="Your name" data-profile-input="name" />
+          </label>
+          <label>
+            Tags
+            <input type="text" name="tags" placeholder="Fantasy · Slice of Life · Creator" data-profile-input="tags" />
+          </label>
+          <label>
+            Bio
+            <textarea name="bio" rows="4" placeholder="Tell readers about yourself." data-profile-input="bio"></textarea>
+          </label>
+          <div class="profile-form-actions">
+            <button class="btn" type="submit">Save profile</button>
+            <button class="btn ghost" type="button" data-profile-reset>Reset</button>
+          </div>
+        </form>
       </section>
 
       <section class="profile-series">
         <div class="section-header">
-          <h2>Series</h2>
+          <h2>Your series</h2>
         </div>
         <div class="series-grid">
           <article class="series-card">
@@ -72,13 +93,13 @@
 
       <section class="profile-feed">
         <div class="section-header">
-          <h2>Feed</h2>
+          <h2>Your updates</h2>
         </div>
         <article class="feed-card">
           <div class="feed-body">
             <div class="feed-author">
               <div>
-                <h3>***</h3>
+                <h3 data-profile-display="name">Your Profile</h3>
                 <p>1 hour ago</p>
               </div>
             </div>
