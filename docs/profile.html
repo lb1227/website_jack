@@ -44,15 +44,33 @@
                 <input type="file" accept="image/*" />
               </label>
             </div>
-            <div>
-              <p class="handle">@</p>
-              <p class="bio">
+            <div class="profile-details">
+              <p class="handle view-only">@</p>
+              <p class="bio view-only">
                 *Nothing here yet*
               </p>
-              <div class="profile-tags">
+              <div class="profile-tags view-only">
                 <span>First Tag</span>
                 <span>Second Tag</span>
                 <span>Third Tag</span>
+              </div>
+              <div class="profile-form edit-only">
+                <label>
+                  Display name
+                  <input type="text" placeholder="Untitled" />
+                </label>
+                <label>
+                  Handle
+                  <input type="text" placeholder="@yourname" />
+                </label>
+                <label class="profile-form-wide">
+                  Bio
+                  <textarea rows="3" placeholder="Share a short intro"></textarea>
+                </label>
+                <label class="profile-form-wide">
+                  Tags
+                  <input type="text" placeholder="Fantasy, Audio, Romance" />
+                </label>
               </div>
             </div>
           </div>
@@ -62,31 +80,6 @@
             <button class="btn ghost edit-only" data-edit-profile-cancel>Cancel</button>
           </div>
 
-        </div>
-      </section>
-
-      <section class="profile-edit edit-only" aria-live="polite">
-        <div class="profile-panel">
-          <h2>Edit Profile Details</h2>
-          <div class="profile-form">
-            <label>
-              Display name
-              <input type="text" placeholder="Untitled" />
-            </label>
-            <label>
-              Handle
-              <input type="text" placeholder="@yourname" />
-            </label>
-            <label class="profile-form-wide">
-              Bio
-              <textarea rows="3" placeholder="Share a short intro"></textarea>
-            </label>
-            <label class="profile-form-wide">
-              Tags
-              <input type="text" placeholder="Fantasy, Audio, Romance" />
-            </label>
-          </div>
-          <p class="profile-hint">Edits are previewed here and saved to your profile.</p>
         </div>
       </section>
 

@@ -1083,8 +1083,16 @@ input {
   display: inline-flex;
 }
 
-.profile-page.is-editing .profile-edit.edit-only {
+.profile-page.is-editing .profile-form.edit-only {
+  display: grid;
+}
+
+.view-only {
   display: block;
+}
+
+.profile-page.is-editing .view-only {
+  display: none;
 }
 
 .profile-banner {
