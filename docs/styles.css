@@ -37,8 +37,8 @@ input {
   position: sticky;
   top: 0;
   z-index: 10;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 24px 56px;
   background: linear-gradient(180deg, rgba(7, 7, 7, 0.95), rgba(7, 7, 7, 0.6));
@@ -57,11 +57,27 @@ input {
   gap: 28px;
 }
 
-.logo {
+.logo,
+.logo-button {
   font-size: 2.1rem;
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 1px;
+}
+
+.logo-button {
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.header-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
 }
 
 .main-nav {
@@ -104,6 +120,7 @@ input {
   display: flex;
   align-items: center;
   gap: 16px;
+  justify-self: end;
 }
 
 .search {
@@ -994,9 +1011,17 @@ input {
 
 @media (max-width: 900px) {
   .site-header {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: 1fr;
     gap: 16px;
+    justify-items: stretch;
+  }
+
+  .header-center {
+    justify-content: flex-start;
+  }
+
+  .header-right {
+    justify-self: start;
   }
 
   .search input {
