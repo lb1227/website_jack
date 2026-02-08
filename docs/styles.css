@@ -1147,8 +1147,7 @@ input {
 }
 
 .discord-server-spacer {
-  flex: 1;
-  width: 100%;
+  display: none;
 }
 
 .discord-dms {
