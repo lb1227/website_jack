@@ -174,7 +174,7 @@ const setupChatOverlay = (root = document) => {
 };
 
 if (chatIncludeTargets.length) {
-  fetch('messages.html')
+  fetch('chat-overlay.html')
     .then((response) => response.text())
     .then((html) => {
       const parser = new DOMParser();
