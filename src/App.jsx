@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout.jsx";
 import Home from "./pages/Home.jsx";
 import Reading from "./pages/Reading.jsx";
@@ -14,6 +14,7 @@ export default function App() {
         <Route path="/reading" element={<Reading />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );
