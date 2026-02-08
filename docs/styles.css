@@ -2452,7 +2452,7 @@ body.creator-fullscreen-open {
   place-items: center;
   font-size: 0.85rem;
   font-weight: 700;
-  background: linear-gradient(135deg, rgba(255, 94, 120, 0.95), rgba(88, 101, 242, 0.95));
+  background: #000;
   color: #fff;
 }
 
