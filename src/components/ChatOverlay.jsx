@@ -204,150 +204,137 @@ export default function ChatOverlay() {
       </button>
       {isOpen ? (
         <div className="chat-overlay" onClick={handleOverlayClick}>
-          <div className="chat-shell" role="dialog" aria-modal="true" aria-label="PensUp chat">
-            <header className="chat-shell-header">
+          <div className="chat-shell chat-shell--studio" role="dialog" aria-modal="true" aria-label="PensUp chat">
+            <header className="chat-shell-header chat-shell-header--studio">
               <div>
-                <p className="chat-shell-title">UpChat</p>
+                <p className="chat-shell-title">Studio Inbox</p>
+                <p className="chat-shell-subtitle">Drafts, collabs, and creative sprints in one place.</p>
               </div>
-              <button
-                className="chat-shell-close"
-                type="button"
-                aria-label="Close chat"
-                onClick={() => setIsOpen(false)}
-              >
-                ✕
-              </button>
+              <div className="chat-shell-header-actions">
+                <button className="chat-shell-pill" type="button">
+                  Focus: All
+                </button>
+                <button className="chat-shell-pill" type="button">
+                  Activity: Live
+                </button>
+                <button
+                  className="chat-shell-close"
+                  type="button"
+                  aria-label="Close chat"
+                  onClick={() => setIsOpen(false)}
+                >
+                  ✕
+                </button>
+              </div>
             </header>
-            <div className="chat-shell-body">
-              <aside className="chat-sidebar">
-                <div className="chat-server-list" role="list" aria-label="Server list">
-                  {SERVERS.map((server, index) => (
-                    <React.Fragment key={server.id}>
-                      {index === 1 ? <span className="chat-server-divider" aria-hidden="true" /> : null}
-                      <button
-                        className={`chat-server-icon${server.id === activeServerId ? " active" : ""}`}
-                        type="button"
-                        role="listitem"
-                        aria-label={server.title}
-                        onClick={() => {
-                          setActiveServerId(server.id);
-                          setActiveChannelId(server.channels[0].id);
-                        }}
-                      >
-                        <span className="chat-server-logo">{server.logo}</span>
-                      </button>
-                    </React.Fragment>
+            <div className="chat-shell-body chat-shell-body--studio">
+              <aside className="chat-spaces">
+                <div className="chat-spaces-header">
+                  <p>Spaces</p>
+                  <span>{SERVERS.length} active</span>
+                </div>
+                <div className="chat-spaces-list" role="list" aria-label="Spaces list">
+                  {SERVERS.map((server) => (
+                    <button
+                      key={server.id}
+                      className={`chat-space-card${server.id === activeServerId ? " active" : ""}`}
+                      type="button"
+                      role="listitem"
+                      onClick={() => {
+                        setActiveServerId(server.id);
+                        setActiveChannelId(server.channels[0].id);
+                      }}
+                    >
+                      <span className="chat-space-logo">{server.logo}</span>
+                      <div>
+                        <p>{server.title}</p>
+                        <span>{server.status}</span>
+                      </div>
+                      <span className="chat-space-arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </button>
                   ))}
-                  <button className="chat-server-icon chat-server-add" type="button" role="listitem">
-                    <span className="chat-server-logo">＋</span>
-                  </button>
+                </div>
+                <div className="chat-spaces-footer">
+                  <button type="button">＋ New space</button>
+                  <button type="button">Manage</button>
                 </div>
               </aside>
-              <section className="chat-channel-panel">
-                <div className="chat-channel-header">
-                  <p>{activeServer.title}</p>
-                  <span>{activeServer.status}</span>
+              <section className="chat-conversations">
+                <div className="chat-conversations-header">
+                  <div>
+                    <p>{activeServer.title}</p>
+                    <span>{activeServer.status}</span>
+                  </div>
+                  <div className="chat-conversations-search">
+                    <input type="text" placeholder="Search threads" readOnly />
+                  </div>
                 </div>
-                <div className="chat-channel-search">
-                  <input type="text" placeholder="Search" readOnly />
-                </div>
-                <div className="chat-channel-list" role="list" aria-label="Channel list">
+                <div className="chat-conversations-list" role="list" aria-label="Thread list">
                   {activeServer.channels.map((channel) => (
                     <button
                       key={channel.id}
-                      className={`chat-channel-item${channel.id === activeChannel.id ? " active" : ""}`}
+                      className={`chat-conversation-item${channel.id === activeChannel.id ? " active" : ""}`}
                       type="button"
                       role="listitem"
                       onClick={() => setActiveChannelId(channel.id)}
                     >
-                      <span className="chat-channel-hash">#</span>
-                      <span>{channel.label}</span>
-                      {channel.unread ? <span className="chat-channel-unread" aria-label="Unread" /> : null}
+                      <div>
+                        <p>{channel.label}</p>
+                        <span>Shared notes and files</span>
+                      </div>
+                      {channel.unread ? <span className="chat-conversation-unread">New</span> : null}
                     </button>
                   ))}
                 </div>
-                <div className="chat-channel-footer">
+                <div className="chat-conversations-footer">
                   <div>
                     <p>Luke</p>
-                    <span>Noneyobeezwax</span>
+                    <span>Creative lead</span>
                   </div>
-                  <div className="chat-channel-footer-actions">
-                    <button type="button" aria-label="Mute">
-                      🔇
-                    </button>
-                    <button type="button" aria-label="Settings">
-                      ⚙️
-                    </button>
-                  </div>
+                  <button type="button">Update status</button>
                 </div>
               </section>
-              <section className="chat-thread">
-                <div className="chat-thread-header">
-                  <div className="chat-thread-title-group">
-                    <p className="chat-thread-title">
-                      <span className="chat-thread-hash">#</span>
-                      {activeChannel.label}
-                    </p>
-                    <span className="chat-thread-status">{activeServer.status}</span>
+              <section className="chat-detail">
+                <div className="chat-detail-header">
+                  <div>
+                    <p>{activeChannel.label}</p>
+                    <span>{activeServer.title}</span>
                   </div>
-                  <div className="chat-thread-actions">
-                    <button type="button" aria-label="Notifications">
-                      🔔
-                    </button>
-                    <button type="button" aria-label="Pinned messages">
-                      📌
-                    </button>
-                    <button type="button" aria-label="Members">
-                      👥
-                    </button>
+                  <div className="chat-detail-actions">
+                    <button type="button">Schedule</button>
+                    <button type="button">Share</button>
                   </div>
                 </div>
-                <div className="chat-thread-feed" ref={feedRef}>
-                  <div className="chat-thread-welcome">
-                    <h2>Welcome to {activeServer.title}</h2>
-                    <p>This is the beginning of the {activeChannel.label} channel.</p>
+                <div className="chat-detail-feed" ref={feedRef}>
+                  <div className="chat-detail-welcome">
+                    <h2>{activeChannel.label}</h2>
+                    <p>Kick off a new update or drop a file for the team.</p>
                   </div>
                   {(messagesByServer[activeServer.id] || []).map((message, index) => (
-                    <div className="chat-thread-message" key={`${message.author}-${index}`}>
-                      <strong>{message.author}</strong>
+                    <div className="chat-detail-message" key={`${message.author}-${index}`}>
+                      <div className="chat-detail-message-meta">
+                        <strong>{message.author}</strong>
+                        <span>Just now</span>
+                      </div>
                       <p>{message.text}</p>
                     </div>
                   ))}
                 </div>
-                <form className="chat-thread-input" onSubmit={handleSubmit}>
-                  <span className="chat-input-prefix">＋</span>
+                <form className="chat-detail-input" onSubmit={handleSubmit}>
+                  <span className="chat-input-prefix">✦</span>
                   <input
                     type="text"
-                    placeholder={`Message #${activeChannel.label}`}
+                    placeholder={`Message ${activeChannel.label}`}
                     value={messageDraft}
                     onChange={(event) => setMessageDraft(event.target.value)}
                   />
-                  <div className="chat-input-actions" aria-hidden="true">
-                    <span>😀</span>
-                    <span>📎</span>
-                    <span>🎁</span>
-                  </div>
+                  <button className="chat-detail-send" type="submit">
+                    Send
+                  </button>
                 </form>
               </section>
-              <aside className="chat-members">
-                <div className="chat-members-header">
-                  <p>Members</p>
-                  <span>{activeServer.members.length}</span>
-                </div>
-                <div className="chat-members-list">
-                  {activeServer.members.map((member) => (
-                    <div className="chat-member" key={member.id}>
-                      <span className={`chat-member-avatar ${member.status}`} aria-hidden="true">
-                        {member.name[0]}
-                      </span>
-                      <div>
-                        <p>{member.name}</p>
-                        <span>{member.status}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </aside>
             </div>
           </div>
         </div>
