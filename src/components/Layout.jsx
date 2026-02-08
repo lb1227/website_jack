@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import ChatOverlay from "./ChatOverlay.jsx";
 
 export default function Layout() {
   const location = useLocation();
@@ -54,6 +55,7 @@ export default function Layout() {
           <a href="#">Jobs</a>
         </div>
       </footer>
+      <ChatOverlay />
     </>
   );
 }
