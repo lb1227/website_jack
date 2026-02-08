@@ -5,8 +5,6 @@ import Home from "./pages/Home.jsx";
 import Reading from "./pages/Reading.jsx";
 import Profile from "./pages/Profile.jsx";
 import Login from "./pages/Login.jsx";
-import Publish from "./pages/Publish.jsx";
-import Story from "./pages/Story.jsx";
 
 export default function App() {
   return (
@@ -16,8 +14,6 @@ export default function App() {
         <Route path="/reading" element={<Reading />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/publish" element={<Publish />} />
-        <Route path="/story" element={<Story />} />
       </Route>
     </Routes>
   );
