@@ -313,8 +313,15 @@ export default function Profile() {
       return;
     }
     setProfile(formValues);
+    setFormValues(formValues);
     persistProfile(formValues);
     setIsEditing(false);
+    if (avatarInputRef.current) {
+      avatarInputRef.current.value = "";
+    }
+    if (backgroundInputRef.current) {
+      backgroundInputRef.current.value = "";
+    }
     setStatus("Profile updated.");
   };
 
