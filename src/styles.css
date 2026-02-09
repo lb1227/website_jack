@@ -1637,12 +1637,6 @@ input {
   justify-self: center;
 }
 
-.profile-dev-panel {
-  width: min(280px, 100%);
-  justify-self: end;
-  margin-left: auto;
-}
-
 .profile-hero-card {
   display: grid;
   gap: 12px;
@@ -1748,6 +1742,7 @@ input {
 }
 
 .profile-hero-card.has-background {
+  width: min(60vw, 720px);
   padding: 24px;
   border-radius: 24px;
   overflow: hidden;
@@ -1944,6 +1939,13 @@ input {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
+}
+
+.profile-bottom-nav {
+  width: min(600px, 100%);
+  margin: 0 auto;
+  display: grid;
+  justify-items: center;
 }
 
 .profile-dev-toggle {

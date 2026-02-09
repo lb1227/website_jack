@@ -600,35 +600,6 @@ export default function Profile() {
               {statusMessage}
             </p>
           </div>
-          <aside className="profile-dev-panel">
-            <div className="profile-dev-toggle" aria-live="polite">
-              <p className="profile-dev-label">Development toggles</p>
-              <div className="profile-dev-actions">
-                <button
-                  className="btn ghost"
-                  type="button"
-                  onClick={() => {
-                    setProfileType((current) => (current === "author" ? "reader" : "author"));
-                  }}
-                  disabled={!isAuthorApproved && profileType !== "author"}
-                >
-                  Switch to {profileType === "author" ? "reader" : "author"}
-                </button>
-                <button
-                  className="btn ghost"
-                  type="button"
-                  onClick={() => {
-                    setIsAuthorApproved((current) => !current);
-                  }}
-                >
-                  {isAuthorApproved ? "Revoke author approval" : "Grant author approval"}
-                </button>
-              </div>
-              <p className="profile-dev-status">
-                Author approval: {isAuthorApproved ? "Approved" : "Required"}
-              </p>
-            </div>
-          </aside>
         </div>
         {!isAuthenticated ? (
           <div className="profile-auth-overlay" data-auth-overlay>
@@ -768,6 +739,35 @@ export default function Profile() {
           <div className="feed-media"></div>
         </article>
       </section>
+      <nav className="profile-bottom-nav" aria-label="Development toggles">
+        <div className="profile-dev-toggle" aria-live="polite">
+          <p className="profile-dev-label">Development toggles</p>
+          <div className="profile-dev-actions">
+            <button
+              className="btn ghost"
+              type="button"
+              onClick={() => {
+                setProfileType((current) => (current === "author" ? "reader" : "author"));
+              }}
+              disabled={!isAuthorApproved && profileType !== "author"}
+            >
+              Switch to {profileType === "author" ? "reader" : "author"}
+            </button>
+            <button
+              className="btn ghost"
+              type="button"
+              onClick={() => {
+                setIsAuthorApproved((current) => !current);
+              }}
+            >
+              {isAuthorApproved ? "Revoke author approval" : "Grant author approval"}
+            </button>
+          </div>
+          <p className="profile-dev-status">
+            Author approval: {isAuthorApproved ? "Approved" : "Required"}
+          </p>
+        </div>
+      </nav>
     </main>
   );
 }
