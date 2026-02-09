@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const STORAGE_KEY = "pensup.profile";
@@ -9,6 +9,7 @@ const EMPTY_PROFILE = {
   tags: "empty · empty · empty",
   bio: "Nothing here yet:(",
   avatar: "",
+  background: "",
   counts: {
     works: 0,
     followers: 0,
@@ -77,6 +78,8 @@ export default function Profile() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authStatus, setAuthStatus] = useState("");
   const [authMode, setAuthMode] = useState("signin");
+  const avatarInputRef = useRef(null);
+  const backgroundInputRef = useRef(null);
 
   useEffect(() => {
     const stored = loadProfile();
@@ -147,6 +150,61 @@ export default function Profile() {
     }));
   };
 
+  const handleAvatarClick = () => {
+    if (!isEditing || isLocked) {
+      return;
+    }
+    avatarInputRef.current?.click();
+  };
+
+  const handleImageUpload = (file, onLoad) => {
+    if (!file) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      onLoad(reader.result?.toString() ?? "");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAvatarChange = (event) => {
+    const file = event.target.files?.[0];
+    handleImageUpload(file, (dataUrl) => {
+      setFormValues((current) => ({
+        ...current,
+        avatar: dataUrl,
+      }));
+      setStatus("Profile photo updated. Save changes to apply.");
+    });
+  };
+
+  const handleBackgroundChange = (event) => {
+    const file = event.target.files?.[0];
+    handleImageUpload(file, (dataUrl) => {
+      setFormValues((current) => ({
+        ...current,
+        background: dataUrl,
+      }));
+      setStatus("Background updated. Save changes to apply.");
+    });
+  };
+
+  const handleClearBackground = () => {
+    if (!isAuthenticated) {
+      setAuthStatus("Sign in to update your background.");
+      return;
+    }
+    setFormValues((current) => ({
+      ...current,
+      background: "",
+    }));
+    if (backgroundInputRef.current) {
+      backgroundInputRef.current.value = "";
+    }
+    setStatus("Background cleared. Save changes to apply.");
+  };
+
   const handleSave = (event) => {
     event.preventDefault();
     if (!isAuthenticated) {
@@ -163,12 +221,24 @@ export default function Profile() {
     setFormValues(profile);
     setIsEditing(false);
     setStatus("Edits discarded.");
+    if (avatarInputRef.current) {
+      avatarInputRef.current.value = "";
+    }
+    if (backgroundInputRef.current) {
+      backgroundInputRef.current.value = "";
+    }
   };
 
   const handleReset = () => {
     if (!isAuthenticated) {
       setAuthStatus("Sign in to reset your profile.");
       return;
+    }
+    if (avatarInputRef.current) {
+      avatarInputRef.current.value = "";
+    }
+    if (backgroundInputRef.current) {
+      backgroundInputRef.current.value = "";
     }
     setFormValues(EMPTY_PROFILE);
     setProfile(EMPTY_PROFILE);
@@ -244,6 +314,13 @@ export default function Profile() {
   };
 
   const isLocked = !isAuthenticated;
+  const activeAvatar = isEditing ? formValues.avatar : profile.avatar;
+  const activeBackground = isEditing ? formValues.background : profile.background;
+  const heroStyle = activeBackground
+    ? {
+        backgroundImage: `url(${activeBackground})`,
+      }
+    : undefined;
 
   return (
     <main className="profile-page" id="profile">
@@ -251,7 +328,8 @@ export default function Profile() {
         <div
           className={`profile-hero-card ${isEditing ? "is-editing" : ""} ${
             isAuthenticated ? "" : "is-locked"
-          }`.trim()}
+          } ${activeBackground ? "has-background" : ""}`.trim()}
+          style={heroStyle}
           data-profile-hero
         >
           <button
@@ -259,15 +337,38 @@ export default function Profile() {
             type="button"
             data-profile-avatar
             aria-label="Update profile photo"
-            disabled={isLocked}
+            disabled={isLocked || !isEditing}
+            onClick={handleAvatarClick}
           >
             <img
               data-profile-avatar-image
               alt="Profile photo"
-              src={profile.avatar || undefined}
-              hidden={!profile.avatar}
+              src={activeAvatar || undefined}
+              hidden={!activeAvatar}
             />
+            <span className="profile-avatar-overlay" aria-hidden="true">
+              <svg
+                className="profile-avatar-icon"
+                viewBox="0 0 24 24"
+                role="presentation"
+                focusable="false"
+              >
+                <path
+                  d="M3 17.25V21h3.75l11.1-11.1-3.75-3.75L3 17.25Zm17.71-10.04c.39-.39.39-1.02 0-1.41l-2.51-2.51a1 1 0 0 0-1.41 0l-1.96 1.96 3.75 3.75 2.13-2.13Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
           </button>
+          <input
+            ref={avatarInputRef}
+            className="profile-file-input"
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            aria-label="Upload profile photo"
+            disabled={isLocked || !isEditing}
+          />
           <div className="profile-summary" data-profile-summary>
             <h1 className="profile-summary-name" data-profile-display="name">
               {profile.name}
@@ -316,6 +417,20 @@ export default function Profile() {
                 disabled={isLocked}
               ></textarea>
             </label>
+            <label className="profile-inline-field">
+              <span>Profile background</span>
+              <input
+                ref={backgroundInputRef}
+                type="file"
+                name="background"
+                accept="image/*"
+                onChange={handleBackgroundChange}
+                disabled={isLocked}
+              />
+              <span className="profile-inline-hint">
+                This background is stored locally in your browser.
+              </span>
+            </label>
             <div className="profile-form-actions">
               <button className="btn primary" type="submit" disabled={isLocked}>
                 Save changes
@@ -337,6 +452,14 @@ export default function Profile() {
                 disabled={isLocked}
               >
                 Reset
+              </button>
+              <button
+                className="btn ghost"
+                type="button"
+                onClick={handleClearBackground}
+                disabled={isLocked}
+              >
+                Clear background
               </button>
             </div>
           </form>
