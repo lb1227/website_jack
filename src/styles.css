@@ -2494,9 +2494,9 @@ body.creator-fullscreen-open {
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(16px, 3vw, 40px);
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
   background: rgba(7, 9, 15, 0.92);
   backdrop-filter: blur(4px);
   z-index: 70;
@@ -2926,6 +2926,10 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell--studio {
+  width: 60vw;
+  max-width: 60vw;
+  height: 100vh;
+  max-height: 100vh;
   background: radial-gradient(circle at top left, rgba(88, 101, 242, 0.18), transparent 55%), #14151b;
 }
 
@@ -2952,7 +2956,7 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell-body--studio {
-  grid-template-columns: 260px 280px 1fr;
+  grid-template-columns: 1fr 1fr 2fr;
   background: rgba(14, 16, 22, 0.95);
 }
 
