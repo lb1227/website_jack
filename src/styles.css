@@ -1620,10 +1620,25 @@ input {
 
 .profile-hero {
   display: grid;
-  place-items: center;
-  text-align: center;
   gap: 18px;
   position: relative;
+  text-align: center;
+  justify-items: center;
+}
+
+.profile-hero-layout {
+  width: 100%;
+  display: grid;
+  gap: 20px;
+  align-items: start;
+}
+
+.profile-hero-layout > * {
+  justify-self: center;
+}
+
+.profile-dev-panel {
+  width: min(280px, 100%);
 }
 
 .profile-hero-card {
@@ -2018,12 +2033,30 @@ input {
 }
 
 .profile-category-card {
+  appearance: none;
   background: rgba(255, 255, 255, 0.04);
   border-radius: 16px;
   padding: 16px;
   display: grid;
   gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-category-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(111, 184, 255, 0.35);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+}
+
+.profile-category-card.is-active {
+  border-color: rgba(111, 184, 255, 0.7);
+  box-shadow: 0 18px 28px rgba(7, 20, 40, 0.35);
+  background: rgba(111, 184, 255, 0.12);
 }
 
 .profile-category-card h3 {
@@ -2074,6 +2107,17 @@ input {
   padding-top: 24px;
 }
 
+.profile-feed .section-header {
+  display: grid;
+  gap: 6px;
+}
+
+.feed-description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 .feed-card {
   background: var(--surface-alt);
   border-radius: 18px;
@@ -2112,6 +2156,21 @@ input {
   aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
+}
+
+@media (min-width: 900px) {
+  .profile-hero-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+    justify-items: stretch;
+  }
+
+  .profile-hero-layout > * {
+    justify-self: stretch;
+  }
+
+  .profile-dev-panel {
+    justify-self: end;
+  }
 }
 
 .availability {

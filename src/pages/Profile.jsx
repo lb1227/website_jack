@@ -179,16 +179,20 @@ export default function Profile() {
         ],
         categories: [
           {
-            title: "Works",
+            id: "works-feed",
+            title: "Works feed",
             description: "Pinned releases, serial updates, and collections.",
+            feedTitle: "Works feed",
+            feedDescription: "Publish new chapters or collections to keep your reader feed fresh.",
+            feedBody: "No new releases yet. Publish a chapter or collection to spark activity.",
           },
           {
-            title: "Feed",
-            description: "Updates, announcements, and milestones.",
-          },
-          {
+            id: "public-chat",
             title: "Public chat",
             description: "Community chat for your profile followers.",
+            feedTitle: "Public chat",
+            feedDescription: "Share quick updates and jump into live community threads.",
+            feedBody: "The chatroom is quiet. Start a new prompt to welcome readers.",
           },
         ],
       };
@@ -202,16 +206,29 @@ export default function Profile() {
       ],
       categories: [
         {
-          title: "Feed",
+          id: "works-feed",
+          title: "Works feed",
           description: "Story updates and posts from creators you follow.",
+          feedTitle: "Works feed",
+          feedDescription: "Stay up to date on the creators and stories you love.",
+          feedBody: "Follow creators to see their updates show up here.",
         },
         {
-          title: "Accounts chatroom",
+          id: "public-chat",
+          title: "Public chat",
           description: "Shared chat space for reader discussions.",
+          feedTitle: "Public chat",
+          feedDescription: "Reader lounge for recommendations, reactions, and meetups.",
+          feedBody: "Jump in to start a new conversation or respond to ongoing threads.",
         },
       ],
     };
   }, [profileType]);
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  useEffect(() => {
+    setActiveCategory(profileContext.categories[0] ?? null);
+  }, [profileContext]);
 
   const handleEditClick = () => {
     if (!isAuthenticated) {
@@ -403,202 +420,212 @@ export default function Profile() {
         backgroundImage: `url(${activeBackground})`,
       }
     : undefined;
+  const selectedCategory = activeCategory ?? profileContext.categories[0];
 
   return (
     <main className="profile-page" id="profile">
       <section className="profile-hero">
-        <div
-          className={`profile-hero-card ${isEditing ? "is-editing" : ""} ${
-            isAuthenticated ? "" : "is-locked"
-          } ${activeBackground ? "has-background" : ""}`.trim()}
-          style={heroStyle}
-          data-profile-hero
-        >
-          <button
-            className={`profile-avatar ${isEditing ? "is-editable" : ""}`.trim()}
-            type="button"
-            data-profile-avatar
-            aria-label="Update profile photo"
-            disabled={isLocked || !isEditing}
-            onClick={handleAvatarClick}
+        <div className="profile-hero-layout">
+          <div
+            className={`profile-hero-card ${isEditing ? "is-editing" : ""} ${
+              isAuthenticated ? "" : "is-locked"
+            } ${activeBackground ? "has-background" : ""}`.trim()}
+            style={heroStyle}
+            data-profile-hero
           >
-            <img
-              data-profile-avatar-image
-              alt="Profile photo"
-              src={activeAvatar || undefined}
-              hidden={!activeAvatar}
-            />
-            <span className="profile-avatar-overlay" aria-hidden="true">
-              <svg
-                className="profile-avatar-icon"
-                viewBox="0 0 24 24"
-                role="presentation"
-                focusable="false"
-              >
-                <path
-                  d="M3 17.25V21h3.75l11.1-11.1-3.75-3.75L3 17.25Zm17.71-10.04c.39-.39.39-1.02 0-1.41l-2.51-2.51a1 1 0 0 0-1.41 0l-1.96 1.96 3.75 3.75 2.13-2.13Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-          </button>
-          <input
-            ref={avatarInputRef}
-            className="profile-file-input"
-            type="file"
-            accept="image/*"
-            onChange={handleAvatarChange}
-            aria-label="Upload profile photo"
-            disabled={isLocked || !isEditing}
-          />
-          <div className="profile-summary" data-profile-summary>
-            <h1 className="profile-summary-name" data-profile-display="name">
-              {profile.name}
-            </h1>
-            <p className="profile-summary-type">{profileContext.label}</p>
-            <p className="profile-summary-tags" data-profile-display="tags">
-              {profile.tags}
-            </p>
-            <p className="profile-summary-bio" data-profile-display="bio">
-              {profile.bio}
-            </p>
-            <p className="profile-summary-context">{profileContext.description}</p>
-          </div>
-          <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
-            <label className="profile-inline-field">
-              <span>Display name</span>
-              <input
-                type="text"
-                name="name"
-                data-profile-input="name"
-                placeholder="Add your display name"
-                value={formValues.name}
-                onChange={handleInputChange}
-                disabled={isLocked}
-              />
-            </label>
-            <label className="profile-inline-field">
-              <span>Genres & tags</span>
-              <input
-                type="text"
-                name="tags"
-                data-profile-input="tags"
-                placeholder="e.g. Fantasy · Cozy · Found family"
-                value={formValues.tags}
-                onChange={handleInputChange}
-                disabled={isLocked}
-              />
-            </label>
-            <label className="profile-inline-field">
-              <span>Bio</span>
-              <textarea
-                name="bio"
-                rows="3"
-                data-profile-input="bio"
-                placeholder="Tell readers about your writing focus."
-                value={formValues.bio}
-                onChange={handleInputChange}
-                disabled={isLocked}
-              ></textarea>
-            </label>
-            <label className="profile-inline-field">
-              <span>Profile background</span>
-              <input
-                ref={backgroundInputRef}
-                type="file"
-                name="background"
-                accept="image/*"
-                onChange={handleBackgroundChange}
-                disabled={isLocked}
-              />
-              <span className="profile-inline-hint">
-                This background is stored locally in your browser.
-              </span>
-            </label>
-            <div className="profile-form-actions">
-              <button className="btn primary" type="submit" disabled={isLocked}>
-                Save changes
-              </button>
-              <button
-                className="btn ghost"
-                type="button"
-                data-profile-cancel
-                onClick={handleCancel}
-                disabled={isLocked}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn ghost"
-                type="button"
-                data-profile-reset
-                onClick={handleReset}
-                disabled={isLocked}
-              >
-                Reset
-              </button>
-              <button
-                className="btn ghost"
-                type="button"
-                onClick={handleClearBackground}
-                disabled={isLocked}
-              >
-                Clear background
-              </button>
-            </div>
-          </form>
-          <div className="profile-counts">
-            {countsToDisplay.map((count) => (
-              <span key={count.key}>
-                <strong>{count.label}</strong>{" "}
-                <span data-profile-count={count.key}>{profile.counts[count.key]}</span>
-              </span>
-            ))}
-          </div>
-          <div className="profile-actions">
             <button
-              className="btn"
+              className={`profile-avatar ${isEditing ? "is-editable" : ""}`.trim()}
               type="button"
-              data-profile-edit
-              onClick={handleEditClick}
-              disabled={isLocked}
+              data-profile-avatar
+              aria-label="Update profile photo"
+              disabled={isLocked || !isEditing}
+              onClick={handleAvatarClick}
             >
-              Edit profile
+              <img
+                data-profile-avatar-image
+                alt="Profile photo"
+                src={activeAvatar || undefined}
+                hidden={!activeAvatar}
+              />
+              <span className="profile-avatar-overlay" aria-hidden="true">
+                <svg
+                  className="profile-avatar-icon"
+                  viewBox="0 0 24 24"
+                  role="presentation"
+                  focusable="false"
+                >
+                  <path
+                    d="M3 17.25V21h3.75l11.1-11.1-3.75-3.75L3 17.25Zm17.71-10.04c.39-.39.39-1.02 0-1.41l-2.51-2.51a1 1 0 0 0-1.41 0l-1.96 1.96 3.75 3.75 2.13-2.13Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
             </button>
-            <button className="btn glow-danger" type="button" data-profile-share disabled={isLocked}>
-              Share profile
-            </button>
-          </div>
-          <div className="profile-dev-toggle" aria-live="polite">
-            <p className="profile-dev-label">Development toggles</p>
-            <div className="profile-dev-actions">
+            <input
+              ref={avatarInputRef}
+              className="profile-file-input"
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+              aria-label="Upload profile photo"
+              disabled={isLocked || !isEditing}
+            />
+            <div className="profile-summary" data-profile-summary>
+              <h1 className="profile-summary-name" data-profile-display="name">
+                {profile.name}
+              </h1>
+              <p className="profile-summary-type">{profileContext.label}</p>
+              <p className="profile-summary-tags" data-profile-display="tags">
+                {profile.tags}
+              </p>
+              <p className="profile-summary-bio" data-profile-display="bio">
+                {profile.bio}
+              </p>
+              <p className="profile-summary-context">{profileContext.description}</p>
+            </div>
+            <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
+              <label className="profile-inline-field">
+                <span>Display name</span>
+                <input
+                  type="text"
+                  name="name"
+                  data-profile-input="name"
+                  placeholder="Add your display name"
+                  value={formValues.name}
+                  onChange={handleInputChange}
+                  disabled={isLocked}
+                />
+              </label>
+              <label className="profile-inline-field">
+                <span>Genres & tags</span>
+                <input
+                  type="text"
+                  name="tags"
+                  data-profile-input="tags"
+                  placeholder="e.g. Fantasy · Cozy · Found family"
+                  value={formValues.tags}
+                  onChange={handleInputChange}
+                  disabled={isLocked}
+                />
+              </label>
+              <label className="profile-inline-field">
+                <span>Bio</span>
+                <textarea
+                  name="bio"
+                  rows="3"
+                  data-profile-input="bio"
+                  placeholder="Tell readers about your writing focus."
+                  value={formValues.bio}
+                  onChange={handleInputChange}
+                  disabled={isLocked}
+                ></textarea>
+              </label>
+              <label className="profile-inline-field">
+                <span>Profile background</span>
+                <input
+                  ref={backgroundInputRef}
+                  type="file"
+                  name="background"
+                  accept="image/*"
+                  onChange={handleBackgroundChange}
+                  disabled={isLocked}
+                />
+                <span className="profile-inline-hint">
+                  This background is stored locally in your browser.
+                </span>
+              </label>
+              <div className="profile-form-actions">
+                <button className="btn primary" type="submit" disabled={isLocked}>
+                  Save changes
+                </button>
+                <button
+                  className="btn ghost"
+                  type="button"
+                  data-profile-cancel
+                  onClick={handleCancel}
+                  disabled={isLocked}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn ghost"
+                  type="button"
+                  data-profile-reset
+                  onClick={handleReset}
+                  disabled={isLocked}
+                >
+                  Reset
+                </button>
+                <button
+                  className="btn ghost"
+                  type="button"
+                  onClick={handleClearBackground}
+                  disabled={isLocked}
+                >
+                  Clear background
+                </button>
+              </div>
+            </form>
+            <div className="profile-counts">
+              {countsToDisplay.map((count) => (
+                <span key={count.key}>
+                  <strong>{count.label}</strong>{" "}
+                  <span data-profile-count={count.key}>{profile.counts[count.key]}</span>
+                </span>
+              ))}
+            </div>
+            <div className="profile-actions">
               <button
-                className="btn ghost"
+                className="btn"
                 type="button"
-                onClick={() => {
-                  setProfileType((current) => (current === "author" ? "reader" : "author"));
-                }}
-                disabled={!isAuthorApproved && profileType !== "author"}
+                data-profile-edit
+                onClick={handleEditClick}
+                disabled={isLocked}
               >
-                Switch to {profileType === "author" ? "reader" : "author"}
+                Edit profile
               </button>
               <button
-                className="btn ghost"
+                className="btn glow-danger"
                 type="button"
-                onClick={() => {
-                  setIsAuthorApproved((current) => !current);
-                }}
+                data-profile-share
+                disabled={isLocked}
               >
-                {isAuthorApproved ? "Revoke author approval" : "Grant author approval"}
+                Share profile
               </button>
             </div>
-            <p className="profile-dev-status">
-              Author approval: {isAuthorApproved ? "Approved" : "Required"}
+            <p className="profile-status" data-profile-status>
+              {statusMessage}
             </p>
           </div>
-          <p className="profile-status" data-profile-status>
-            {statusMessage}
-          </p>
+          <aside className="profile-dev-panel">
+            <div className="profile-dev-toggle" aria-live="polite">
+              <p className="profile-dev-label">Development toggles</p>
+              <div className="profile-dev-actions">
+                <button
+                  className="btn ghost"
+                  type="button"
+                  onClick={() => {
+                    setProfileType((current) => (current === "author" ? "reader" : "author"));
+                  }}
+                  disabled={!isAuthorApproved && profileType !== "author"}
+                >
+                  Switch to {profileType === "author" ? "reader" : "author"}
+                </button>
+                <button
+                  className="btn ghost"
+                  type="button"
+                  onClick={() => {
+                    setIsAuthorApproved((current) => !current);
+                  }}
+                >
+                  {isAuthorApproved ? "Revoke author approval" : "Grant author approval"}
+                </button>
+              </div>
+              <p className="profile-dev-status">
+                Author approval: {isAuthorApproved ? "Approved" : "Required"}
+              </p>
+            </div>
+          </aside>
         </div>
         {!isAuthenticated ? (
           <div className="profile-auth-overlay" data-auth-overlay>
@@ -708,21 +735,32 @@ export default function Profile() {
         </div>
         <div className="profile-category-grid">
           {profileContext.categories.map((category) => (
-            <article className="profile-category-card" key={category.title}>
+            <button
+              className={`profile-category-card ${
+                selectedCategory?.id === category.id ? "is-active" : ""
+              }`.trim()}
+              type="button"
+              key={category.id}
+              aria-pressed={selectedCategory?.id === category.id}
+              onClick={() => setActiveCategory(category)}
+            >
               <h3>{category.title}</h3>
               <p>{category.description}</p>
-            </article>
+            </button>
           ))}
         </div>
       </section>
 
       <section className="profile-feed">
         <div className="section-header">
-          <h2>Feed</h2>
+          <h2>{selectedCategory?.feedTitle ?? "Feed"}</h2>
+          <p className="feed-description">
+            {selectedCategory?.feedDescription ?? "Select a category to view its updates."}
+          </p>
         </div>
         <article className="feed-card">
           <div className="feed-body">
-            <p></p>
+            <p>{selectedCategory?.feedBody ?? "Choose a category to see updates here."}</p>
           </div>
           <div className="feed-media"></div>
         </article>
