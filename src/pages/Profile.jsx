@@ -49,7 +49,6 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authMode, setAuthMode] = useState("signin");
   const [authStatus, setAuthStatus] = useState("");
 
   useEffect(() => {
@@ -119,11 +118,6 @@ export default function Profile() {
     setStatus("Profile reset.");
   };
 
-  const handleAuthToggle = (nextMode) => {
-    setAuthMode(nextMode);
-    setAuthStatus("");
-  };
-
   const handleAuthSubmit = (event) => {
     event.preventDefault();
     if (typeof window !== "undefined") {
@@ -142,6 +136,8 @@ export default function Profile() {
     setAuthStatus("Signed out. Sign in to continue.");
   };
 
+  const isLocked = !isAuthenticated;
+
   return (
     <main className="profile-page" id="profile">
       <section className="profile-hero">
@@ -156,6 +152,7 @@ export default function Profile() {
             type="button"
             data-profile-avatar
             aria-label="Update profile photo"
+            disabled={isLocked}
           >
             <img
               data-profile-avatar-image
@@ -185,6 +182,7 @@ export default function Profile() {
                 placeholder="Add your display name"
                 value={formValues.name}
                 onChange={handleInputChange}
+                disabled={isLocked}
               />
             </label>
             <label className="profile-inline-field">
@@ -196,6 +194,7 @@ export default function Profile() {
                 placeholder="e.g. Fantasy · Cozy · Found family"
                 value={formValues.tags}
                 onChange={handleInputChange}
+                disabled={isLocked}
               />
             </label>
             <label className="profile-inline-field">
@@ -207,10 +206,11 @@ export default function Profile() {
                 placeholder="Tell readers about your writing focus."
                 value={formValues.bio}
                 onChange={handleInputChange}
+                disabled={isLocked}
               ></textarea>
             </label>
             <div className="profile-form-actions">
-              <button className="btn primary" type="submit">
+              <button className="btn primary" type="submit" disabled={isLocked}>
                 Save changes
               </button>
               <button
@@ -218,6 +218,7 @@ export default function Profile() {
                 type="button"
                 data-profile-cancel
                 onClick={handleCancel}
+                disabled={isLocked}
               >
                 Cancel
               </button>
@@ -226,6 +227,7 @@ export default function Profile() {
                 type="button"
                 data-profile-reset
                 onClick={handleReset}
+                disabled={isLocked}
               >
                 Reset
               </button>
@@ -247,11 +249,11 @@ export default function Profile() {
               type="button"
               data-profile-edit
               onClick={handleEditClick}
-              disabled={!isAuthenticated}
+              disabled={isLocked}
             >
               Edit profile
             </button>
-            <button className="btn glow-danger" type="button" data-profile-share>
+            <button className="btn glow-danger" type="button" data-profile-share disabled={isLocked}>
               Share profile
             </button>
             {isAuthenticated ? (
@@ -268,93 +270,35 @@ export default function Profile() {
           <div className="profile-auth-overlay" data-auth-overlay>
             <div className="profile-auth-window">
               <p className="auth-eyebrow">Welcome to PensUp</p>
-              <h2>{authMode === "signin" ? "Sign in" : "Create account"}</h2>
-              <div className="auth-grid">
-                <form
-                  className="auth-card"
-                  data-auth-form="signin"
-                  data-auth-panel="signin"
-                  hidden={authMode !== "signin"}
-                  onSubmit={handleAuthSubmit}
-                >
-                  <h3>Sign in</h3>
-                  <label>
-                    Username
-                    <input
-                      type="text"
-                      name="signinUsername"
-                      autoComplete="username"
-                      required
-                      data-auth-input="signin-username"
-                    />
-                  </label>
-                  <label>
-                    Password
-                    <input
-                      type="password"
-                      name="signinPassword"
-                      autoComplete="current-password"
-                      required
-                      data-auth-input="signin-password"
-                    />
-                  </label>
-                  <div className="auth-card-actions">
-                    <button className="btn" type="submit">
-                      Sign in
-                    </button>
-                    <button
-                      className="btn ghost glow-danger"
-                      type="button"
-                      data-auth-toggle="signup"
-                      onClick={() => handleAuthToggle("signup")}
-                    >
-                      Create account
-                    </button>
-                  </div>
-                </form>
-                <form
-                  className="auth-card"
-                  data-auth-form="signup"
-                  data-auth-panel="signup"
-                  hidden={authMode !== "signup"}
-                  onSubmit={handleAuthSubmit}
-                >
-                  <h3>Create account</h3>
-                  <label>
-                    Username
-                    <input
-                      type="text"
-                      name="signupUsername"
-                      autoComplete="username"
-                      required
-                      data-auth-input="signup-username"
-                    />
-                  </label>
-                  <label>
-                    Password
-                    <input
-                      type="password"
-                      name="signupPassword"
-                      autoComplete="new-password"
-                      required
-                      data-auth-input="signup-password"
-                    />
-                  </label>
-                  <div className="auth-card-actions">
-                    <button className="btn glow-danger" type="submit">
-                      Create account
-                    </button>
-                    <button
-                      className="btn ghost"
-                      type="button"
-                      data-auth-toggle="signin"
-                      onClick={() => handleAuthToggle("signin")}
-                    >
-                      Back to sign in
-                    </button>
-                  </div>
-                </form>
-              </div>
+              <h2>Sign in</h2>
+              <form className="auth-card" data-auth-form="signin" onSubmit={handleAuthSubmit}>
+                <h3>Sign in</h3>
+                <label>
+                  Username
+                  <input
+                    type="text"
+                    name="signinUsername"
+                    autoComplete="username"
+                    required
+                    data-auth-input="signin-username"
+                  />
+                </label>
+                <label>
+                  Password
+                  <input
+                    type="password"
+                    name="signinPassword"
+                    autoComplete="current-password"
+                    required
+                    data-auth-input="signin-password"
+                  />
+                </label>
+                <div className="auth-card-actions">
+                  <button className="btn" type="submit">
+                    Sign in
+                  </button>
+                </div>
+              </form>
               <p className="auth-status" data-auth-status>
                 {authStatus || "Sign in to edit your profile details."}
               </p>
