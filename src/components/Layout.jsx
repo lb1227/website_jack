@@ -63,6 +63,8 @@ export default function Layout() {
               Publish
             </NavLink>
           </nav>
+        </div>
+        <div className="header-right">
           {isHome ? (
             <div className="search" data-search>
               <span className="icon"></span>
@@ -74,8 +76,6 @@ export default function Layout() {
               />
             </div>
           ) : null}
-        </div>
-        <div className="header-right">
           <button className="btn glow-danger logout-button" type="button" onClick={handleAuthClick}>
             {isAuthenticated ? "Sign out" : "Sign in"}
           </button>
