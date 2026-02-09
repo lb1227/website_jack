@@ -56,6 +56,7 @@ export default function Layout() {
         <div className="header-center">
           <nav className="main-nav">
             <NavLink to="/">Explore</NavLink>
+            <NavLink to="/feed">Feed</NavLink>
             <a href="#leaderboard">Leaderboard</a>
             <NavLink to="/profile">My Profile</NavLink>
             <NavLink className="nav-cta" to="/publish">
