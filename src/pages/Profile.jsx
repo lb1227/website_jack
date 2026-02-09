@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 const STORAGE_KEY = "pensup.profile";
+const AUTH_KEY = "pensup.authenticated";
 const EMPTY_PROFILE = {
   name: "Username",
   tags: "empty · empty · empty",
@@ -47,11 +48,17 @@ export default function Profile() {
   const [formValues, setFormValues] = useState(EMPTY_PROFILE);
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authMode, setAuthMode] = useState("signin");
+  const [authStatus, setAuthStatus] = useState("");
 
   useEffect(() => {
     const stored = loadProfile();
     setProfile(stored);
     setFormValues(stored);
+    if (typeof window !== "undefined") {
+      setIsAuthenticated(window.localStorage.getItem(AUTH_KEY) === "true");
+    }
   }, []);
 
   const statusMessage = useMemo(() => {
@@ -65,6 +72,10 @@ export default function Profile() {
   }, [isEditing, status]);
 
   const handleEditClick = () => {
+    if (!isAuthenticated) {
+      setAuthStatus("Sign in to edit your profile.");
+      return;
+    }
     setIsEditing(true);
     setFormValues(profile);
     setStatus("");
@@ -80,6 +91,10 @@ export default function Profile() {
 
   const handleSave = (event) => {
     event.preventDefault();
+    if (!isAuthenticated) {
+      setAuthStatus("Sign in to save changes.");
+      return;
+    }
     setProfile(formValues);
     persistProfile(formValues);
     setIsEditing(false);
@@ -93,6 +108,10 @@ export default function Profile() {
   };
 
   const handleReset = () => {
+    if (!isAuthenticated) {
+      setAuthStatus("Sign in to reset your profile.");
+      return;
+    }
     setFormValues(EMPTY_PROFILE);
     setProfile(EMPTY_PROFILE);
     persistProfile(EMPTY_PROFILE);
@@ -100,11 +119,36 @@ export default function Profile() {
     setStatus("Profile reset.");
   };
 
+  const handleAuthToggle = (nextMode) => {
+    setAuthMode(nextMode);
+    setAuthStatus("");
+  };
+
+  const handleAuthSubmit = (event) => {
+    event.preventDefault();
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(AUTH_KEY, "true");
+    }
+    setIsAuthenticated(true);
+    setAuthStatus("Welcome back! You can update your profile now.");
+  };
+
+  const handleSignOut = () => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(AUTH_KEY, "false");
+    }
+    setIsAuthenticated(false);
+    setIsEditing(false);
+    setAuthStatus("Signed out. Sign in to continue.");
+  };
+
   return (
     <main className="profile-page" id="profile">
       <section className="profile-hero">
         <div
-          className={`profile-hero-card ${isEditing ? "is-editing" : ""}`.trim()}
+          className={`profile-hero-card ${isEditing ? "is-editing" : ""} ${
+            isAuthenticated ? "" : "is-locked"
+          }`.trim()}
           data-profile-hero
         >
           <button
@@ -198,88 +242,125 @@ export default function Profile() {
             </span>
           </div>
           <div className="profile-actions">
-            <button className="btn" type="button" data-profile-edit onClick={handleEditClick}>
+            <button
+              className="btn"
+              type="button"
+              data-profile-edit
+              onClick={handleEditClick}
+              disabled={!isAuthenticated}
+            >
               Edit profile
             </button>
             <button className="btn glow-danger" type="button" data-profile-share>
               Share profile
             </button>
+            {isAuthenticated ? (
+              <button className="btn ghost" type="button" onClick={handleSignOut}>
+                Sign out
+              </button>
+            ) : null}
           </div>
           <p className="profile-status" data-profile-status>
             {statusMessage}
           </p>
         </div>
-        <div className="profile-auth-overlay" data-auth-overlay hidden>
-          <div className="profile-auth-window">
-            <p className="auth-eyebrow">Welcome to PensUp</p>
-            <h2>Sign in</h2>
-            <div className="auth-grid">
-              <form className="auth-card" data-auth-form="signin" data-auth-panel="signin">
-                <h3>Sign in</h3>
-                <label>
-                  Username
-                  <input
-                    type="text"
-                    name="signinUsername"
-                    autoComplete="username"
-                    required
-                    data-auth-input="signin-username"
-                  />
-                </label>
-                <label>
-                  Password
-                  <input
-                    type="password"
-                    name="signinPassword"
-                    autoComplete="current-password"
-                    required
-                    data-auth-input="signin-password"
-                  />
-                </label>
-                <div className="auth-card-actions">
-                  <button className="btn" type="submit">
-                    Sign in
-                  </button>
-                  <button className="btn ghost glow-danger" type="button" data-auth-toggle="signup">
-                    Create account
-                  </button>
-                </div>
-              </form>
-              <form className="auth-card" data-auth-form="signup" data-auth-panel="signup" hidden>
-                <h3>Create account</h3>
-                <label>
-                  Username
-                  <input
-                    type="text"
-                    name="signupUsername"
-                    autoComplete="username"
-                    required
-                    data-auth-input="signup-username"
-                  />
-                </label>
-                <label>
-                  Password
-                  <input
-                    type="password"
-                    name="signupPassword"
-                    autoComplete="new-password"
-                    required
-                    data-auth-input="signup-password"
-                  />
-                </label>
-                <div className="auth-card-actions">
-                  <button className="btn glow-danger" type="submit">
-                    Create account
-                  </button>
-                  <button className="btn ghost" type="button" data-auth-toggle="signin">
-                    Back to sign in
-                  </button>
-                </div>
-              </form>
+        {!isAuthenticated ? (
+          <div className="profile-auth-overlay" data-auth-overlay>
+            <div className="profile-auth-window">
+              <p className="auth-eyebrow">Welcome to PensUp</p>
+              <h2>{authMode === "signin" ? "Sign in" : "Create account"}</h2>
+              <div className="auth-grid">
+                <form
+                  className="auth-card"
+                  data-auth-form="signin"
+                  data-auth-panel="signin"
+                  hidden={authMode !== "signin"}
+                  onSubmit={handleAuthSubmit}
+                >
+                  <h3>Sign in</h3>
+                  <label>
+                    Username
+                    <input
+                      type="text"
+                      name="signinUsername"
+                      autoComplete="username"
+                      required
+                      data-auth-input="signin-username"
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      type="password"
+                      name="signinPassword"
+                      autoComplete="current-password"
+                      required
+                      data-auth-input="signin-password"
+                    />
+                  </label>
+                  <div className="auth-card-actions">
+                    <button className="btn" type="submit">
+                      Sign in
+                    </button>
+                    <button
+                      className="btn ghost glow-danger"
+                      type="button"
+                      data-auth-toggle="signup"
+                      onClick={() => handleAuthToggle("signup")}
+                    >
+                      Create account
+                    </button>
+                  </div>
+                </form>
+                <form
+                  className="auth-card"
+                  data-auth-form="signup"
+                  data-auth-panel="signup"
+                  hidden={authMode !== "signup"}
+                  onSubmit={handleAuthSubmit}
+                >
+                  <h3>Create account</h3>
+                  <label>
+                    Username
+                    <input
+                      type="text"
+                      name="signupUsername"
+                      autoComplete="username"
+                      required
+                      data-auth-input="signup-username"
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      type="password"
+                      name="signupPassword"
+                      autoComplete="new-password"
+                      required
+                      data-auth-input="signup-password"
+                    />
+                  </label>
+                  <div className="auth-card-actions">
+                    <button className="btn glow-danger" type="submit">
+                      Create account
+                    </button>
+                    <button
+                      className="btn ghost"
+                      type="button"
+                      data-auth-toggle="signin"
+                      onClick={() => handleAuthToggle("signin")}
+                    >
+                      Back to sign in
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <p className="auth-status" data-auth-status>
+                {authStatus || "Sign in to edit your profile details."}
+              </p>
             </div>
-            <p className="auth-status" data-auth-status></p>
           </div>
-        </div>
+        ) : null}
       </section>
 
       <section className="profile-series" data-profile-series hidden>
