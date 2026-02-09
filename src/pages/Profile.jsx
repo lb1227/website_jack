@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 const STORAGE_KEY = "pensup.profile";
 const AUTH_KEY = "pensup.authenticated";
+const ACCOUNTS_KEY = "pensup.accounts";
 const EMPTY_PROFILE = {
   name: "Username",
   tags: "empty · empty · empty",
@@ -43,6 +44,29 @@ const persistProfile = (profile) => {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
 };
 
+const loadAccounts = () => {
+  if (typeof window === "undefined") {
+    return [];
+  }
+  try {
+    const stored = window.localStorage.getItem(ACCOUNTS_KEY);
+    if (!stored) {
+      return [];
+    }
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+const persistAccounts = (accounts) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  window.localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
+};
+
 export default function Profile() {
   const [profile, setProfile] = useState(EMPTY_PROFILE);
   const [formValues, setFormValues] = useState(EMPTY_PROFILE);
@@ -50,6 +74,7 @@ export default function Profile() {
   const [status, setStatus] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authStatus, setAuthStatus] = useState("");
+  const [authMode, setAuthMode] = useState("signin");
 
   useEffect(() => {
     const stored = loadProfile();
@@ -120,11 +145,55 @@ export default function Profile() {
 
   const handleAuthSubmit = (event) => {
     event.preventDefault();
+    const formData = new FormData(event.target);
+    const username = formData.get("signinUsername")?.toString().trim();
+    const password = formData.get("signinPassword")?.toString();
+    if (!username || !password) {
+      setAuthStatus("Enter your username and password to sign in.");
+      return;
+    }
+    const accounts = loadAccounts();
+    const match = accounts.find(
+      (account) => account.username === username && account.password === password,
+    );
+    if (!match) {
+      setAuthStatus("Account not found. Create an account to continue.");
+      return;
+    }
     if (typeof window !== "undefined") {
       window.localStorage.setItem(AUTH_KEY, "true");
     }
     setIsAuthenticated(true);
     setAuthStatus("Welcome back! You can update your profile now.");
+  };
+
+  const handleCreateAccount = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const username = formData.get("createUsername")?.toString().trim();
+    const password = formData.get("createPassword")?.toString();
+    if (!username || !password) {
+      setAuthStatus("Choose a username and password to create an account.");
+      return;
+    }
+    const accounts = loadAccounts();
+    const updatedAccounts = [...accounts.filter((account) => account.username !== username), {
+      username,
+      password,
+    }];
+    persistAccounts(updatedAccounts);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(AUTH_KEY, "true");
+    }
+    const nextProfile = {
+      ...profile,
+      name: username,
+    };
+    setProfile(nextProfile);
+    setFormValues(nextProfile);
+    persistProfile(nextProfile);
+    setIsAuthenticated(true);
+    setAuthStatus("Account created! You can update your profile now.");
   };
 
   const handleSignOut = () => {
@@ -133,6 +202,7 @@ export default function Profile() {
     }
     setIsAuthenticated(false);
     setIsEditing(false);
+    setAuthMode("signin");
     setAuthStatus("Signed out. Sign in to continue.");
   };
 
@@ -270,37 +340,91 @@ export default function Profile() {
           <div className="profile-auth-overlay" data-auth-overlay>
             <div className="profile-auth-window">
               <p className="auth-eyebrow">Welcome to PensUp</p>
-              <h2>Sign in</h2>
-              <form className="auth-card" data-auth-form="signin" onSubmit={handleAuthSubmit}>
-                <h3>Sign in</h3>
-                <label>
-                  Username
-                  <input
-                    type="text"
-                    name="signinUsername"
-                    autoComplete="username"
-                    required
-                    data-auth-input="signin-username"
-                  />
-                </label>
-                <label>
-                  Password
-                  <input
-                    type="password"
-                    name="signinPassword"
-                    autoComplete="current-password"
-                    required
-                    data-auth-input="signin-password"
-                  />
-                </label>
-                <div className="auth-card-actions">
-                  <button className="btn" type="submit">
-                    Sign in
-                  </button>
-                </div>
-              </form>
+              <h2>{authMode === "signin" ? "Sign in" : "Create account"}</h2>
+              {authMode === "signin" ? (
+                <form className="auth-card" data-auth-form="signin" onSubmit={handleAuthSubmit}>
+                  <h3>Sign in</h3>
+                  <label>
+                    Username
+                    <input
+                      type="text"
+                      name="signinUsername"
+                      autoComplete="username"
+                      required
+                      data-auth-input="signin-username"
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      type="password"
+                      name="signinPassword"
+                      autoComplete="current-password"
+                      required
+                      data-auth-input="signin-password"
+                    />
+                  </label>
+                  <div className="auth-card-actions">
+                    <button className="btn" type="submit">
+                      Sign in
+                    </button>
+                    <button
+                      className="btn ghost"
+                      type="button"
+                      onClick={() => {
+                        setAuthMode("create");
+                        setAuthStatus("");
+                      }}
+                    >
+                      Create account
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <form className="auth-card" data-auth-form="create" onSubmit={handleCreateAccount}>
+                  <h3>Create account</h3>
+                  <label>
+                    Username
+                    <input
+                      type="text"
+                      name="createUsername"
+                      autoComplete="username"
+                      required
+                      data-auth-input="create-username"
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      type="password"
+                      name="createPassword"
+                      autoComplete="new-password"
+                      required
+                      data-auth-input="create-password"
+                    />
+                  </label>
+                  <div className="auth-card-actions">
+                    <button className="btn" type="submit">
+                      Create account
+                    </button>
+                    <button
+                      className="btn ghost"
+                      type="button"
+                      onClick={() => {
+                        setAuthMode("signin");
+                        setAuthStatus("");
+                      }}
+                    >
+                      Sign in
+                    </button>
+                  </div>
+                </form>
+              )}
               <p className="auth-status" data-auth-status>
-                {authStatus || "Sign in to edit your profile details."}
+                {authStatus ||
+                  (authMode === "signin"
+                    ? "Sign in to edit your profile details."
+                    : "Create an account to unlock profile editing.")}
               </p>
             </div>
           </div>
