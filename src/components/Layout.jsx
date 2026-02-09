@@ -8,7 +8,6 @@ export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
-  const isProfile = location.pathname === "/profile";
   const [searchQuery, setSearchQuery] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -59,11 +58,9 @@ export default function Layout() {
             <NavLink to="/">Explore</NavLink>
             <a href="#leaderboard">Leaderboard</a>
             <NavLink to="/profile">My Profile</NavLink>
-            {isProfile ? (
-              <Link className="nav-cta" to="/profile#publish">
-                Publish
-              </Link>
-            ) : null}
+            <NavLink className="nav-cta" to="/publish">
+              Publish
+            </NavLink>
           </nav>
           {isHome ? (
             <div className="search" data-search>
