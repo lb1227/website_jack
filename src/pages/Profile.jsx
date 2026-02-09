@@ -1,46 +1,157 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
+const STORAGE_KEY = "pensup.profile";
+const EMPTY_PROFILE = {
+  name: "Username",
+  tags: "empty · empty · empty",
+  bio: "Nothing here yet:(",
+  avatar: "",
+  counts: {
+    works: 0,
+    followers: 0,
+  },
+};
+
+const loadProfile = () => {
+  if (typeof window === "undefined") {
+    return EMPTY_PROFILE;
+  }
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (!stored) {
+      return EMPTY_PROFILE;
+    }
+    const parsed = JSON.parse(stored);
+    return {
+      ...EMPTY_PROFILE,
+      ...parsed,
+      counts: {
+        ...EMPTY_PROFILE.counts,
+        ...(parsed?.counts ?? {}),
+      },
+    };
+  } catch {
+    return EMPTY_PROFILE;
+  }
+};
+
+const persistProfile = (profile) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+};
 
 export default function Profile() {
+  const [profile, setProfile] = useState(EMPTY_PROFILE);
+  const [formValues, setFormValues] = useState(EMPTY_PROFILE);
+  const [isEditing, setIsEditing] = useState(false);
+  const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    const stored = loadProfile();
+    setProfile(stored);
+    setFormValues(stored);
+  }, []);
+
+  const statusMessage = useMemo(() => {
+    if (status) {
+      return status;
+    }
+    if (!isEditing) {
+      return "Profile saved. Changes appear immediately.";
+    }
+    return "Edit your profile details below.";
+  }, [isEditing, status]);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setFormValues(profile);
+    setStatus("");
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = (event) => {
+    event.preventDefault();
+    setProfile(formValues);
+    persistProfile(formValues);
+    setIsEditing(false);
+    setStatus("Profile updated.");
+  };
+
+  const handleCancel = () => {
+    setFormValues(profile);
+    setIsEditing(false);
+    setStatus("Edits discarded.");
+  };
+
+  const handleReset = () => {
+    setFormValues(EMPTY_PROFILE);
+    setProfile(EMPTY_PROFILE);
+    persistProfile(EMPTY_PROFILE);
+    setIsEditing(false);
+    setStatus("Profile reset.");
+  };
+
   return (
     <main className="profile-page" id="profile">
       <section className="profile-hero">
-        <div className="profile-hero-card" data-profile-hero>
+        <div
+          className={`profile-hero-card ${isEditing ? "is-editing" : ""}`.trim()}
+          data-profile-hero
+        >
           <button
-            className="profile-avatar"
+            className={`profile-avatar ${isEditing ? "is-editable" : ""}`.trim()}
             type="button"
             data-profile-avatar
             aria-label="Update profile photo"
           >
-            <img data-profile-avatar-image alt="Profile photo" hidden />
+            <img
+              data-profile-avatar-image
+              alt="Profile photo"
+              src={profile.avatar || undefined}
+              hidden={!profile.avatar}
+            />
           </button>
           <div className="profile-summary" data-profile-summary>
             <h1 className="profile-summary-name" data-profile-display="name">
-              Username
+              {profile.name}
             </h1>
             <p className="profile-summary-tags" data-profile-display="tags">
-              empty · empty · empty
+              {profile.tags}
             </p>
             <p className="profile-summary-bio" data-profile-display="bio">
-              Nothing here yet:(
+              {profile.bio}
             </p>
           </div>
-          <form className="profile-inline-form" data-profile-form>
+          <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
             <label className="profile-inline-field">
               <span>Display name</span>
               <input
                 type="text"
-                name="displayName"
+                name="name"
                 data-profile-input="name"
                 placeholder="Add your display name"
+                value={formValues.name}
+                onChange={handleInputChange}
               />
             </label>
             <label className="profile-inline-field">
               <span>Genres & tags</span>
               <input
                 type="text"
-                name="genres"
+                name="tags"
                 data-profile-input="tags"
                 placeholder="e.g. Fantasy · Cozy · Found family"
+                value={formValues.tags}
+                onChange={handleInputChange}
               />
             </label>
             <label className="profile-inline-field">
@@ -50,37 +161,53 @@ export default function Profile() {
                 rows="3"
                 data-profile-input="bio"
                 placeholder="Tell readers about your writing focus."
+                value={formValues.bio}
+                onChange={handleInputChange}
               ></textarea>
             </label>
             <div className="profile-form-actions">
               <button className="btn primary" type="submit">
                 Save changes
               </button>
-              <button className="btn ghost" type="button" data-profile-cancel>
+              <button
+                className="btn ghost"
+                type="button"
+                data-profile-cancel
+                onClick={handleCancel}
+              >
                 Cancel
               </button>
-              <button className="btn ghost" type="button" data-profile-reset>
+              <button
+                className="btn ghost"
+                type="button"
+                data-profile-reset
+                onClick={handleReset}
+              >
                 Reset
               </button>
             </div>
           </form>
           <div className="profile-counts">
             <span>
-              <strong>Works</strong> <span data-profile-count="works">0</span>
+              <strong>Works</strong>{" "}
+              <span data-profile-count="works">{profile.counts.works}</span>
             </span>
             <span>
-              <strong>Followers</strong> <span data-profile-count="followers">0</span>
+              <strong>Followers</strong>{" "}
+              <span data-profile-count="followers">{profile.counts.followers}</span>
             </span>
           </div>
           <div className="profile-actions">
-            <button className="btn" type="button" data-profile-edit>
+            <button className="btn" type="button" data-profile-edit onClick={handleEditClick}>
               Edit profile
             </button>
             <button className="btn glow-danger" type="button" data-profile-share>
               Share profile
             </button>
           </div>
-          <p className="profile-status" data-profile-status></p>
+          <p className="profile-status" data-profile-status>
+            {statusMessage}
+          </p>
         </div>
         <div className="profile-auth-overlay" data-auth-overlay hidden>
           <div className="profile-auth-window">
