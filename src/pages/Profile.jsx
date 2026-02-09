@@ -657,24 +657,37 @@ export default function Profile() {
                 </span>
               ))}
             </div>
-            <div className="profile-actions">
-              <button
-                className="btn"
-                type="button"
-                data-profile-edit
-                onClick={handleEditClick}
-                disabled={isLocked}
-              >
-                Edit profile
-              </button>
-              <button
-                className="btn glow-danger"
-                type="button"
-                data-profile-share
-                disabled={isLocked}
-              >
-                Share profile
-              </button>
+           <div className="profile-actions">
+              {isViewingCreator ? (
+                <>
+                  <button className="btn" type="button" data-profile-follow>
+                    Follow
+                  </button>
+                  <button className="btn glow-danger" type="button" data-profile-subscribe>
+                    Subscribe
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="btn"
+                    type="button"
+                    data-profile-edit
+                    onClick={handleEditClick}
+                    disabled={isLocked}
+                  >
+                    Edit profile
+                  </button>
+                  <button
+                    className="btn glow-danger"
+                    type="button"
+                    data-profile-share
+                    disabled={isLocked}
+                  >
+                    Share profile
+                  </button>
+                </>
+              )}
             </div>
             <p className="profile-status" data-profile-status>
               {isViewingCreator ? "Creator profile preview." : statusMessage}
@@ -776,23 +789,36 @@ export default function Profile() {
         ) : null}
       </section>
 
-      {worksToShow.length ? (
+      {isViewingCreator ? (
         <section className="profile-series" data-profile-series>
           <div className="section-header">
             <h2>Featured works</h2>
           </div>
-          <div className="series-grid" data-series-grid>
-            {worksToShow.map((work) => (
-              <article className="series-card" key={work.title}>
-                <img src={work.cover} alt="" />
-                <div>
-                  <p className="series-meta">{work.status}</p>
-                  <strong>{work.title}</strong>
-                  <p className="profile-summary-context">{work.detail}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+          {worksToShow.length ? (
+            <div className="series-grid" data-series-grid>
+              {worksToShow.map((work) => (
+                <a
+                  className="series-card-link"
+                  key={work.title}
+                  href={work.link}
+                  aria-label={`Read ${work.title}`}
+                >
+                  <article className="series-card">
+                    <img src={work.cover} alt="" />
+                    <div>
+                      <p className="series-meta">{work.status}</p>
+                      <strong>{work.title}</strong>
+                      <p className="profile-summary-context">{work.detail}</p>
+                    </div>
+                  </article>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p className="profile-summary-context">
+              This author hasn&apos;t shared any works yet. Check back soon for new releases.
+            </p>
+          )}
         </section>
       ) : null}
 

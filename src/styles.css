@@ -2150,6 +2150,12 @@ input {
   gap: 16px;
 }
 
+.series-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .series-card {
   display: flex;
   gap: 14px;
@@ -2157,6 +2163,12 @@ input {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 16px;
   padding: 12px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.series-card-link:hover .series-card {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
 }
 
 .series-card img {
