@@ -2956,7 +2956,7 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell-body--studio {
-  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-columns: .65fr .65fr 2fr;
   background: rgba(14, 16, 22, 0.95);
 }
 
