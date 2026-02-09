@@ -179,18 +179,23 @@ export default function Profile() {
         ],
         categories: [
           {
-            id: "works-feed",
-            title: "Works feed",
-            description: "Pinned releases, serial updates, and collections.",
-            feedTitle: "Works feed",
+            id: "works",
+            title: "Works",
+            feedTitle: "Works",
             feedDescription: "Publish new chapters or collections to keep your reader feed fresh.",
             feedBody: "No new releases yet. Publish a chapter or collection to spark activity.",
           },
           {
-            id: "public-chat",
-            title: "Public chat",
-            description: "Community chat for your profile followers.",
-            feedTitle: "Public chat",
+            id: "feed",
+            title: "Feed",
+            feedTitle: "Feed",
+            feedDescription: "Share quick updates and jump into live community threads.",
+            feedBody: "The chatroom is quiet. Start a new prompt to welcome readers.",
+          },
+          {
+            id: "public-comments",
+            title: "Public Comments",
+            feedTitle: "Public Comments",
             feedDescription: "Share quick updates and jump into live community threads.",
             feedBody: "The chatroom is quiet. Start a new prompt to welcome readers.",
           },
@@ -206,18 +211,16 @@ export default function Profile() {
       ],
       categories: [
         {
-          id: "works-feed",
-          title: "Works feed",
-          description: "Story updates and posts from creators you follow.",
-          feedTitle: "Works feed",
+          id: "feed",
+          title: "Feed",
+          feedTitle: "Feed",
           feedDescription: "Stay up to date on the creators and stories you love.",
           feedBody: "Follow creators to see their updates show up here.",
         },
         {
-          id: "public-chat",
-          title: "Public chat",
-          description: "Shared chat space for reader discussions.",
-          feedTitle: "Public chat",
+          id: "public-comments",
+          title: "Public Comments",
+          feedTitle: "Public Comments",
           feedDescription: "Reader lounge for recommendations, reactions, and meetups.",
           feedBody: "Jump in to start a new conversation or respond to ongoing threads.",
         },
@@ -745,7 +748,7 @@ export default function Profile() {
               onClick={() => setActiveCategory(category)}
             >
               <h3>{category.title}</h3>
-              <p>{category.description}</p>
+              {category.description ? <p>{category.description}</p> : null}
             </button>
           ))}
         </div>
