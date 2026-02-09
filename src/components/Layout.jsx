@@ -5,6 +5,7 @@ import ChatOverlay from "./ChatOverlay.jsx";
 export default function Layout() {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const isProfile = location.pathname === "/profile";
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -21,6 +22,11 @@ export default function Layout() {
             <NavLink to="/">Explore</NavLink>
             <a href="#leaderboard">Leaderboard</a>
             <NavLink to="/profile">My Profile</NavLink>
+            {isProfile ? (
+              <Link className="nav-cta" to="/profile#publish">
+                Publish
+              </Link>
+            ) : null}
           </nav>
           {isHome ? (
             <div className="search" data-search>
