@@ -57,7 +57,7 @@ export default function Layout() {
           <nav className="main-nav">
             <NavLink to="/">Explore</NavLink>
             <NavLink to="/feed">Feed</NavLink>
-            <a href="#leaderboard">Leaderboard</a>
+            <NavLink to="/leaderboard">Leaderboard</NavLink>
             <NavLink to="/profile">My Profile</NavLink>
             <NavLink className="nav-cta" to="/publish">
               Publish

@@ -3476,6 +3476,223 @@ body.chat-overlay-open {
   cursor: pointer;
 }
 
+.leaderboard-page {
+  padding: 48px 64px 80px;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.leaderboard-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 32px;
+  align-items: center;
+}
+
+.leaderboard-tag {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.leaderboard-subtitle {
+  color: var(--muted);
+  margin-top: 12px;
+  max-width: 560px;
+}
+
+.leaderboard-actions {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.leaderboard-hero-card {
+  background: linear-gradient(140deg, rgba(229, 9, 20, 0.18), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 28px;
+  border-radius: 20px;
+  display: grid;
+  gap: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.leaderboard-hero-card h2 {
+  font-size: 1.4rem;
+}
+
+.leaderboard-hero-card p {
+  color: var(--muted);
+}
+
+.leaderboard-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.leaderboard-metric:first-of-type {
+  border-top: none;
+}
+
+.leaderboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.leaderboard-stat-card {
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: 6px;
+}
+
+.leaderboard-stat-card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.leaderboard-stat-card h3 {
+  font-size: 1.8rem;
+}
+
+.leaderboard-stat-card span {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+.leaderboard-table {
+  display: grid;
+  gap: 24px;
+}
+
+.leaderboard-table-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leaderboard-table-header p {
+  color: var(--muted);
+}
+
+.leaderboard-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.leaderboard-filters button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.leaderboard-filters button.active {
+  background: var(--accent);
+  border-color: transparent;
+  box-shadow: 0 12px 24px rgba(229, 9, 20, 0.3);
+}
+
+.leaderboard-rows {
+  display: grid;
+  gap: 16px;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  padding: 18px 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.leaderboard-rank {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(229, 9, 20, 0.2);
+  text-align: center;
+}
+
+.leaderboard-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.leaderboard-info p {
+  color: var(--muted);
+}
+
+.leaderboard-highlight {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.leaderboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  text-align: left;
+}
+
+.leaderboard-metrics span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.leaderboard-metrics strong {
+  font-size: 1rem;
+  display: block;
+  margin-top: 2px;
+}
+
+@media (max-width: 980px) {
+  .leaderboard-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .leaderboard-row {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .leaderboard-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .leaderboard-page {
+    padding: 32px 24px 64px;
+  }
+
+  .leaderboard-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 960px) {
   .feed-layout {
     grid-template-columns: 1fr;
