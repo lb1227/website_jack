@@ -164,6 +164,10 @@ input {
   position: relative;
   padding: 6px 4px;
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .main-nav a:hover,
