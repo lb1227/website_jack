@@ -17,6 +17,7 @@ export default function App() {
         <Route path="/reading" element={<Reading />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/creator/:creatorId" element={<Profile />} />
         <Route path="/publish" element={<Publish />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
