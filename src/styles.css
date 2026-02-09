@@ -1742,7 +1742,8 @@ input {
 }
 
 .profile-hero-card.has-background {
-  width: min(60vw, 720px);
+  width: 100%;
+  max-width: 100%;
   padding: 24px;
   border-radius: 24px;
   overflow: hidden;

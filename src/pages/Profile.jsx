@@ -473,102 +473,106 @@ export default function Profile() {
               aria-label="Upload profile photo"
               disabled={isLocked || !isEditing}
             />
-            <div className="profile-summary" data-profile-summary>
-              <h1 className="profile-summary-name" data-profile-display="name">
-                {profile.name}
-              </h1>
-              <p className="profile-summary-type">{profileContext.label}</p>
-              <p className="profile-summary-tags" data-profile-display="tags">
-                {profile.tags}
-              </p>
-              <p className="profile-summary-bio" data-profile-display="bio">
-                {profile.bio}
-              </p>
-              <p className="profile-summary-context">{profileContext.description}</p>
-            </div>
-            <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
-              <label className="profile-inline-field">
-                <span>Display name</span>
-                <input
-                  type="text"
-                  name="name"
-                  data-profile-input="name"
-                  placeholder="Add your display name"
-                  value={formValues.name}
-                  onChange={handleInputChange}
-                  disabled={isLocked}
-                />
-              </label>
-              <label className="profile-inline-field">
-                <span>Genres & tags</span>
-                <input
-                  type="text"
-                  name="tags"
-                  data-profile-input="tags"
-                  placeholder="e.g. Fantasy · Cozy · Found family"
-                  value={formValues.tags}
-                  onChange={handleInputChange}
-                  disabled={isLocked}
-                />
-              </label>
-              <label className="profile-inline-field">
-                <span>Bio</span>
-                <textarea
-                  name="bio"
-                  rows="3"
-                  data-profile-input="bio"
-                  placeholder="Tell readers about your writing focus."
-                  value={formValues.bio}
-                  onChange={handleInputChange}
-                  disabled={isLocked}
-                ></textarea>
-              </label>
-              <label className="profile-inline-field">
-                <span>Profile background</span>
-                <input
-                  ref={backgroundInputRef}
-                  type="file"
-                  name="background"
-                  accept="image/*"
-                  onChange={handleBackgroundChange}
-                  disabled={isLocked}
-                />
-                <span className="profile-inline-hint">
-                  This background is stored locally in your browser.
-                </span>
-              </label>
-              <div className="profile-form-actions">
-                <button className="btn primary" type="submit" disabled={isLocked}>
-                  Save changes
-                </button>
-                <button
-                  className="btn ghost"
-                  type="button"
-                  data-profile-cancel
-                  onClick={handleCancel}
-                  disabled={isLocked}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="btn ghost"
-                  type="button"
-                  data-profile-reset
-                  onClick={handleReset}
-                  disabled={isLocked}
-                >
-                  Reset
-                </button>
-                <button
-                  className="btn ghost"
-                  type="button"
-                  onClick={handleClearBackground}
-                  disabled={isLocked}
-                >
-                  Clear background
-                </button>
+            {!isEditing ? (
+              <div className="profile-summary" data-profile-summary>
+                <h1 className="profile-summary-name" data-profile-display="name">
+                  {profile.name}
+                </h1>
+                <p className="profile-summary-type">{profileContext.label}</p>
+                <p className="profile-summary-tags" data-profile-display="tags">
+                  {profile.tags}
+                </p>
+                <p className="profile-summary-bio" data-profile-display="bio">
+                  {profile.bio}
+                </p>
+                <p className="profile-summary-context">{profileContext.description}</p>
               </div>
-            </form>
+            ) : null}
+            {isEditing ? (
+              <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
+                <label className="profile-inline-field">
+                  <span>Display name</span>
+                  <input
+                    type="text"
+                    name="name"
+                    data-profile-input="name"
+                    placeholder="Add your display name"
+                    value={formValues.name}
+                    onChange={handleInputChange}
+                    disabled={isLocked}
+                  />
+                </label>
+                <label className="profile-inline-field">
+                  <span>Genres & tags</span>
+                  <input
+                    type="text"
+                    name="tags"
+                    data-profile-input="tags"
+                    placeholder="e.g. Fantasy · Cozy · Found family"
+                    value={formValues.tags}
+                    onChange={handleInputChange}
+                    disabled={isLocked}
+                  />
+                </label>
+                <label className="profile-inline-field">
+                  <span>Bio</span>
+                  <textarea
+                    name="bio"
+                    rows="3"
+                    data-profile-input="bio"
+                    placeholder="Tell readers about your writing focus."
+                    value={formValues.bio}
+                    onChange={handleInputChange}
+                    disabled={isLocked}
+                  ></textarea>
+                </label>
+                <label className="profile-inline-field">
+                  <span>Profile background</span>
+                  <input
+                    ref={backgroundInputRef}
+                    type="file"
+                    name="background"
+                    accept="image/*"
+                    onChange={handleBackgroundChange}
+                    disabled={isLocked}
+                  />
+                  <span className="profile-inline-hint">
+                    This background is stored locally in your browser.
+                  </span>
+                </label>
+                <div className="profile-form-actions">
+                  <button className="btn primary" type="submit" disabled={isLocked}>
+                    Save changes
+                  </button>
+                  <button
+                    className="btn ghost"
+                    type="button"
+                    data-profile-cancel
+                    onClick={handleCancel}
+                    disabled={isLocked}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="btn ghost"
+                    type="button"
+                    data-profile-reset
+                    onClick={handleReset}
+                    disabled={isLocked}
+                  >
+                    Reset
+                  </button>
+                  <button
+                    className="btn ghost"
+                    type="button"
+                    onClick={handleClearBackground}
+                    disabled={isLocked}
+                  >
+                    Clear background
+                  </button>
+                </div>
+              </form>
+            ) : null}
             <div className="profile-counts">
               {countsToDisplay.map((count) => (
                 <span key={count.key}>
