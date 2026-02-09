@@ -2,169 +2,176 @@ import React from "react";
 
 export default function Profile() {
   return (
-    <main className="page-shell profile-page">
-      <section className="profile-hero" id="profile">
-        <div className="profile-hero-card">
-          <button className="profile-avatar is-editable" type="button" aria-label="Update avatar">
-            <img
-              src="https://picsum.photos/seed/creator-avery/240/240"
-              alt="Avery Harper profile avatar"
-            />
+    <main className="profile-page" id="profile">
+      <section className="profile-hero">
+        <div className="profile-hero-card" data-profile-hero>
+          <button
+            className="profile-avatar"
+            type="button"
+            data-profile-avatar
+            aria-label="Update profile photo"
+          >
+            <img data-profile-avatar-image alt="Profile photo" hidden />
           </button>
-          <div className="profile-summary">
-            <p className="profile-summary-tags">Epic Fantasy • Cozy Mystery • Weekly Drops</p>
-            <h1 className="profile-summary-name">Avery Harper</h1>
-            <p className="profile-summary-bio">
-              Building cozy worlds with high stakes. Currently drafting book three of Rhapsody of
-              Ember and hosting live annotation sessions every Thursday.
+          <div className="profile-summary" data-profile-summary>
+            <h1 className="profile-summary-name" data-profile-display="name">
+              Username
+            </h1>
+            <p className="profile-summary-tags" data-profile-display="tags">
+              empty · empty · empty
+            </p>
+            <p className="profile-summary-bio" data-profile-display="bio">
+              Nothing here yet:(
             </p>
           </div>
+          <form className="profile-inline-form" data-profile-form>
+            <label className="profile-inline-field">
+              <span>Display name</span>
+              <input
+                type="text"
+                name="displayName"
+                data-profile-input="name"
+                placeholder="Add your display name"
+              />
+            </label>
+            <label className="profile-inline-field">
+              <span>Genres & tags</span>
+              <input
+                type="text"
+                name="genres"
+                data-profile-input="tags"
+                placeholder="e.g. Fantasy · Cozy · Found family"
+              />
+            </label>
+            <label className="profile-inline-field">
+              <span>Bio</span>
+              <textarea
+                name="bio"
+                rows="3"
+                data-profile-input="bio"
+                placeholder="Tell readers about your writing focus."
+              ></textarea>
+            </label>
+            <div className="profile-form-actions">
+              <button className="btn primary" type="submit">
+                Save changes
+              </button>
+              <button className="btn ghost" type="button" data-profile-cancel>
+                Cancel
+              </button>
+              <button className="btn ghost" type="button" data-profile-reset>
+                Reset
+              </button>
+            </div>
+          </form>
           <div className="profile-counts">
-            <div>
-              <strong>12.4k</strong> Followers
-            </div>
-            <div>
-              <strong>3</strong> Active Series
-            </div>
-            <div>
-              <strong>96%</strong> Positive Ratings
-            </div>
+            <span>
+              <strong>Works</strong> <span data-profile-count="works">0</span>
+            </span>
+            <span>
+              <strong>Followers</strong> <span data-profile-count="followers">0</span>
+            </span>
           </div>
           <div className="profile-actions">
-            <button className="btn follow" type="button">
-              + Follow
+            <button className="btn" type="button" data-profile-edit>
+              Edit profile
             </button>
-            <button className="btn ghost" type="button">
-              Message
-            </button>
-            <button className="icon-btn" type="button" aria-label="Share profile">
-              ↗
+            <button className="btn glow-danger" type="button" data-profile-share>
+              Share profile
             </button>
           </div>
-          <p className="profile-status">
-            Last updated 2 hours ago • Available for collaborations
-          </p>
-          <a className="profile-link" href="#">
-            View public profile preview
-          </a>
+          <p className="profile-status" data-profile-status></p>
+        </div>
+        <div className="profile-auth-overlay" data-auth-overlay hidden>
+          <div className="profile-auth-window">
+            <p className="auth-eyebrow">Welcome to PensUp</p>
+            <h2>Sign in</h2>
+            <div className="auth-grid">
+              <form className="auth-card" data-auth-form="signin" data-auth-panel="signin">
+                <h3>Sign in</h3>
+                <label>
+                  Username
+                  <input
+                    type="text"
+                    name="signinUsername"
+                    autoComplete="username"
+                    required
+                    data-auth-input="signin-username"
+                  />
+                </label>
+                <label>
+                  Password
+                  <input
+                    type="password"
+                    name="signinPassword"
+                    autoComplete="current-password"
+                    required
+                    data-auth-input="signin-password"
+                  />
+                </label>
+                <div className="auth-card-actions">
+                  <button className="btn" type="submit">
+                    Sign in
+                  </button>
+                  <button className="btn ghost glow-danger" type="button" data-auth-toggle="signup">
+                    Create account
+                  </button>
+                </div>
+              </form>
+              <form className="auth-card" data-auth-form="signup" data-auth-panel="signup" hidden>
+                <h3>Create account</h3>
+                <label>
+                  Username
+                  <input
+                    type="text"
+                    name="signupUsername"
+                    autoComplete="username"
+                    required
+                    data-auth-input="signup-username"
+                  />
+                </label>
+                <label>
+                  Password
+                  <input
+                    type="password"
+                    name="signupPassword"
+                    autoComplete="new-password"
+                    required
+                    data-auth-input="signup-password"
+                  />
+                </label>
+                <div className="auth-card-actions">
+                  <button className="btn glow-danger" type="submit">
+                    Create account
+                  </button>
+                  <button className="btn ghost" type="button" data-auth-toggle="signin">
+                    Back to sign in
+                  </button>
+                </div>
+              </form>
+            </div>
+            <p className="auth-status" data-auth-status></p>
+          </div>
         </div>
       </section>
 
-      <section className="profile-grid" aria-label="Profile highlights">
-        <article className="settings-card">
-          <h2>Creator Tier</h2>
-          <p className="hero-subtitle">Spotlight</p>
-          <p className="hero-copy">
-            Featured across the homepage and recommended to new readers in fantasy and mystery.
-          </p>
-        </article>
-        <article className="settings-card">
-          <h2>Next Release</h2>
-          <p className="hero-subtitle">Chapter 14 • Friday</p>
-          <p className="hero-copy">
-            Schedule automation is on. Patrons receive early access 24 hours before launch.
-          </p>
-        </article>
-        <article className="settings-card">
-          <h2>Monetization</h2>
-          <p className="hero-subtitle">$2.9k this month</p>
-          <p className="hero-copy">
-            Premium arcs and signed bundles are performing above forecast for Q4.
-          </p>
-        </article>
-      </section>
-
-      <section className="profile-series">
+      <section className="profile-series" data-profile-series hidden>
         <div className="section-header">
-          <div>
-            <h2>Active Series</h2>
-            <p className="hero-subtitle">Keep momentum with scheduled drops.</p>
-          </div>
-          <button className="btn ghost" type="button">
-            Manage Series
-          </button>
+          <h2>Your series</h2>
         </div>
-        <div className="series-grid">
-          {[
-            {
-              title: "Rhapsody of Ember",
-              meta: "Epic Fantasy • 12 chapters",
-              image: "https://picsum.photos/seed/rhapsody-ember-profile/120/120",
-            },
-            {
-              title: "Lanterns of Liora",
-              meta: "Cozy Mystery • 8 chapters",
-              image: "https://picsum.photos/seed/lanterns-liora/120/120",
-            },
-            {
-              title: "Starlit Syntax",
-              meta: "Sci-Fi Romance • 6 chapters",
-              image: "https://picsum.photos/seed/starlit-syntax-profile/120/120",
-            },
-          ].map((series) => (
-            <article className="series-card" key={series.title}>
-              <img src={series.image} alt={series.title} />
-              <div>
-                <p className="series-meta">{series.meta}</p>
-                <strong>{series.title}</strong>
-              </div>
-            </article>
-          ))}
-        </div>
+        <div className="series-grid" data-series-grid></div>
       </section>
 
       <section className="profile-feed">
         <div className="section-header">
-          <div>
-            <h2>Creator Feed</h2>
-            <p className="hero-subtitle">Highlights from your community.</p>
-          </div>
-          <button className="btn ghost" type="button">
-            View Insights
-          </button>
+          <h2>Feed</h2>
         </div>
-        {[
-          {
-            title: "Reader note of the week",
-            body:
-              "“Every new chapter leaves me breathless. The cliffhanger pacing is perfection.”",
-            author: "Elena P.",
-            role: "Top supporter",
-            image: "https://picsum.photos/seed/reader-elana/120/120",
-            cover: "https://picsum.photos/seed/ember-feed/640/480",
-          },
-          {
-            title: "Live session recap",
-            body:
-              "You hosted a 45-minute live annotation and gained 183 new followers afterward.",
-            author: "PensUp Analytics",
-            role: "Weekly recap",
-            image: "https://picsum.photos/seed/analytics-avatar/120/120",
-            cover: "https://picsum.photos/seed/live-session/640/480",
-          },
-        ].map((post) => (
-          <article className="feed-card" key={post.title}>
-            <div className="feed-media">
-              <img src={post.cover} alt={post.title} />
-            </div>
-            <div className="feed-body">
-              <div className="feed-author">
-                <img src={post.image} alt={post.author} />
-                <div>
-                  <strong>{post.author}</strong>
-                  <p>{post.role}</p>
-                </div>
-              </div>
-              <div>
-                <h3>{post.title}</h3>
-                <p className="hero-copy">{post.body}</p>
-              </div>
-              <button className="btn ghost" type="button">
-                Respond
-              </button>
-            </div>
-          </article>
-        ))}
+        <article className="feed-card">
+          <div className="feed-body">
+            <p></p>
+          </div>
+          <div className="feed-media"></div>
+        </article>
       </section>
     </main>
   );
