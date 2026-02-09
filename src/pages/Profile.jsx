@@ -6,6 +6,7 @@ const AUTH_KEY = "pensup.authenticated";
 const ACCOUNTS_KEY = "pensup.accounts";
 const PROFILE_TYPE_KEY = "pensup.profileType";
 const AUTHOR_APPROVED_KEY = "pensup.authorApproved";
+const MAX_IMAGE_BYTES = 800 * 1024;
 const EMPTY_PROFILE = {
   name: "Username",
   tags: "empty · empty · empty",
@@ -43,11 +44,39 @@ const loadProfile = () => {
   }
 };
 
+const safeSetItem = (key, value) => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  try {
+    window.localStorage.setItem(key, value);
+    return true;
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "QuotaExceededError") {
+      return false;
+    }
+    throw error;
+  }
+};
+
 const persistProfile = (profile) => {
   if (typeof window === "undefined") {
-    return;
+    return { stored: false, reduced: false };
   }
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+  const serialized = JSON.stringify(profile);
+  if (safeSetItem(STORAGE_KEY, serialized)) {
+    return { stored: true, reduced: false };
+  }
+  const trimmedProfile = {
+    ...profile,
+    avatar: "",
+    background: "",
+  };
+  const trimmedSerialized = JSON.stringify(trimmedProfile);
+  if (safeSetItem(STORAGE_KEY, trimmedSerialized)) {
+    return { stored: true, reduced: true };
+  }
+  return { stored: false, reduced: true };
 };
 
 const loadAccounts = () => {
@@ -70,7 +99,7 @@ const persistAccounts = (accounts) => {
   if (typeof window === "undefined") {
     return;
   }
-  window.localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
+  safeSetItem(ACCOUNTS_KEY, JSON.stringify(accounts));
 };
 
 export default function Profile() {
@@ -133,14 +162,14 @@ export default function Profile() {
     if (typeof window === "undefined") {
       return;
     }
-    window.localStorage.setItem(PROFILE_TYPE_KEY, profileType);
+    safeSetItem(PROFILE_TYPE_KEY, profileType);
   }, [profileType]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
-    window.localStorage.setItem(AUTHOR_APPROVED_KEY, String(isAuthorApproved));
+    safeSetItem(AUTHOR_APPROVED_KEY, String(isAuthorApproved));
   }, [isAuthorApproved]);
 
   useEffect(() => {
@@ -262,6 +291,10 @@ export default function Profile() {
     if (!file) {
       return;
     }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setStatus("Image too large. Choose one under 800 KB.");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       onLoad(reader.result?.toString() ?? "");
@@ -314,7 +347,14 @@ export default function Profile() {
     }
     setProfile(formValues);
     setFormValues(formValues);
-    persistProfile(formValues);
+    const { stored, reduced } = persistProfile(formValues);
+    if (!stored) {
+      setStatus("Profile saved locally. Some details may not persist due to storage limits.");
+    } else if (reduced) {
+      setStatus("Profile saved, but images were removed to fit browser storage limits.");
+    } else {
+      setStatus("Profile updated.");
+    }
     setIsEditing(false);
     if (avatarInputRef.current) {
       avatarInputRef.current.value = "";
@@ -322,7 +362,6 @@ export default function Profile() {
     if (backgroundInputRef.current) {
       backgroundInputRef.current.value = "";
     }
-    setStatus("Profile updated.");
   };
 
   const handleCancel = () => {
@@ -404,7 +443,10 @@ export default function Profile() {
     };
     setProfile(nextProfile);
     setFormValues(nextProfile);
-    persistProfile(nextProfile);
+    const { reduced } = persistProfile(nextProfile);
+    if (reduced) {
+      setStatus("Profile saved, but images were removed to fit browser storage limits.");
+    }
     setIsAuthenticated(true);
     broadcastAuth(true);
     setAuthStatus("Account created! You can update your profile now.");
