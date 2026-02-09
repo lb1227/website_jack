@@ -106,16 +106,6 @@ export default function Feed() {
 
   return (
     <main className="feed-page">
-      <header className="feed-header">
-        <div>
-          <h1>Feed</h1>
-          <p>Live creator updates, behind-the-scenes drops, and reader chatter.</p>
-        </div>
-        <button className="btn glow" type="button">
-          New post
-        </button>
-      </header>
-
       <div className="feed-layout">
         <section className="feed-main">
           <div className="feed-tabs" role="tablist" aria-label="Feed categories">

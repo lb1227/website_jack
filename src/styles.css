@@ -3309,23 +3309,6 @@ body.chat-overlay-open {
   gap: 32px;
 }
 
-.feed-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-}
-
-.feed-header h1 {
-  font-size: clamp(2rem, 2.5vw, 2.6rem);
-  margin-bottom: 8px;
-}
-
-.feed-header p {
-  color: rgba(255, 255, 255, 0.7);
-  max-width: 480px;
-}
-
 .feed-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.6fr);
@@ -3336,6 +3319,7 @@ body.chat-overlay-open {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  align-items: center;
 }
 
 .feed-tabs {
@@ -3346,6 +3330,7 @@ body.chat-overlay-open {
   gap: 6px;
   width: fit-content;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0 auto;
 }
 
 .feed-tab {
@@ -3369,6 +3354,7 @@ body.chat-overlay-open {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: min(760px, 100%);
 }
 
 .feed-card {
@@ -3501,11 +3487,6 @@ body.chat-overlay-open {
 }
 
 @media (max-width: 720px) {
-  .feed-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .feed-tabs {
     width: 100%;
     justify-content: space-between;
