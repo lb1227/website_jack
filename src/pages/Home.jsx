@@ -232,6 +232,7 @@ export default function Home() {
             subtitle={row.subtitle}
             cards={row.cards}
             highlight={index === activeRow}
+            isTrending={row.id === "new"}
             anchorId={row.id}
           />
         </div>

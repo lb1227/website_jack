@@ -444,6 +444,13 @@ input {
   padding: 32px 48px;
 }
 
+.row.is-trending-row {
+  background: linear-gradient(90deg, rgba(229, 9, 20, 0.12), rgba(229, 9, 20, 0.04));
+  border: 1px solid rgba(229, 9, 20, 0.18);
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(229, 9, 20, 0.08);
+}
+
 .row .card-strip {
   transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
   transform-origin: left center;
@@ -529,6 +536,7 @@ input {
   border-radius: 10px;
   min-height: 360px;
   padding: 18px;
+  position: relative;
   display: grid;
   align-items: end;
   font-weight: 600;

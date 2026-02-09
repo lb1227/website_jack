@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-export default function CardRow({ title, subtitle, cards, highlight, anchorId }) {
+export default function CardRow({ title, subtitle, cards, highlight, anchorId, isTrending }) {
   const carouselRef = useRef(null);
 
   const handleScroll = (direction) => {
@@ -13,7 +13,10 @@ export default function CardRow({ title, subtitle, cards, highlight, anchorId })
   };
 
   return (
-    <section className={`row ${highlight ? "is-active-row" : ""}`} id={anchorId}>
+    <section
+      className={`row ${highlight ? "is-active-row" : ""} ${isTrending ? "is-trending-row" : ""}`}
+      id={anchorId}
+    >
       <div className="row-header">
         <div>
           <h2>{title}</h2>
@@ -57,9 +60,11 @@ CardRow.propTypes = {
   ).isRequired,
   highlight: PropTypes.bool,
   anchorId: PropTypes.string,
+  isTrending: PropTypes.bool,
 };
 
 CardRow.defaultProps = {
   highlight: false,
   anchorId: undefined,
+  isTrending: false,
 };
