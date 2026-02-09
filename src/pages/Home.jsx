@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import CardRow from "../components/CardRow.jsx";
+import LeaderboardSection from "../components/LeaderboardSection.jsx";
 
 const ROWS = [
   {
@@ -62,38 +63,6 @@ const ROWS = [
     ],
   },
   {
-    id: "leaderboard",
-    title: "Top 10 Zone",
-    subtitle: "Highest rated creators this week",
-    cards: [
-      {
-        title: "Rhapsody of Ember",
-        image: "https://picsum.photos/seed/rhapsody-ember/640/360",
-        rank: 1,
-      },
-      {
-        title: "Blue Hour Letters",
-        image: "https://picsum.photos/seed/blue-hour-letters/640/360",
-        rank: 2,
-      },
-      {
-        title: "Low Tide Legends",
-        image: "https://picsum.photos/seed/low-tide-legends/640/360",
-        rank: 3,
-      },
-      {
-        title: "Frames of the Fallen",
-        image: "https://picsum.photos/seed/frames-fallen/640/360",
-        rank: 4,
-      },
-      {
-        title: "Starlit Syntax",
-        image: "https://picsum.photos/seed/starlit-syntax/640/360",
-        rank: 5,
-      },
-    ],
-  },
-  {
     id: "essays",
     title: "Genre Curation",
     subtitle: "Expert editors spotlight the best voices",
@@ -119,6 +88,109 @@ const ROWS = [
         image: "https://picsum.photos/seed/slice-life-panels/640/360",
       },
     ],
+  },
+];
+
+const LEADERBOARD_ENTRIES = [
+  {
+    rank: 1,
+    creator: "Rhapsody of Ember",
+    title: "Epic fantasy series · 12 chapters",
+    score: "9.6",
+    reads: "420k reads",
+    label: "Momentum pick",
+    trend: "+18% week-over-week",
+    delta: "+2",
+  },
+  {
+    rank: 2,
+    creator: "Blue Hour Letters",
+    title: "Romantic drama · 8 chapters",
+    score: "9.4",
+    reads: "388k reads",
+    label: "Breakout",
+    trend: "+12% week-over-week",
+    delta: "+1",
+  },
+  {
+    rank: 3,
+    creator: "Low Tide Legends",
+    title: "Coastal mystery · 10 chapters",
+    score: "9.3",
+    reads: "350k reads",
+    label: "Fan favorite",
+    trend: "+9% week-over-week",
+    delta: "-1",
+  },
+  {
+    rank: 4,
+    creator: "Frames of the Fallen",
+    title: "Noir thriller · 6 chapters",
+    score: "9.2",
+    reads: "322k reads",
+    label: "Editor spotlight",
+    trend: "+6% week-over-week",
+    delta: "+1",
+  },
+  {
+    rank: 5,
+    creator: "Starlit Syntax",
+    title: "Sci-fi short · 5 chapters",
+    score: "9.1",
+    reads: "298k reads",
+    label: "Critics pick",
+    trend: "+5% week-over-week",
+    delta: "-2",
+  },
+  {
+    rank: 6,
+    creator: "Paper Gardens",
+    title: "Slice-of-life · 7 chapters",
+    score: "9.0",
+    reads: "281k reads",
+    label: "Slow burn",
+    trend: "+3% week-over-week",
+    delta: "+1",
+  },
+  {
+    rank: 7,
+    creator: "Neon Caravan",
+    title: "Cyberpunk travelogue · 9 chapters",
+    score: "8.9",
+    reads: "264k reads",
+    label: "Binge ready",
+    trend: "+2% week-over-week",
+    delta: "-1",
+  },
+  {
+    rank: 8,
+    creator: "Harborlight",
+    title: "Romance saga · 22 chapters",
+    score: "8.8",
+    reads: "243k reads",
+    label: "Sustained hit",
+    trend: "+2% week-over-week",
+    delta: "+1",
+  },
+  {
+    rank: 9,
+    creator: "Inkbound Circuit",
+    title: "Tech thriller · 11 chapters",
+    score: "8.7",
+    reads: "221k reads",
+    label: "Underground",
+    trend: "+1% week-over-week",
+    delta: "-1",
+  },
+  {
+    rank: 10,
+    creator: "Signal to the Sea",
+    title: "Adventure memoir · 4 chapters",
+    score: "8.6",
+    reads: "210k reads",
+    label: "New entry",
+    trend: "+1% week-over-week",
+    delta: "+3",
   },
 ];
 
@@ -224,6 +296,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <LeaderboardSection
+        title="Top 10 Zone"
+        subtitle="Highest rated creators this week"
+        entries={LEADERBOARD_ENTRIES}
+      />
 
       {filteredRows.map((row, index) => (
         <div key={row.id} ref={(element) => (rowRefs.current[index] = element)}>
