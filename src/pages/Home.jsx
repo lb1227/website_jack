@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import CardRow from "../components/CardRow.jsx";
+import { CREATOR_PROFILES } from "../data/creatorProfiles.js";
+
+const CREATOR_LOOKUP = CREATOR_PROFILES.reduce((accumulator, profile) => {
+  accumulator[profile.id] = profile;
+  return accumulator;
+}, {});
 
 const HERO_SPOTLIGHTS = [
   {
@@ -11,6 +17,7 @@ const HERO_SPOTLIGHTS = [
     description:
       "A rising author builds a realm of ember and ash. Read free chapters, unlock premium arcs, and follow the creator’s journey to digital and print publishing.",
     cover: "https://picsum.photos/seed/ember-hero/1600/900",
+    creatorId: "ariela-ross",
   },
   {
     id: "harbor",
@@ -20,6 +27,7 @@ const HERO_SPOTLIGHTS = [
     description:
       "A seaside anthology where every tide reveals a new secret. Dive into the conversations, annotated scenes, and live reader polls.",
     cover: "https://picsum.photos/seed/harbor-hero/1600/900",
+    creatorId: "marcos-lune",
   },
   {
     id: "neon",
@@ -29,6 +37,7 @@ const HERO_SPOTLIGHTS = [
     description:
       "Follow the neon trail of a cyber detective and unlock interactive dossiers crafted by the creator community.",
     cover: "https://picsum.photos/seed/neon-hero/1600/900",
+    creatorId: "sanaa-bell",
   },
   {
     id: "archive",
@@ -38,6 +47,7 @@ const HERO_SPOTLIGHTS = [
     description:
       "An archive of unsolved tales with hidden bonus scenes. Choose the next investigation and vote on the reveal order.",
     cover: "https://picsum.photos/seed/archive-hero/1600/900",
+    creatorId: "elyse-hart",
   },
   {
     id: "mythic",
@@ -47,6 +57,7 @@ const HERO_SPOTLIGHTS = [
     description:
       "Reimagined legends told through immersive panels. Collect behind-the-scenes drafts and creator voice notes.",
     cover: "https://picsum.photos/seed/mythic-hero/1600/900",
+    creatorId: "ariela-ross",
   },
 ];
 
@@ -59,6 +70,7 @@ const ROWS = [
       {
         title: "The Glass Orchard",
         image: "https://picsum.photos/seed/glass-orchard/640/360",
+        creator: CREATOR_LOOKUP["ariela-ross"],
       },
       {
         title: "Signal to the Sea",
@@ -67,6 +79,7 @@ const ROWS = [
       {
         title: "Inkbound Circuit",
         image: "https://picsum.photos/seed/inkbound-circuit/640/360",
+        creator: CREATOR_LOOKUP["sanaa-bell"],
       },
       {
         title: "Paper Gardens",
@@ -75,10 +88,12 @@ const ROWS = [
       {
         title: "Neon Caravan",
         image: "https://picsum.photos/seed/neon-caravan/640/360",
+        creator: CREATOR_LOOKUP["sanaa-bell"],
       },
       {
         title: "Harborlight",
         image: "https://picsum.photos/seed/harborlight/640/360",
+        creator: CREATOR_LOOKUP["marcos-lune"],
       },
     ],
   },
@@ -90,10 +105,12 @@ const ROWS = [
       {
         title: "Harborlight — Ep. 22",
         image: "https://picsum.photos/seed/harborlight-22/640/360",
+        creator: CREATOR_LOOKUP["marcos-lune"],
       },
       {
         title: "The Silent Archive — Ep. 6",
         image: "https://picsum.photos/seed/silent-archive/640/360",
+        creator: CREATOR_LOOKUP["elyse-hart"],
       },
       {
         title: "Cosmic Blueprints — S2",
@@ -118,6 +135,7 @@ const ROWS = [
         title: "Rhapsody of Ember",
         image: "https://picsum.photos/seed/rhapsody-ember/640/360",
         rank: 1,
+        creator: CREATOR_LOOKUP["ariela-ross"],
       },
       {
         title: "Blue Hour Letters",
@@ -128,16 +146,19 @@ const ROWS = [
         title: "Low Tide Legends",
         image: "https://picsum.photos/seed/low-tide-legends/640/360",
         rank: 3,
+        creator: CREATOR_LOOKUP["marcos-lune"],
       },
       {
         title: "Frames of the Fallen",
         image: "https://picsum.photos/seed/frames-fallen/640/360",
         rank: 4,
+        creator: CREATOR_LOOKUP["elyse-hart"],
       },
       {
         title: "Starlit Syntax",
         image: "https://picsum.photos/seed/starlit-syntax/640/360",
         rank: 5,
+        creator: CREATOR_LOOKUP["sanaa-bell"],
       },
     ],
   },
@@ -161,6 +182,7 @@ const ROWS = [
       {
         title: "Mythic Rewrites",
         image: "https://picsum.photos/seed/mythic-rewrites/640/360",
+        creator: CREATOR_LOOKUP["ariela-ross"],
       },
       {
         title: "Slice-of-Life Panels",
@@ -233,6 +255,7 @@ export default function Home() {
   }, []);
 
   const spotlight = HERO_SPOTLIGHTS[activeSpotlight];
+  const spotlightCreator = spotlight.creatorId ? CREATOR_LOOKUP[spotlight.creatorId] : null;
 
   return (
     <main id="home">
@@ -256,9 +279,11 @@ export default function Home() {
             <button className="btn ghost" type="button">
               + My List
             </button>
-            <button className="btn ghost" type="button">
-              Creator Profile
-            </button>
+            {spotlightCreator ? (
+              <Link className="btn ghost" to={`/creator/${spotlightCreator.id}`}>
+                Creator Profile
+              </Link>
+            ) : null}
           </div>
           <div className="hero-meta">
             <div>

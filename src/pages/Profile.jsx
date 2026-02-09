@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { creatorProfileById } from "../data/creatorProfiles.js";
 
 const STORAGE_KEY = "pensup.profile";
 const AUTH_KEY = "pensup.authenticated";
@@ -104,6 +105,7 @@ const persistAccounts = (accounts) => {
 
 export default function Profile() {
   const location = useLocation();
+  const { creatorId } = useParams();
   const [profile, setProfile] = useState(EMPTY_PROFILE);
   const [formValues, setFormValues] = useState(EMPTY_PROFILE);
   const [isEditing, setIsEditing] = useState(false);
@@ -115,6 +117,8 @@ export default function Profile() {
   const [isAuthorApproved, setIsAuthorApproved] = useState(false);
   const avatarInputRef = useRef(null);
   const backgroundInputRef = useRef(null);
+  const creatorProfile = useMemo(() => creatorProfileById(creatorId), [creatorId]);
+  const isViewingCreator = Boolean(creatorId && creatorProfile);
 
   useEffect(() => {
     const stored = loadProfile();
@@ -132,6 +136,16 @@ export default function Profile() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (!isViewingCreator) {
+      return;
+    }
+    setIsEditing(false);
+    setProfileType("author");
+    setIsAuthorApproved(true);
+    setStatus("");
+  }, [isViewingCreator]);
 
   useEffect(() => {
     if (location.state?.authMode === "signin") {
@@ -263,6 +277,10 @@ export default function Profile() {
   }, [profileContext]);
 
   const handleEditClick = () => {
+    if (isViewingCreator) {
+      setStatus("Creator profiles are read-only.");
+      return;
+    }
     if (!isAuthenticated) {
       setAuthStatus("Sign in to edit your profile.");
       return;
@@ -463,9 +481,10 @@ export default function Profile() {
     broadcastAuth(false);
   };
 
-  const isLocked = !isAuthenticated;
-  const activeAvatar = isEditing ? formValues.avatar : profile.avatar;
-  const activeBackground = isEditing ? formValues.background : profile.background;
+  const displayProfile = isViewingCreator ? creatorProfile : profile;
+  const isLocked = !isAuthenticated || isViewingCreator;
+  const activeAvatar = isEditing ? formValues.avatar : displayProfile?.avatar;
+  const activeBackground = isEditing ? formValues.background : displayProfile?.background;
   const countsToDisplay = profileContext.counts;
   const heroStyle = activeBackground
     ? {
@@ -473,6 +492,7 @@ export default function Profile() {
       }
     : undefined;
   const selectedCategory = activeCategory ?? profileContext.categories[0];
+  const worksToShow = isViewingCreator ? creatorProfile?.works ?? [] : [];
 
   return (
     <main className="profile-page" id="profile">
@@ -525,16 +545,21 @@ export default function Profile() {
             {!isEditing ? (
               <div className="profile-summary" data-profile-summary>
                 <h1 className="profile-summary-name" data-profile-display="name">
-                  {profile.name}
+                  {displayProfile?.name}
                 </h1>
                 <p className="profile-summary-type">{profileContext.label}</p>
                 <p className="profile-summary-tags" data-profile-display="tags">
-                  {profile.tags}
+                  {displayProfile?.tags}
                 </p>
                 <p className="profile-summary-bio" data-profile-display="bio">
-                  {profile.bio}
+                  {displayProfile?.bio}
                 </p>
                 <p className="profile-summary-context">{profileContext.description}</p>
+                {isViewingCreator ? (
+                  <p className="profile-summary-context">
+                    Viewing {displayProfile?.name}&apos;s creator profile.
+                  </p>
+                ) : null}
               </div>
             ) : null}
             {isEditing ? (
@@ -626,7 +651,9 @@ export default function Profile() {
               {countsToDisplay.map((count) => (
                 <span key={count.key}>
                   <strong>{count.label}</strong>{" "}
-                  <span data-profile-count={count.key}>{profile.counts[count.key]}</span>
+                  <span data-profile-count={count.key}>
+                    {displayProfile?.counts?.[count.key] ?? 0}
+                  </span>
                 </span>
               ))}
             </div>
@@ -650,11 +677,11 @@ export default function Profile() {
               </button>
             </div>
             <p className="profile-status" data-profile-status>
-              {statusMessage}
+              {isViewingCreator ? "Creator profile preview." : statusMessage}
             </p>
           </div>
         </div>
-        {!isAuthenticated ? (
+        {!isAuthenticated && !isViewingCreator ? (
           <div className="profile-auth-overlay" data-auth-overlay>
             <div className="profile-auth-window">
               <p className="auth-eyebrow">Welcome to PensUp</p>
@@ -749,12 +776,25 @@ export default function Profile() {
         ) : null}
       </section>
 
-      <section className="profile-series" data-profile-series hidden>
-        <div className="section-header">
-          <h2>Your series</h2>
-        </div>
-        <div className="series-grid" data-series-grid></div>
-      </section>
+      {worksToShow.length ? (
+        <section className="profile-series" data-profile-series>
+          <div className="section-header">
+            <h2>Featured works</h2>
+          </div>
+          <div className="series-grid" data-series-grid>
+            {worksToShow.map((work) => (
+              <article className="series-card" key={work.title}>
+                <img src={work.cover} alt="" />
+                <div>
+                  <p className="series-meta">{work.status}</p>
+                  <strong>{work.title}</strong>
+                  <p className="profile-summary-context">{work.detail}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="profile-categories" data-profile-categories>
         <div className="section-header">

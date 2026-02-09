@@ -33,15 +33,22 @@ export default function CardRow({ title, subtitle, cards, highlight, anchorId, i
       </div>
       <div className="card-strip" data-carousel ref={carouselRef}>
         {cards.map((card) => (
-          <Link
+          <article
             className={`card ${card.rank ? "ranked" : ""}`}
             key={card.title}
-            to="/reading"
             style={{ "--card-image": `url('${card.image}')` }}
           >
+            <Link className="card-cover-link" to="/reading" aria-label={`Read ${card.title}`} />
             {card.rank ? <span className="rank">{card.rank}</span> : null}
-            <span className="card-title">{card.title}</span>
-          </Link>
+            <div className="card-details">
+              <span className="card-title">{card.title}</span>
+              {card.creator ? (
+                <Link className="card-creator-link" to={`/creator/${card.creator.id}`}>
+                  View {card.creator.name}'s profile
+                </Link>
+              ) : null}
+            </div>
+          </article>
         ))}
       </div>
     </section>
@@ -56,6 +63,10 @@ CardRow.propTypes = {
       title: PropTypes.string.isRequired,
       image: PropTypes.string.isRequired,
       rank: PropTypes.number,
+      creator: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      }),
     })
   ).isRequired,
   highlight: PropTypes.bool,
