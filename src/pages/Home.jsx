@@ -2,6 +2,54 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import CardRow from "../components/CardRow.jsx";
 
+const HERO_SPOTLIGHTS = [
+  {
+    id: "ember",
+    label: "Top 10 Creator Spotlight",
+    title: "Rhapsody of Ember",
+    subtitle: "Epic Fantasy • 12 chapters • 9.6 rating",
+    description:
+      "A rising author builds a realm of ember and ash. Read free chapters, unlock premium arcs, and follow the creator’s journey to digital and print publishing.",
+    cover: "https://picsum.photos/seed/ember-hero/1600/900",
+  },
+  {
+    id: "harbor",
+    label: "Top 10 Creator Spotlight",
+    title: "Harborlight",
+    subtitle: "Coastal Drama • 18 chapters • 9.4 rating",
+    description:
+      "A seaside anthology where every tide reveals a new secret. Dive into the conversations, annotated scenes, and live reader polls.",
+    cover: "https://picsum.photos/seed/harbor-hero/1600/900",
+  },
+  {
+    id: "neon",
+    label: "Top 10 Creator Spotlight",
+    title: "Neon Caravan",
+    subtitle: "Sci-Fi Noir • 10 chapters • 9.3 rating",
+    description:
+      "Follow the neon trail of a cyber detective and unlock interactive dossiers crafted by the creator community.",
+    cover: "https://picsum.photos/seed/neon-hero/1600/900",
+  },
+  {
+    id: "archive",
+    label: "Top 10 Creator Spotlight",
+    title: "The Silent Archive",
+    subtitle: "Mystery • 8 chapters • 9.1 rating",
+    description:
+      "An archive of unsolved tales with hidden bonus scenes. Choose the next investigation and vote on the reveal order.",
+    cover: "https://picsum.photos/seed/archive-hero/1600/900",
+  },
+  {
+    id: "mythic",
+    label: "Top 10 Creator Spotlight",
+    title: "Mythic Rewrites",
+    subtitle: "Mythology • 14 chapters • 9.2 rating",
+    description:
+      "Reimagined legends told through immersive panels. Collect behind-the-scenes drafts and creator voice notes.",
+    cover: "https://picsum.photos/seed/mythic-hero/1600/900",
+  },
+];
+
 const ROWS = [
   {
     id: "new",
@@ -125,6 +173,7 @@ const ROWS = [
 export default function Home() {
   const { searchQuery } = useOutletContext();
   const [activeRow, setActiveRow] = useState(0);
+  const [activeSpotlight, setActiveSpotlight] = useState(0);
   const rowRefs = useRef([]);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -183,20 +232,23 @@ export default function Home() {
     };
   }, []);
 
+  const spotlight = HERO_SPOTLIGHTS[activeSpotlight];
+
   return (
     <main id="home">
       <div className="search-status" data-search-status hidden={!normalizedQuery || matchCount > 0}>
         No matches yet — try another title or creator.
       </div>
-      <section className="hero" id="main-home">
+      <section
+        className={`hero ${spotlight.cover ? "has-featured-cover" : ""}`}
+        id="main-home"
+        style={spotlight.cover ? { "--featured-cover": `url(${spotlight.cover})` } : undefined}
+      >
         <div className="hero-content">
-          <span className="pill">Top 10 Creator Spotlight</span>
-          <h1>Rhapsody of Ember</h1>
-          <p className="hero-subtitle">Epic Fantasy • 12 chapters • 9.6 rating</p>
-          <p className="hero-copy">
-            A rising author builds a realm of ember and ash. Read free chapters, unlock premium arcs,
-            and follow the creator’s journey to digital and print publishing.
-          </p>
+          <span className="pill">{spotlight.label}</span>
+          <h1>{spotlight.title}</h1>
+          <p className="hero-subtitle">{spotlight.subtitle}</p>
+          <p className="hero-copy">{spotlight.description}</p>
           <div className="hero-actions">
             <button className="btn primary" type="button">
               ▶ Read Now
@@ -222,6 +274,18 @@ export default function Home() {
               <strong>Live feedback</strong>
             </div>
           </div>
+        </div>
+        <div className="hero-carousel-dots" role="tablist" aria-label="Creator spotlight carousel">
+          {HERO_SPOTLIGHTS.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              className={`hero-carousel-dot ${index === activeSpotlight ? "is-active" : ""}`}
+              aria-label={`Show spotlight for ${item.title}`}
+              aria-pressed={index === activeSpotlight}
+              onClick={() => setActiveSpotlight(index)}
+            />
+          ))}
         </div>
       </section>
 
