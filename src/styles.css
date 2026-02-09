@@ -3301,3 +3301,213 @@ body.chat-overlay-open {
     width: 100%;
   }
 }
+
+.feed-page {
+  padding: 40px 6vw 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.feed-header h1 {
+  font-size: clamp(2rem, 2.5vw, 2.6rem);
+  margin-bottom: 8px;
+}
+
+.feed-header p {
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 480px;
+}
+
+.feed-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.6fr);
+  gap: 32px;
+}
+
+.feed-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.feed-tabs {
+  display: inline-flex;
+  background: rgba(19, 21, 26, 0.75);
+  border-radius: 999px;
+  padding: 6px;
+  gap: 6px;
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feed-tab {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feed-tab.active {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(20, 20, 20, 0.35);
+}
+
+.feed-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feed-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(19, 21, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.feed-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(135deg, #ff8fb6, #7f8cff);
+}
+
+.feed-content p {
+  margin: 12px 0 16px;
+  line-height: 1.6;
+}
+
+.feed-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.feed-name {
+  font-weight: 700;
+}
+
+.feed-handle,
+.feed-time {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+}
+
+.feed-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.feed-actions button {
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.feed-actions button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.feed-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feed-panel {
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(14, 16, 20, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feed-panel h2 {
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+}
+
+.feed-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.feed-panel li span {
+  font-weight: 600;
+  display: block;
+}
+
+.feed-panel li small {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.feed-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feed-links button {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (max-width: 960px) {
+  .feed-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .feed-aside {
+    order: -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .feed-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .feed-tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
