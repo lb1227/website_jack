@@ -1,12 +1,49 @@
-import React, { useState } from "react";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import ChatOverlay from "./ChatOverlay.jsx";
+
+const AUTH_KEY = "pensup.authenticated";
 
 export default function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
   const isProfile = location.pathname === "/profile";
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const setAuthFromStorage = () => {
+      setIsAuthenticated(window.localStorage.getItem(AUTH_KEY) === "true");
+    };
+    setAuthFromStorage();
+    const handleAuthEvent = (event) => {
+      if (typeof event?.detail?.authenticated === "boolean") {
+        setIsAuthenticated(event.detail.authenticated);
+        return;
+      }
+      setAuthFromStorage();
+    };
+    window.addEventListener("pensup-auth", handleAuthEvent);
+    return () => window.removeEventListener("pensup-auth", handleAuthEvent);
+  }, []);
+
+  const handleAuthClick = () => {
+    if (isAuthenticated) {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(AUTH_KEY, "false");
+        window.dispatchEvent(
+          new CustomEvent("pensup-auth", { detail: { authenticated: false } }),
+        );
+      }
+      setIsAuthenticated(false);
+      return;
+    }
+    navigate("/profile", { state: { authMode: "signin" } });
+  };
 
   return (
     <>
@@ -41,9 +78,9 @@ export default function Layout() {
           ) : null}
         </div>
         <div className="header-right">
-          <Link className="btn glow-danger logout-button" to="/login">
-            Sign in
-          </Link>
+          <button className="btn glow-danger logout-button" type="button" onClick={handleAuthClick}>
+            {isAuthenticated ? "Sign out" : "Sign in"}
+          </button>
         </div>
       </header>
 

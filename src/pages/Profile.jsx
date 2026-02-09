@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const STORAGE_KEY = "pensup.profile";
 const AUTH_KEY = "pensup.authenticated";
@@ -68,6 +69,7 @@ const persistAccounts = (accounts) => {
 };
 
 export default function Profile() {
+  const location = useLocation();
   const [profile, setProfile] = useState(EMPTY_PROFILE);
   const [formValues, setFormValues] = useState(EMPTY_PROFILE);
   const [isEditing, setIsEditing] = useState(false);
@@ -84,6 +86,38 @@ export default function Profile() {
       setIsAuthenticated(window.localStorage.getItem(AUTH_KEY) === "true");
     }
   }, []);
+
+  useEffect(() => {
+    if (location.state?.authMode === "signin") {
+      setAuthMode("signin");
+      setAuthStatus("");
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const handleAuthEvent = (event) => {
+      if (typeof event?.detail?.authenticated === "boolean") {
+        setIsAuthenticated(event.detail.authenticated);
+        if (!event.detail.authenticated) {
+          setIsEditing(false);
+          setAuthMode("signin");
+          setAuthStatus("Signed out. Sign in to continue.");
+        }
+      }
+    };
+    window.addEventListener("pensup-auth", handleAuthEvent);
+    return () => window.removeEventListener("pensup-auth", handleAuthEvent);
+  }, []);
+
+  const broadcastAuth = (authenticated) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.dispatchEvent(new CustomEvent("pensup-auth", { detail: { authenticated } }));
+  };
 
   const statusMessage = useMemo(() => {
     if (status) {
@@ -164,6 +198,7 @@ export default function Profile() {
       window.localStorage.setItem(AUTH_KEY, "true");
     }
     setIsAuthenticated(true);
+    broadcastAuth(true);
     setAuthStatus("Welcome back! You can update your profile now.");
   };
 
@@ -193,6 +228,7 @@ export default function Profile() {
     setFormValues(nextProfile);
     persistProfile(nextProfile);
     setIsAuthenticated(true);
+    broadcastAuth(true);
     setAuthStatus("Account created! You can update your profile now.");
   };
 
@@ -204,6 +240,7 @@ export default function Profile() {
     setIsEditing(false);
     setAuthMode("signin");
     setAuthStatus("Signed out. Sign in to continue.");
+    broadcastAuth(false);
   };
 
   const isLocked = !isAuthenticated;
@@ -326,11 +363,6 @@ export default function Profile() {
             <button className="btn glow-danger" type="button" data-profile-share disabled={isLocked}>
               Share profile
             </button>
-            {isAuthenticated ? (
-              <button className="btn ghost" type="button" onClick={handleSignOut}>
-                Sign out
-              </button>
-            ) : null}
           </div>
           <p className="profile-status" data-profile-status>
             {statusMessage}
