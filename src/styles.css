@@ -2165,12 +2165,12 @@ input {
 
 @media (min-width: 900px) {
   .profile-hero-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
-    justify-items: stretch;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
   }
 
   .profile-hero-layout > * {
-    justify-self: stretch;
+    justify-self: center;
   }
 
   .profile-dev-panel {
