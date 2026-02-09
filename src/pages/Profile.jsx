@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom";
 const STORAGE_KEY = "pensup.profile";
 const AUTH_KEY = "pensup.authenticated";
 const ACCOUNTS_KEY = "pensup.accounts";
+const PROFILE_TYPE_KEY = "pensup.profileType";
+const AUTHOR_APPROVED_KEY = "pensup.authorApproved";
 const EMPTY_PROFILE = {
   name: "Username",
   tags: "empty · empty · empty",
@@ -13,6 +15,8 @@ const EMPTY_PROFILE = {
   counts: {
     works: 0,
     followers: 0,
+    subscribers: 0,
+    following: 0,
   },
 };
 
@@ -78,6 +82,8 @@ export default function Profile() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authStatus, setAuthStatus] = useState("");
   const [authMode, setAuthMode] = useState("signin");
+  const [profileType, setProfileType] = useState("reader");
+  const [isAuthorApproved, setIsAuthorApproved] = useState(false);
   const avatarInputRef = useRef(null);
   const backgroundInputRef = useRef(null);
 
@@ -87,6 +93,14 @@ export default function Profile() {
     setFormValues(stored);
     if (typeof window !== "undefined") {
       setIsAuthenticated(window.localStorage.getItem(AUTH_KEY) === "true");
+      const savedType = window.localStorage.getItem(PROFILE_TYPE_KEY);
+      const savedApproval = window.localStorage.getItem(AUTHOR_APPROVED_KEY);
+      if (savedType === "author" || savedType === "reader") {
+        setProfileType(savedType);
+      }
+      if (savedApproval === "true") {
+        setIsAuthorApproved(true);
+      }
     }
   }, []);
 
@@ -115,6 +129,27 @@ export default function Profile() {
     return () => window.removeEventListener("pensup-auth", handleAuthEvent);
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.localStorage.setItem(PROFILE_TYPE_KEY, profileType);
+  }, [profileType]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.localStorage.setItem(AUTHOR_APPROVED_KEY, String(isAuthorApproved));
+  }, [isAuthorApproved]);
+
+  useEffect(() => {
+    if (profileType === "author" && !isAuthorApproved) {
+      setProfileType("reader");
+      setStatus("Author profiles require approval. Toggle approval to preview it.");
+    }
+  }, [isAuthorApproved, profileType]);
+
   const broadcastAuth = (authenticated) => {
     if (typeof window === "undefined") {
       return;
@@ -131,6 +166,52 @@ export default function Profile() {
     }
     return "Edit your profile details below.";
   }, [isEditing, status]);
+
+  const profileContext = useMemo(() => {
+    if (profileType === "author") {
+      return {
+        label: "Author profile",
+        description: "Showcase works and connect with subscribers.",
+        counts: [
+          { key: "works", label: "Works" },
+          { key: "followers", label: "Followers" },
+          { key: "subscribers", label: "Subscribers" },
+        ],
+        categories: [
+          {
+            title: "Works",
+            description: "Pinned releases, serial updates, and collections.",
+          },
+          {
+            title: "Feed",
+            description: "Updates, announcements, and milestones.",
+          },
+          {
+            title: "Public chat",
+            description: "Community chat for your profile followers.",
+          },
+        ],
+      };
+    }
+    return {
+      label: "Reader profile",
+      description: "Track who you follow and join reader conversations.",
+      counts: [
+        { key: "followers", label: "Followers" },
+        { key: "following", label: "Following" },
+      ],
+      categories: [
+        {
+          title: "Feed",
+          description: "Story updates and posts from creators you follow.",
+        },
+        {
+          title: "Accounts chatroom",
+          description: "Shared chat space for reader discussions.",
+        },
+      ],
+    };
+  }, [profileType]);
 
   const handleEditClick = () => {
     if (!isAuthenticated) {
@@ -316,6 +397,7 @@ export default function Profile() {
   const isLocked = !isAuthenticated;
   const activeAvatar = isEditing ? formValues.avatar : profile.avatar;
   const activeBackground = isEditing ? formValues.background : profile.background;
+  const countsToDisplay = profileContext.counts;
   const heroStyle = activeBackground
     ? {
         backgroundImage: `url(${activeBackground})`,
@@ -373,12 +455,14 @@ export default function Profile() {
             <h1 className="profile-summary-name" data-profile-display="name">
               {profile.name}
             </h1>
+            <p className="profile-summary-type">{profileContext.label}</p>
             <p className="profile-summary-tags" data-profile-display="tags">
               {profile.tags}
             </p>
             <p className="profile-summary-bio" data-profile-display="bio">
               {profile.bio}
             </p>
+            <p className="profile-summary-context">{profileContext.description}</p>
           </div>
           <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
             <label className="profile-inline-field">
@@ -464,14 +548,12 @@ export default function Profile() {
             </div>
           </form>
           <div className="profile-counts">
-            <span>
-              <strong>Works</strong>{" "}
-              <span data-profile-count="works">{profile.counts.works}</span>
-            </span>
-            <span>
-              <strong>Followers</strong>{" "}
-              <span data-profile-count="followers">{profile.counts.followers}</span>
-            </span>
+            {countsToDisplay.map((count) => (
+              <span key={count.key}>
+                <strong>{count.label}</strong>{" "}
+                <span data-profile-count={count.key}>{profile.counts[count.key]}</span>
+              </span>
+            ))}
           </div>
           <div className="profile-actions">
             <button
@@ -486,6 +568,33 @@ export default function Profile() {
             <button className="btn glow-danger" type="button" data-profile-share disabled={isLocked}>
               Share profile
             </button>
+          </div>
+          <div className="profile-dev-toggle" aria-live="polite">
+            <p className="profile-dev-label">Development toggles</p>
+            <div className="profile-dev-actions">
+              <button
+                className="btn ghost"
+                type="button"
+                onClick={() => {
+                  setProfileType((current) => (current === "author" ? "reader" : "author"));
+                }}
+                disabled={!isAuthorApproved && profileType !== "author"}
+              >
+                Switch to {profileType === "author" ? "reader" : "author"}
+              </button>
+              <button
+                className="btn ghost"
+                type="button"
+                onClick={() => {
+                  setIsAuthorApproved((current) => !current);
+                }}
+              >
+                {isAuthorApproved ? "Revoke author approval" : "Grant author approval"}
+              </button>
+            </div>
+            <p className="profile-dev-status">
+              Author approval: {isAuthorApproved ? "Approved" : "Required"}
+            </p>
           </div>
           <p className="profile-status" data-profile-status>
             {statusMessage}
@@ -591,6 +700,20 @@ export default function Profile() {
           <h2>Your series</h2>
         </div>
         <div className="series-grid" data-series-grid></div>
+      </section>
+
+      <section className="profile-categories" data-profile-categories>
+        <div className="section-header">
+          <h2>{profileType === "author" ? "Author" : "Reader"} spaces</h2>
+        </div>
+        <div className="profile-category-grid">
+          {profileContext.categories.map((category) => (
+            <article className="profile-category-card" key={category.title}>
+              <h3>{category.title}</h3>
+              <p>{category.description}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="profile-feed">
