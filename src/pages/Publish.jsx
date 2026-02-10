@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
+const PROFILE_TYPE_KEY = "pensup.profileType";
 
 const steps = [
   {
@@ -24,6 +26,30 @@ export default function Publish() {
   const [series, setSeries] = useState("");
   const [title, setTitle] = useState("");
   const [cover, setCover] = useState("");
+  const [hasAuthorMode, setHasAuthorMode] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const syncAuthorMode = () => {
+      setHasAuthorMode(window.localStorage.getItem(PROFILE_TYPE_KEY) === "author");
+    };
+
+    syncAuthorMode();
+    window.addEventListener("storage", syncAuthorMode);
+    window.addEventListener("focus", syncAuthorMode);
+    window.addEventListener("pageshow", syncAuthorMode);
+    document.addEventListener("visibilitychange", syncAuthorMode);
+
+    return () => {
+      window.removeEventListener("storage", syncAuthorMode);
+      window.removeEventListener("focus", syncAuthorMode);
+      window.removeEventListener("pageshow", syncAuthorMode);
+      document.removeEventListener("visibilitychange", syncAuthorMode);
+    };
+  }, []);
 
   const tabs = useMemo(
     () => [
@@ -108,28 +134,30 @@ export default function Publish() {
         </form>
       </section>
 
-      <section className="publish-tabs" aria-label="Publish steps">
-        {tabs.map((tab) => {
-          const isLocked = tab.index > maxUnlocked;
-          const isActive = tab.index === currentStep;
-          return (
-            <button
-              className={`publish-tab ${isActive ? "active" : ""}`.trim()}
-              type="button"
-              key={tab.label}
-              disabled={isLocked}
-              aria-disabled={isLocked}
-              aria-selected={isActive}
-              onClick={() => handleTabClick(tab.index)}
-            >
-              <span>{tab.index + 1}</span>
-              {tab.label}
-            </button>
-          );
-        })}
-      </section>
+      {hasAuthorMode ? (
+        <>
+          <section className="publish-tabs" aria-label="Publish steps">
+            {tabs.map((tab) => {
+              const isLocked = tab.index > maxUnlocked;
+              const isActive = tab.index === currentStep;
+              return (
+                <button
+                  className={`publish-tab ${isActive ? "active" : ""}`.trim()}
+                  type="button"
+                  key={tab.label}
+                  disabled={isLocked}
+                  aria-disabled={isLocked}
+                  aria-selected={isActive}
+                  onClick={() => handleTabClick(tab.index)}
+                >
+                  <span>{tab.index + 1}</span>
+                  {tab.label}
+                </button>
+              );
+            })}
+          </section>
 
-      <section className="publish-card publish-details" hidden={currentStep !== 0}>
+          <section className="publish-card publish-details" hidden={currentStep !== 0}>
         <div className="publish-card-header">
           <h2>{steps[0].title}</h2>
           <p>{steps[0].subtitle}</p>
@@ -224,9 +252,9 @@ export default function Publish() {
             </button>
           </div>
         </form>
-      </section>
+          </section>
 
-      <section className="publish-card publish-content" hidden={currentStep !== 1}>
+          <section className="publish-card publish-content" hidden={currentStep !== 1}>
         <div className="publish-card-header">
           <h2>{steps[1].title}</h2>
           <p>{steps[1].subtitle}</p>
@@ -275,9 +303,9 @@ export default function Publish() {
             </button>
           </div>
         </form>
-      </section>
+          </section>
 
-      <section className="publish-card publish-pricing" hidden={currentStep !== 2}>
+          <section className="publish-card publish-pricing" hidden={currentStep !== 2}>
         <div className="publish-card-header">
           <h2>{steps[2].title}</h2>
           <p>{steps[2].subtitle}</p>
@@ -325,7 +353,16 @@ export default function Publish() {
             </button>
           </div>
         </form>
-      </section>
+          </section>
+        </>
+      ) : (
+        <section className="publish-card">
+          <div className="publish-card-header">
+            <h2>Author Mode required</h2>
+            <p>Switch your profile to Author Mode to unlock the publishing setup form.</p>
+          </div>
+        </section>
+      )}
     </main>
   );
 }
