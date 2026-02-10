@@ -3823,6 +3823,10 @@ body.chat-overlay-open {
   cursor: pointer;
 }
 
+.waffle-signout {
+  color: var(--accent);
+}
+
 .waffle-dropdown a:hover,
 .waffle-signout:hover {
   background: rgba(255, 255, 255, 0.1);
