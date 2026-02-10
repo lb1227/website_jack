@@ -2635,6 +2635,7 @@ body.creator-fullscreen-open {
   background: rgba(7, 9, 15, 0.92);
   backdrop-filter: blur(4px);
   z-index: 70;
+  overflow: hidden;
 }
 
 .chat-shell {
@@ -3061,6 +3062,7 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell--studio {
+  position: absolute;
   width: min(92vw, 1400px);
   max-width: min(92vw, 1400px);
   height: 100vh;
@@ -3072,6 +3074,14 @@ body.creator-fullscreen-open {
   background: rgba(12, 14, 20, 0.9);
   padding: 16px 24px;
   gap: 18px;
+}
+
+.chat-shell-header--draggable {
+  cursor: grab;
+}
+
+.chat-shell-header--draggable:active {
+  cursor: grabbing;
 }
 
 .chat-shell-header-actions {

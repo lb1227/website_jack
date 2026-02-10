@@ -135,7 +135,10 @@ export default function ChatOverlay() {
   const [spacesWidth, setSpacesWidth] = useState(300);
   const [conversationsWidth, setConversationsWidth] = useState(320);
   const [dragInfo, setDragInfo] = useState(null);
+  const [shellPosition, setShellPosition] = useState({ left: null, top: null });
+  const [shellDragInfo, setShellDragInfo] = useState(null);
   const shellBodyRef = useRef(null);
+  const shellRef = useRef(null);
   const feedRef = useRef(null);
 
   const [messagesByServer, setMessagesByServer] = useState(() =>
@@ -225,17 +228,52 @@ export default function ChatOverlay() {
     };
   }, [conversationsWidth, dragInfo, spacesWidth]);
 
+  useEffect(() => {
+    if (!isOpen || shellPosition.left !== null || shellPosition.top !== null) return;
+
+    const shellElement = shellRef.current;
+    if (!shellElement) return;
+
+    const shellWidth = shellElement.offsetWidth;
+    const shellHeight = shellElement.offsetHeight;
+    setShellPosition({
+      left: Math.max((window.innerWidth - shellWidth) / 2, 0),
+      top: Math.max((window.innerHeight - shellHeight) / 2, 0),
+    });
+  }, [isOpen, shellPosition.left, shellPosition.top]);
+
+  useEffect(() => {
+    if (!shellDragInfo) return;
+
+    const handlePointerMove = (event) => {
+      const shellElement = shellRef.current;
+      if (!shellElement) return;
+
+      const maxLeft = Math.max(window.innerWidth - shellElement.offsetWidth, 0);
+      const maxTop = Math.max(window.innerHeight - shellElement.offsetHeight, 0);
+      const nextLeft = Math.min(Math.max(shellDragInfo.startLeft + event.clientX - shellDragInfo.startX, 0), maxLeft);
+      const nextTop = Math.min(Math.max(shellDragInfo.startTop + event.clientY - shellDragInfo.startY, 0), maxTop);
+
+      setShellPosition({ left: nextLeft, top: nextTop });
+    };
+
+    const handlePointerUp = () => {
+      setShellDragInfo(null);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, [shellDragInfo]);
+
   const handleOverlayClick = (event) => {
     if (event.target === event.currentTarget) {
       setIsOpen(false);
     }
-  };
-
-  const scrollPane = (direction) => {
-    const shellBody = shellBodyRef.current;
-    if (!shellBody) return;
-    const scrollDistance = Math.max(shellBody.clientWidth * 0.55, 320);
-    shellBody.scrollBy({ left: direction * scrollDistance, behavior: "smooth" });
   };
 
   const handleSubmit = (event) => {
@@ -262,8 +300,32 @@ export default function ChatOverlay() {
       </button>
       {isOpen ? (
         <div className="chat-overlay" onClick={handleOverlayClick}>
-          <div className="chat-shell chat-shell--studio" role="dialog" aria-modal="true" aria-label="PensUp chat">
-            <header className="chat-shell-header chat-shell-header--studio">
+          <div
+            className="chat-shell chat-shell--studio"
+            role="dialog"
+            aria-modal="true"
+            aria-label="PensUp chat"
+            ref={shellRef}
+            style={{
+              left: shellPosition.left !== null ? `${shellPosition.left}px` : undefined,
+              top: shellPosition.top !== null ? `${shellPosition.top}px` : undefined,
+            }}
+          >
+            <header
+              className="chat-shell-header chat-shell-header--studio chat-shell-header--draggable"
+              onPointerDown={(event) => {
+                if (event.target.closest("button, input, textarea, a")) return;
+
+                event.preventDefault();
+                const shellRect = shellRef.current?.getBoundingClientRect();
+                setShellDragInfo({
+                  startX: event.clientX,
+                  startY: event.clientY,
+                  startLeft: shellRect?.left ?? shellPosition.left ?? 0,
+                  startTop: shellRect?.top ?? shellPosition.top ?? 0,
+                });
+              }}
+            >
               <div>
                 <p className="chat-shell-title">Studio Inbox</p>
                 <p className="chat-shell-subtitle">Drafts, collabs, and creative sprints in one place.</p>
@@ -274,12 +336,6 @@ export default function ChatOverlay() {
                 </button>
                 <button className="chat-shell-pill" type="button">
                   Activity: Live
-                </button>
-                <button className="chat-shell-pill" type="button" onClick={() => scrollPane(-1)}>
-                  ← Panels
-                </button>
-                <button className="chat-shell-pill" type="button" onClick={() => scrollPane(1)}>
-                  Panels →
                 </button>
                 <button
                   className="chat-shell-close"
