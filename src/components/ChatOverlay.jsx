@@ -5,7 +5,7 @@ const SERVERS = [
     id: "direct",
     title: "Direct Messages",
     status: "4 new",
-    logo: "PU",
+    logo: "DM",
     channels: [
       { id: "friends", label: "friends", unread: true },
       { id: "requests", label: "message-requests" },
@@ -82,42 +82,6 @@ const SERVERS = [
     messages: [
       { author: "Mira", text: "Loved the pacing in act two — we should chat." },
       { author: "You", text: "Thanks! I can review your notes after lunch." },
-    ],
-  },
-  {
-    id: "jun-park",
-    title: "Jun Park",
-    status: "Typing...",
-    logo: "JP",
-    channels: [
-      { id: "profile", label: "profile" },
-      { id: "media", label: "media" },
-    ],
-    members: [
-      { id: "jun", name: "Jun Park", status: "online" },
-      { id: "you", name: "You", status: "idle" },
-    ],
-    messages: [
-      { author: "Jun", text: "Are you open to a crossover collab?" },
-      { author: "You", text: "Absolutely — send me the outline when ready." },
-    ],
-  },
-  {
-    id: "yara-bell",
-    title: "Yara Bell",
-    status: "Online",
-    logo: "YB",
-    channels: [
-      { id: "creative", label: "creative" },
-      { id: "drafts", label: "drafts" },
-    ],
-    members: [
-      { id: "yara", name: "Yara Bell", status: "online" },
-      { id: "you", name: "You", status: "offline" },
-    ],
-    messages: [
-      { author: "Yara", text: "Just shared the concept art in the drive." },
-      { author: "You", text: "It looks stunning! I’ll reply with notes soon." },
     ],
   },
 ];
