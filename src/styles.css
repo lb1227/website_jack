@@ -2017,6 +2017,46 @@ input {
   justify-content: center;
 }
 
+.profile-action-menu {
+  position: relative;
+}
+
+.profile-more-btn {
+  font-size: 1.45rem;
+  line-height: 1;
+  padding-bottom: 4px;
+}
+
+.profile-action-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 3;
+  min-width: 180px;
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 15, 15, 0.96);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
+.profile-action-dropdown button {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9rem;
+  text-align: left;
+  border-radius: 8px;
+  padding: 9px 10px;
+  cursor: pointer;
+}
+
+.profile-action-dropdown button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .profile-bottom-nav {
   width: min(600px, 100%);
   margin: 0 auto;

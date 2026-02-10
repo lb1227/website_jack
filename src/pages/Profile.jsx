@@ -115,6 +115,9 @@ export default function Profile() {
   const [authMode, setAuthMode] = useState("signin");
   const [profileType, setProfileType] = useState("reader");
   const [isAuthorApproved, setIsAuthorApproved] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [creatorActionStatus, setCreatorActionStatus] = useState("");
+  const userMenuRef = useRef(null);
   const avatarInputRef = useRef(null);
   const backgroundInputRef = useRef(null);
   const creatorProfile = useMemo(() => creatorProfileById(creatorId), [creatorId]);
@@ -145,7 +148,22 @@ export default function Profile() {
     setProfileType("author");
     setIsAuthorApproved(true);
     setStatus("");
+    setIsUserMenuOpen(false);
+    setCreatorActionStatus("");
   }, [isViewingCreator]);
+
+  useEffect(() => {
+    if (!isUserMenuOpen || typeof window === "undefined") {
+      return;
+    }
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
+  }, [isUserMenuOpen]);
 
   useEffect(() => {
     if (location.state?.authMode === "signin") {
@@ -481,6 +499,11 @@ export default function Profile() {
     broadcastAuth(false);
   };
 
+  const handleCreatorMenuAction = (actionLabel) => {
+    setCreatorActionStatus(`${actionLabel} selected.`);
+    setIsUserMenuOpen(false);
+  };
+
   const displayProfile = isViewingCreator ? creatorProfile : profile;
   const isLocked = !isAuthenticated || isViewingCreator;
   const activeAvatar = isEditing ? formValues.avatar : displayProfile?.avatar;
@@ -657,7 +680,7 @@ export default function Profile() {
                 </span>
               ))}
             </div>
-           <div className="profile-actions">
+            <div className="profile-actions">
               {isViewingCreator ? (
                 <>
                   <button className="btn" type="button" data-profile-follow>
@@ -666,6 +689,46 @@ export default function Profile() {
                   <button className="btn glow-danger" type="button" data-profile-subscribe>
                     Subscribe
                   </button>
+                  <div className="profile-action-menu" ref={userMenuRef}>
+                    <button
+                      className="icon-btn profile-more-btn"
+                      type="button"
+                      aria-label="More options"
+                      aria-expanded={isUserMenuOpen}
+                      data-profile-more
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setIsUserMenuOpen((current) => !current);
+                      }}
+                    >
+                      ⋯
+                    </button>
+                    {isUserMenuOpen ? (
+                      <div className="profile-action-dropdown" role="menu">
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => handleCreatorMenuAction("Report user")}
+                        >
+                          Report user
+                        </button>
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => handleCreatorMenuAction("Hide")}
+                        >
+                          Hide
+                        </button>
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => handleCreatorMenuAction("Block")}
+                        >
+                          Block
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
                 </>
               ) : (
                 <>
@@ -690,7 +753,7 @@ export default function Profile() {
               )}
             </div>
             <p className="profile-status" data-profile-status>
-              {isViewingCreator ? "Creator profile preview." : statusMessage}
+              {isViewingCreator ? creatorActionStatus || "Creator profile preview." : statusMessage}
             </p>
           </div>
         </div>
