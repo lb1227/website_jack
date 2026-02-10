@@ -123,10 +123,19 @@ const SERVERS = [
 ];
 
 export default function ChatOverlay() {
+  const CHAT_SPLITTER_WIDTH = 10;
+  const CHAT_DETAIL_MIN_WIDTH = 360;
+  const CHAT_SPACES_MIN_WIDTH = 220;
+  const CHAT_CONVERSATIONS_MIN_WIDTH = 220;
+
   const [isOpen, setIsOpen] = useState(false);
   const [activeServerId, setActiveServerId] = useState(SERVERS[0].id);
   const [activeChannelId, setActiveChannelId] = useState(SERVERS[0].channels[0].id);
   const [messageDraft, setMessageDraft] = useState("");
+  const [spacesWidth, setSpacesWidth] = useState(300);
+  const [conversationsWidth, setConversationsWidth] = useState(320);
+  const [dragInfo, setDragInfo] = useState(null);
+  const shellBodyRef = useRef(null);
   const feedRef = useRef(null);
 
   const [messagesByServer, setMessagesByServer] = useState(() =>
@@ -173,6 +182,48 @@ export default function ChatOverlay() {
       feedRef.current.scrollTop = feedRef.current.scrollHeight;
     }
   }, [activeServerId, activeChannelId, messagesByServer]);
+
+  useEffect(() => {
+    if (!dragInfo) return;
+
+    const handlePointerMove = (event) => {
+      const shellBodyWidth = shellBodyRef.current?.clientWidth;
+      if (!shellBodyWidth) return;
+
+      const deltaX = event.clientX - dragInfo.startX;
+      if (dragInfo.type === "spaces") {
+        const maxSpacesWidth =
+          shellBodyWidth - conversationsWidth - CHAT_DETAIL_MIN_WIDTH - CHAT_SPLITTER_WIDTH * 2;
+        const nextSpacesWidth = Math.max(
+          CHAT_SPACES_MIN_WIDTH,
+          Math.min(maxSpacesWidth, dragInfo.startSpacesWidth + deltaX)
+        );
+        setSpacesWidth(nextSpacesWidth);
+      }
+
+      if (dragInfo.type === "conversations") {
+        const maxConversationsWidth =
+          shellBodyWidth - spacesWidth - CHAT_DETAIL_MIN_WIDTH - CHAT_SPLITTER_WIDTH * 2;
+        const nextConversationsWidth = Math.max(
+          CHAT_CONVERSATIONS_MIN_WIDTH,
+          Math.min(maxConversationsWidth, dragInfo.startConversationsWidth + deltaX)
+        );
+        setConversationsWidth(nextConversationsWidth);
+      }
+    };
+
+    const handlePointerUp = () => {
+      setDragInfo(null);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, [conversationsWidth, dragInfo, spacesWidth]);
 
   const handleOverlayClick = (event) => {
     if (event.target === event.currentTarget) {
@@ -227,7 +278,15 @@ export default function ChatOverlay() {
                 </button>
               </div>
             </header>
-            <div className="chat-shell-body chat-shell-body--studio">
+            <div
+              className={`chat-shell-body chat-shell-body--studio${dragInfo ? " is-resizing" : ""}`}
+              ref={shellBodyRef}
+              style={{
+                "--chat-spaces-width": `${spacesWidth}px`,
+                "--chat-conversations-width": `${conversationsWidth}px`,
+                "--chat-detail-min-width": `${CHAT_DETAIL_MIN_WIDTH}px`,
+              }}
+            >
               <aside className="chat-spaces">
                 <div className="chat-spaces-header">
                   <p>Spaces</p>
@@ -261,6 +320,20 @@ export default function ChatOverlay() {
                   <button type="button">Manage</button>
                 </div>
               </aside>
+              <div
+                className="chat-column-resizer"
+                role="separator"
+                aria-orientation="vertical"
+                aria-label="Resize spaces panel"
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  setDragInfo({
+                    type: "spaces",
+                    startX: event.clientX,
+                    startSpacesWidth: spacesWidth,
+                  });
+                }}
+              />
               <section className="chat-conversations">
                 <div className="chat-conversations-header">
                   <div>
@@ -296,6 +369,20 @@ export default function ChatOverlay() {
                   <button type="button">Update status</button>
                 </div>
               </section>
+              <div
+                className="chat-column-resizer"
+                role="separator"
+                aria-orientation="vertical"
+                aria-label="Resize categories panel"
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  setDragInfo({
+                    type: "conversations",
+                    startX: event.clientX,
+                    startConversationsWidth: conversationsWidth,
+                  });
+                }}
+              />
               <section className="chat-detail">
                 <div className="chat-detail-header">
                   <div>
