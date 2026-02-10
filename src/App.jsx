@@ -7,6 +7,9 @@ import Publish from "./pages/Publish.jsx";
 import Reading from "./pages/Reading.jsx";
 import Profile from "./pages/Profile.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
+import Lists from "./pages/Lists.jsx";
+import Bookmarks from "./pages/Bookmarks.jsx";
+import History from "./pages/History.jsx";
 
 export default function App() {
   return (
@@ -16,6 +19,9 @@ export default function App() {
         <Route path="/feed" element={<Feed />} />
         <Route path="/reading" element={<Reading />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/lists" element={<Lists />} />
+        <Route path="/bookmarks" element={<Bookmarks />} />
+        <Route path="/history" element={<History />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/creator/:creatorId" element={<Profile />} />
         <Route path="/publish" element={<Publish />} />

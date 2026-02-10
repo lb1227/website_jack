@@ -3770,3 +3770,103 @@ body.chat-overlay-open {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+.waffle-menu {
+  position: relative;
+}
+
+.waffle-button {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.waffle-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.waffle-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.waffle-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 180px;
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(12, 12, 12, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.45);
+}
+
+.waffle-dropdown a,
+.waffle-signout {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  font: inherit;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.waffle-dropdown a:hover,
+.waffle-signout:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.utility-page-section {
+  padding: 24px 48px 56px;
+}
+
+.utility-page-section h2 {
+  margin-bottom: 16px;
+}
+
+.list-grid,
+.bookmark-list {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.list-card,
+.bookmark-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.list-card p,
+.bookmark-card p {
+  color: var(--muted);
+}
+
+.history-timeline {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.history-timeline li {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
