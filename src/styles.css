@@ -1710,6 +1710,7 @@ input {
   display: grid;
   gap: 20px;
   align-items: start;
+  position: relative;
 }
 
 .profile-hero-layout > * {
