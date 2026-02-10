@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 
 const LEADERBOARD_ENTRIES = [
   {
@@ -66,107 +66,19 @@ const LEADERBOARD_ENTRIES = [
   },
 ];
 
-const CATEGORY_LABELS = ["All", "Fiction", "Sci-fi", "Romance", "Mystery"];
-
-const SPOTLIGHT_CARDS = [
-  {
-    title: "Reader Satisfaction",
-    value: "96%",
-    detail: "Average completion rate on top 10 drops.",
-  },
-  {
-    title: "Creator Momentum",
-    value: "8.4%",
-    detail: "Median weekly growth for featured writers.",
-  },
-  {
-    title: "Fan Engagement",
-    value: "42k",
-    detail: "Weekly live chat reactions across the list.",
-  },
-];
-
 export default function Leaderboard() {
-  const [activeCategory, setActiveCategory] = useState(CATEGORY_LABELS[0]);
-
-  const entries = useMemo(() => {
-    if (activeCategory === "All") {
-      return LEADERBOARD_ENTRIES;
-    }
-    return LEADERBOARD_ENTRIES.filter((entry) => entry.genre.includes(activeCategory));
-  }, [activeCategory]);
-
   return (
     <main className="leaderboard-page">
-      <section className="leaderboard-hero">
-        <div>
-          <p className="leaderboard-tag">Leaderboard</p>
-          <h1>Creator League Table</h1>
-          <p className="leaderboard-subtitle">
-            Weekly rankings across story quality, retention, and reader delight. Tap into the
-            momentum and watch the top creators climb.
-          </p>
-          <div className="leaderboard-actions">
-            <button className="btn glow-danger" type="button">
-              Follow top 10
-            </button>
-            <button className="btn ghost" type="button">
-              View methodology
-            </button>
-          </div>
-        </div>
-        <div className="leaderboard-hero-card">
-          <h2>📈 Momentum index</h2>
-          <p>Updated 4 minutes ago</p>
-          <div className="leaderboard-metric">
-            <span>Average rating</span>
-            <strong>9.3</strong>
-          </div>
-          <div className="leaderboard-metric">
-            <span>New followers today</span>
-            <strong>+3,420</strong>
-          </div>
-          <div className="leaderboard-metric">
-            <span>Episodes released</span>
-            <strong>52</strong>
-          </div>
-        </div>
-      </section>
-
-      <section className="leaderboard-stats">
-        {SPOTLIGHT_CARDS.map((card) => (
-          <article key={card.title} className="leaderboard-stat-card">
-            <p>{card.title}</p>
-            <h3>{card.value}</h3>
-            <span>{card.detail}</span>
-          </article>
-        ))}
-      </section>
-
       <section className="leaderboard-table">
         <div className="leaderboard-table-header">
           <div>
             <h2>Top creators this week</h2>
-            <p>Based on reader completion, reviews, and drop cadence.</p>
-          </div>
-          <div className="leaderboard-filters" role="tablist" aria-label="Leaderboard categories">
-            {CATEGORY_LABELS.map((label) => (
-              <button
-                key={label}
-                type="button"
-                className={activeCategory === label ? "active" : ""}
-                role="tab"
-                aria-selected={activeCategory === label}
-                onClick={() => setActiveCategory(label)}
-              >
-                {label}
-              </button>
-            ))}
+            <p>Only showing this week's top creators.</p>
           </div>
         </div>
 
         <div className="leaderboard-rows">
-          {entries.map((entry) => (
+          {LEADERBOARD_ENTRIES.map((entry) => (
             <article key={entry.rank} className="leaderboard-row">
               <div className="leaderboard-rank">#{entry.rank}</div>
               <div className="leaderboard-info">
