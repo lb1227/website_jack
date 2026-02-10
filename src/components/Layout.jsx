@@ -4,6 +4,7 @@ import ChatOverlay from "./ChatOverlay.jsx";
 
 const AUTH_KEY = "pensup.authenticated";
 const PROFILE_KEY = "pensup.profile";
+const INTRO_MODAL_KEY = "pensup.introSeen";
 
 export default function Layout() {
   const location = useLocation();
@@ -12,6 +13,7 @@ export default function Layout() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isWaffleOpen, setIsWaffleOpen] = useState(false);
+  const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -31,6 +33,16 @@ export default function Layout() {
     };
     window.addEventListener("pensup-auth", handleAuthEvent);
     return () => window.removeEventListener("pensup-auth", handleAuthEvent);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const introSeen = window.localStorage.getItem(INTRO_MODAL_KEY) === "true";
+    if (!introSeen) {
+      setIsIntroModalOpen(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -75,6 +87,13 @@ export default function Layout() {
       return;
     }
     navigate("/profile", { state: { authMode: "signin" } });
+  };
+
+  const handleIntroDismiss = () => {
+    setIsIntroModalOpen(false);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(INTRO_MODAL_KEY, "true");
+    }
   };
 
   return (
@@ -148,6 +167,31 @@ export default function Layout() {
           )}
         </div>
       </header>
+
+      {isIntroModalOpen ? (
+        <div className="intro-modal-backdrop" role="presentation" onClick={handleIntroDismiss}>
+          <div
+            aria-labelledby="intro-modal-title"
+            aria-modal="true"
+            className="intro-modal"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+          >
+            <h2 id="intro-modal-title">Welcome to PensUp</h2>
+            <p>
+              PensUp is a story discovery platform where readers can explore trending fiction, follow
+              favorite creators, and support premium releases.
+            </p>
+            <p>
+              <strong>Our mission:</strong> help great storytellers grow sustainable careers while giving
+              readers a richer, community-driven reading experience.
+            </p>
+            <button className="btn glow-danger intro-modal-button" onClick={handleIntroDismiss} type="button">
+              Got it
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       <Outlet context={{ searchQuery }} />
 
