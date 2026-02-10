@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-do
 import ChatOverlay from "./ChatOverlay.jsx";
 
 const AUTH_KEY = "pensup.authenticated";
+const PROFILE_KEY = "pensup.profile";
 
 export default function Layout() {
   const location = useLocation();
@@ -63,9 +64,11 @@ export default function Layout() {
     if (isAuthenticated) {
       if (typeof window !== "undefined") {
         window.localStorage.setItem(AUTH_KEY, "false");
+        window.localStorage.removeItem(PROFILE_KEY);
         window.dispatchEvent(
           new CustomEvent("pensup-auth", { detail: { authenticated: false } }),
         );
+        window.location.reload();
       }
       setIsAuthenticated(false);
       setIsWaffleOpen(false);
