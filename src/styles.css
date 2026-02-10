@@ -3874,3 +3874,37 @@ body.chat-overlay-open {
   border-radius: 12px;
   padding: 12px 14px;
 }
+
+.intro-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+  padding: 24px;
+}
+
+.intro-modal {
+  width: min(620px, 100%);
+  background: linear-gradient(160deg, rgba(24, 24, 24, 0.96), rgba(12, 12, 12, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.45);
+}
+
+.intro-modal h2 {
+  font-size: 1.8rem;
+  margin-bottom: 14px;
+}
+
+.intro-modal p {
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.intro-modal-button {
+  margin-top: 10px;
+}
