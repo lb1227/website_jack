@@ -179,12 +179,10 @@ export default function Layout() {
           >
             <h2 id="intro-modal-title">Welcome to PensUp</h2>
             <p>
-              PensUp is a story discovery platform where readers can explore trending fiction, follow
-              favorite creators, and support premium releases.
+              make something up jack
             </p>
             <p>
-              <strong>Our mission:</strong> help great storytellers grow sustainable careers while giving
-              readers a richer, community-driven reading experience.
+              <strong>Our mission:</strong> the mission statement.
             </p>
             <button className="btn glow-danger intro-modal-button" onClick={handleIntroDismiss} type="button">
               Got it
