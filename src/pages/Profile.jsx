@@ -680,6 +680,44 @@ export default function Profile() {
                 </span>
               ))}
             </div>
+            {isViewingCreator ? (
+              <div className="profile-banner-menu" ref={userMenuRef}>
+                <button
+                  className="icon-btn profile-more-btn"
+                  type="button"
+                  aria-label="More options"
+                  aria-expanded={isUserMenuOpen}
+                  data-profile-more
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setIsUserMenuOpen((current) => !current);
+                  }}
+                >
+                  ⋯
+                </button>
+                {isUserMenuOpen ? (
+                  <div className="profile-action-dropdown" role="menu">
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={() => handleCreatorMenuAction("Report user")}
+                    >
+                      Report user
+                    </button>
+                    <button type="button" role="menuitem" onClick={() => handleCreatorMenuAction("Hide")}>
+                      Hide
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={() => handleCreatorMenuAction("Block")}
+                    >
+                      Block
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
             <div className="profile-actions">
               {isViewingCreator ? (
                 <>
@@ -689,46 +727,6 @@ export default function Profile() {
                   <button className="btn glow-danger" type="button" data-profile-subscribe>
                     Subscribe
                   </button>
-                  <div className="profile-action-menu" ref={userMenuRef}>
-                    <button
-                      className="icon-btn profile-more-btn"
-                      type="button"
-                      aria-label="More options"
-                      aria-expanded={isUserMenuOpen}
-                      data-profile-more
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setIsUserMenuOpen((current) => !current);
-                      }}
-                    >
-                      ⋯
-                    </button>
-                    {isUserMenuOpen ? (
-                      <div className="profile-action-dropdown" role="menu">
-                        <button
-                          type="button"
-                          role="menuitem"
-                          onClick={() => handleCreatorMenuAction("Report user")}
-                        >
-                          Report user
-                        </button>
-                        <button
-                          type="button"
-                          role="menuitem"
-                          onClick={() => handleCreatorMenuAction("Hide")}
-                        >
-                          Hide
-                        </button>
-                        <button
-                          type="button"
-                          role="menuitem"
-                          onClick={() => handleCreatorMenuAction("Block")}
-                        >
-                          Block
-                        </button>
-                      </div>
-                    ) : null}
-                  </div>
                 </>
               ) : (
                 <>

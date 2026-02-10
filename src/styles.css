@@ -7,6 +7,10 @@
   --muted: #b3b3b3;
   --accent: #e50914;
   --accent-soft: rgba(229, 9, 20, 0.2);
+
+  --profile-category-min-width: clamp(160px, 22vw, 260px);
+  --chat-spaces-min-width: clamp(220px, 24vw, 340px);
+  --chat-conversations-min-width: clamp(220px, 24vw, 340px);
 }
 
 * {
@@ -2017,8 +2021,11 @@ input {
   justify-content: center;
 }
 
-.profile-action-menu {
-  position: relative;
+.profile-banner-menu {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
 }
 
 .profile-more-btn {
@@ -2148,7 +2155,7 @@ input {
 
 .profile-category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--profile-category-min-width, 160px), 1fr));
   gap: 16px;
 }
 
@@ -3083,7 +3090,7 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell-body--studio {
-  grid-template-columns: .65fr .65fr 2fr;
+  grid-template-columns: minmax(var(--chat-spaces-min-width, 220px), 0.65fr) minmax(var(--chat-conversations-min-width, 220px), 0.65fr) minmax(0, 2fr);
   background: rgba(14, 16, 22, 0.95);
 }
 
