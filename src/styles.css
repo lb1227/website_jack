@@ -3122,7 +3122,8 @@ body.creator-fullscreen-open {
 .chat-spaces-list {
   display: grid;
   gap: 8px;
-  grid-auto-rows: minmax(54px, 54px);
+  grid-auto-rows: minmax(95px, 95px);
+  justify-items: start;
   overflow-y: auto;
 }
 
@@ -3138,7 +3139,8 @@ body.creator-fullscreen-open {
   align-items: center;
   cursor: pointer;
   text-align: left;
-  min-height: 54px;
+  width: 50%;
+  min-height: 95px;
 }
 
 .chat-space-card p {
@@ -3236,7 +3238,8 @@ body.creator-fullscreen-open {
   padding: 0 12px 12px;
   display: grid;
   gap: 8px;
-  grid-auto-rows: minmax(52px, 52px);
+  grid-auto-rows: minmax(91px, 91px);
+  justify-items: start;
   overflow-y: auto;
 }
 
@@ -3251,7 +3254,8 @@ body.creator-fullscreen-open {
   align-items: center;
   text-align: left;
   cursor: pointer;
-  min-height: 52px;
+  width: 50%;
+  min-height: 91px;
 }
 
 .chat-conversation-item p {
