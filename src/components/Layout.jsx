@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import ChatOverlay from "./ChatOverlay.jsx";
 
@@ -10,6 +10,8 @@ export default function Layout() {
   const isHome = location.pathname === "/";
   const [searchQuery, setSearchQuery] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isWaffleOpen, setIsWaffleOpen] = useState(false);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -30,6 +32,33 @@ export default function Layout() {
     return () => window.removeEventListener("pensup-auth", handleAuthEvent);
   }, []);
 
+  useEffect(() => {
+    const closeMenu = (event) => {
+      if (!menuRef.current || menuRef.current.contains(event.target)) {
+        return;
+      }
+      setIsWaffleOpen(false);
+    };
+
+    const closeMenuOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsWaffleOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", closeMenu);
+    document.addEventListener("keydown", closeMenuOnEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", closeMenu);
+      document.removeEventListener("keydown", closeMenuOnEscape);
+    };
+  }, []);
+
+  useEffect(() => {
+    setIsWaffleOpen(false);
+  }, [location.pathname]);
+
   const handleAuthClick = () => {
     if (isAuthenticated) {
       if (typeof window !== "undefined") {
@@ -39,6 +68,7 @@ export default function Layout() {
         );
       }
       setIsAuthenticated(false);
+      setIsWaffleOpen(false);
       return;
     }
     navigate("/profile", { state: { authMode: "signin" } });
@@ -76,9 +106,43 @@ export default function Layout() {
               />
             </div>
           ) : null}
-          <button className="btn glow-danger logout-button" type="button" onClick={handleAuthClick}>
-            {isAuthenticated ? "Sign out" : "Sign in"}
-          </button>
+          {isAuthenticated ? (
+            <div className="waffle-menu" ref={menuRef}>
+              <button
+                aria-expanded={isWaffleOpen}
+                aria-haspopup="menu"
+                aria-label="Open account menu"
+                className="waffle-button"
+                onClick={() => setIsWaffleOpen((currentValue) => !currentValue)}
+                type="button"
+              >
+                <span className="waffle-icon" aria-hidden="true">
+                  ⠿
+                </span>
+              </button>
+
+              {isWaffleOpen ? (
+                <div className="waffle-dropdown" role="menu">
+                  <NavLink role="menuitem" to="/lists">
+                    Lists
+                  </NavLink>
+                  <NavLink role="menuitem" to="/bookmarks">
+                    Bookmarks
+                  </NavLink>
+                  <NavLink role="menuitem" to="/history">
+                    History
+                  </NavLink>
+                  <button className="waffle-signout" onClick={handleAuthClick} role="menuitem" type="button">
+                    Sign out
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <button className="btn glow-danger logout-button" type="button" onClick={handleAuthClick}>
+              Sign in
+            </button>
+          )}
         </div>
       </header>
 
