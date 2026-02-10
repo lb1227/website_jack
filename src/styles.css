@@ -3061,8 +3061,8 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell--studio {
-  width: 60vw;
-  max-width: 60vw;
+  width: min(92vw, 1400px);
+  max-width: min(92vw, 1400px);
   height: 100vh;
   max-height: 100vh;
   background: radial-gradient(circle at top left, rgba(88, 101, 242, 0.18), transparent 55%), #14151b;
@@ -3096,8 +3096,11 @@ body.creator-fullscreen-open {
     10px
     minmax(var(--chat-conversations-min-width, 220px), var(--chat-conversations-width, 320px))
     10px
-    minmax(var(--chat-detail-min-width, 360px), 1fr);
+    minmax(var(--chat-detail-min-width, 360px), min(62vw, 860px));
   background: rgba(14, 16, 22, 0.95);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
 }
 
 .chat-shell-body--studio.is-resizing {
@@ -3138,6 +3141,7 @@ body.creator-fullscreen-open {
   gap: 16px;
   min-height: 0;
   background: rgba(10, 11, 16, 0.85);
+  scroll-snap-align: start;
 }
 
 .chat-spaces-header {
@@ -3226,6 +3230,7 @@ body.creator-fullscreen-open {
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(18, 20, 26, 0.9);
   min-height: 0;
+  scroll-snap-align: start;
 }
 
 .chat-conversations-header {
@@ -3332,6 +3337,7 @@ body.creator-fullscreen-open {
   padding: 20px 24px;
   gap: 16px;
   min-height: 0;
+  scroll-snap-align: start;
 }
 
 .chat-detail-header {

@@ -231,6 +231,13 @@ export default function ChatOverlay() {
     }
   };
 
+  const scrollPane = (direction) => {
+    const shellBody = shellBodyRef.current;
+    if (!shellBody) return;
+    const scrollDistance = Math.max(shellBody.clientWidth * 0.55, 320);
+    shellBody.scrollBy({ left: direction * scrollDistance, behavior: "smooth" });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const trimmedMessage = messageDraft.trim();
@@ -267,6 +274,12 @@ export default function ChatOverlay() {
                 </button>
                 <button className="chat-shell-pill" type="button">
                   Activity: Live
+                </button>
+                <button className="chat-shell-pill" type="button" onClick={() => scrollPane(-1)}>
+                  ← Panels
+                </button>
+                <button className="chat-shell-pill" type="button" onClick={() => scrollPane(1)}>
+                  Panels →
                 </button>
                 <button
                   className="chat-shell-close"
