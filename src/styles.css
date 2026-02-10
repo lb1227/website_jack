@@ -3091,43 +3091,8 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell-body--studio {
-  grid-template-columns:
-    minmax(var(--chat-spaces-min-width, 220px), var(--chat-spaces-width, 300px))
-    10px
-    minmax(var(--chat-conversations-min-width, 220px), var(--chat-conversations-width, 320px))
-    10px
-    minmax(var(--chat-detail-min-width, 360px), 1fr);
+  grid-template-columns: minmax(var(--chat-spaces-min-width, 220px), 0.65fr) minmax(var(--chat-conversations-min-width, 220px), 0.65fr) minmax(0, 2fr);
   background: rgba(14, 16, 22, 0.95);
-}
-
-.chat-shell-body--studio.is-resizing {
-  cursor: col-resize;
-  user-select: none;
-}
-
-.chat-column-resizer {
-  width: 10px;
-  cursor: col-resize;
-  position: relative;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.chat-column-resizer::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 16px;
-  bottom: 16px;
-  width: 2px;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.15);
-  transition: background 0.2s ease;
-}
-
-.chat-column-resizer:hover::before,
-.chat-shell-body--studio.is-resizing .chat-column-resizer::before {
-  background: rgba(255, 255, 255, 0.35);
 }
 
 .chat-spaces {
@@ -3441,10 +3406,6 @@ body.chat-overlay-open {
 @media (max-width: 900px) {
   .chat-shell-body--studio {
     grid-template-columns: 1fr;
-  }
-
-  .chat-column-resizer {
-    display: none;
   }
 
   .chat-spaces {
