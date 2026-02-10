@@ -123,17 +123,19 @@ export default function Feed() {
             ))}
           </div>
 
-          <div className="feed-panel feed-whats-happening">
-            <h2>What’s happening</h2>
-            <ul>
-              {TRENDING_TOPICS.map((topic) => (
-                <li key={topic.label}>
-                  <span>{topic.label}</span>
-                  <small>{topic.subtitle}</small>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {activeTab === "Trending" && (
+            <div className="feed-panel feed-whats-happening">
+              <h2>What’s happening</h2>
+              <ul>
+                {TRENDING_TOPICS.map((topic) => (
+                  <li key={topic.label}>
+                    <span>{topic.label}</span>
+                    <small>{topic.subtitle}</small>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="feed-stream">
             {feedItems.map((item) => (
