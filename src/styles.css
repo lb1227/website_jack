@@ -8,7 +8,8 @@
   --accent: #e50914;
   --accent-soft: rgba(229, 9, 20, 0.2);
 
-  --profile-category-min-width: clamp(160px, 22vw, 260px);
+  --profile-card-min-width: clamp(220px, 24vw, 280px);
+  --profile-category-min-width: var(--profile-card-min-width);
   --chat-spaces-min-width: clamp(220px, 24vw, 340px);
   --chat-conversations-min-width: clamp(220px, 24vw, 340px);
 }
@@ -2200,7 +2201,7 @@ input {
 
 .series-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--profile-card-min-width, 220px), 1fr));
   gap: 16px;
 }
 
