@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
+const PROFILE_TYPE_KEY = "pensup.profileType";
 
 const PROFILE_TYPE_KEY = "pensup.profileType";
 
@@ -28,7 +30,7 @@ export default function Publish() {
   const [cover, setCover] = useState("");
   const [hasAuthorMode, setHasAuthorMode] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
@@ -39,7 +41,16 @@ export default function Publish() {
 
     syncAuthorMode();
     window.addEventListener("storage", syncAuthorMode);
-    return () => window.removeEventListener("storage", syncAuthorMode);
+    window.addEventListener("focus", syncAuthorMode);
+    window.addEventListener("pageshow", syncAuthorMode);
+    document.addEventListener("visibilitychange", syncAuthorMode);
+
+    return () => {
+      window.removeEventListener("storage", syncAuthorMode);
+      window.removeEventListener("focus", syncAuthorMode);
+      window.removeEventListener("pageshow", syncAuthorMode);
+      document.removeEventListener("visibilitychange", syncAuthorMode);
+    };
   }, []);
 
   const tabs = useMemo(
