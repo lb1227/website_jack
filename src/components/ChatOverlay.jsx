@@ -208,15 +208,8 @@ export default function ChatOverlay() {
             <header className="chat-shell-header chat-shell-header--studio">
               <div>
                 <p className="chat-shell-title">Studio Inbox</p>
-                <p className="chat-shell-subtitle">Drafts, collabs, and creative sprints in one place.</p>
               </div>
               <div className="chat-shell-header-actions">
-                <button className="chat-shell-pill" type="button">
-                  Focus: All
-                </button>
-                <button className="chat-shell-pill" type="button">
-                  Activity: Live
-                </button>
                 <button
                   className="chat-shell-close"
                   type="button"
