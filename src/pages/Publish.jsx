@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 
 const PROFILE_TYPE_KEY = "pensup.profileType";
 
+const PROFILE_TYPE_KEY = "pensup.profileType";
+
 const steps = [
   {
     id: "details",
