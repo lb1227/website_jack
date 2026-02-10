@@ -3398,7 +3398,7 @@ body.chat-overlay-open {
 
 .feed-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.6fr);
+  grid-template-columns: 1fr;
   gap: 32px;
 }
 
@@ -3407,17 +3407,19 @@ body.chat-overlay-open {
   flex-direction: column;
   gap: 24px;
   align-items: center;
+  width: 100%;
 }
 
 .feed-tabs {
   display: inline-flex;
   background: rgba(19, 21, 26, 0.75);
   border-radius: 999px;
-  padding: 6px;
-  gap: 6px;
-  width: fit-content;
+  padding: 8px;
+  gap: 8px;
+  width: min(860px, 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   margin: 0 auto;
+  justify-content: center;
 }
 
 .feed-tab {
@@ -3429,6 +3431,8 @@ body.chat-overlay-open {
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
 }
 
 .feed-tab.active {
@@ -3441,7 +3445,7 @@ body.chat-overlay-open {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: min(760px, 100%);
+  width: min(860px, 100%);
 }
 
 .feed-card {
@@ -3511,12 +3515,6 @@ body.chat-overlay-open {
   transform: translateY(-1px);
 }
 
-.feed-aside {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
 .feed-panel {
   padding: 20px;
   border-radius: 20px;
@@ -3547,20 +3545,8 @@ body.chat-overlay-open {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.feed-links {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.feed-links button {
-  border: none;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  text-align: left;
-  cursor: pointer;
+.feed-happening-panel {
+  width: min(860px, 100%);
 }
 
 .leaderboard-page {
@@ -3780,19 +3766,13 @@ body.chat-overlay-open {
   }
 }
 
-@media (max-width: 960px) {
-  .feed-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .feed-aside {
-    order: -1;
-  }
-}
-
 @media (max-width: 720px) {
   .feed-tabs {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .feed-tab {
+    padding: 10px 12px;
   }
 }
