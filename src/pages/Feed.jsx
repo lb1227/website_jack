@@ -123,18 +123,6 @@ export default function Feed() {
             ))}
           </div>
 
-          <div className="feed-panel feed-happening-panel">
-            <h2>What’s happening</h2>
-            <ul>
-              {TRENDING_TOPICS.map((topic) => (
-                <li key={topic.label}>
-                  <span>{topic.label}</span>
-                  <small>{topic.subtitle}</small>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           <div className="feed-stream">
             {feedItems.map((item) => (
               <article className="feed-card" key={item.id}>
@@ -162,6 +150,29 @@ export default function Feed() {
             ))}
           </div>
         </section>
+
+        <aside className="feed-aside">
+          <div className="feed-panel">
+            <h2>What’s happening</h2>
+            <ul>
+              {TRENDING_TOPICS.map((topic) => (
+                <li key={topic.label}>
+                  <span>{topic.label}</span>
+                  <small>{topic.subtitle}</small>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="feed-panel">
+            <h2>Creator quick links</h2>
+            <div className="feed-links">
+              <button type="button">Start a thread</button>
+              <button type="button">Schedule a drop</button>
+              <button type="button">Share analytics</button>
+            </div>
+          </div>
+        </aside>
       </div>
     </main>
   );
