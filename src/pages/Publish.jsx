@@ -1,8 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-const PROFILE_TYPE_KEY = "pensup.profileType";
-
-const PROFILE_TYPE_KEY = "pensup.profileType";
 
 const steps = [
   {
@@ -36,7 +33,7 @@ export default function Publish() {
     }
 
     const syncAuthorMode = () => {
-      setHasAuthorMode(window.localStorage.getItem(PROFILE_TYPE_KEY) === "author");
+      setHasAuthorMode(window.localStorage.getItem("pensup.profileType") === "author");
     };
 
     syncAuthorMode();
