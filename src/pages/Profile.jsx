@@ -287,7 +287,6 @@ export default function Profile() {
     }
     return {
       label: "Reader profile",
-      description: "Track who you follow and join reader conversations.",
       counts: [
         { key: "followers", label: "Followers" },
         { key: "following", label: "Following" },
@@ -676,14 +675,13 @@ export default function Profile() {
             {isEditing ? (
               <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
                 <label className="profile-inline-field">
-                  <span>Display name</span>
+                  <span>Username</span>
                   <div className="profile-inline-input-with-color">
                     <input
                       type="text"
                       name="name"
                       data-profile-input="name"
-                      placeholder="Add your display name"
-                      maxLength={MAX_DISPLAY_NAME_CHARS}
+                      placeholder="Add your username"
                       value={formValues.name}
                       onChange={handleInputChange}
                       disabled={isLocked}
@@ -702,7 +700,7 @@ export default function Profile() {
                   </div>
                 </label>
                 <label className="profile-inline-field">
-                  <span>Genres & tags</span>
+                  <span>Tags</span>
                   <div className="profile-inline-input-with-color">
                     <input
                       type="text"
