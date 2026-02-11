@@ -925,6 +925,119 @@ input {
   font-size: 1.04rem;
 }
 
+
+.reading-tools .btn.active {
+  border-color: rgba(249, 115, 22, 0.85);
+  color: #ffd7b4;
+  background: rgba(249, 115, 22, 0.12);
+}
+
+.collection-picker {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(12, 12, 16, 0.62);
+  border-radius: 16px;
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.collection-picker-heading {
+  display: grid;
+  gap: 4px;
+}
+
+.collection-picker-heading h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.collection-picker-heading p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.collection-picker ul {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+.collection-item {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  padding: 8px 10px;
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.collection-item.selected {
+  border-color: rgba(249, 115, 22, 0.8);
+  background: rgba(249, 115, 22, 0.14);
+}
+
+.collection-cover {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+}
+
+.collection-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-name {
+  text-align: left;
+}
+
+.collection-check {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.collection-create {
+  display: grid;
+  gap: 10px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.collection-create h4 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.collection-create label {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.collection-create input {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text);
+  padding: 10px 12px;
+  font: inherit;
+}
+
 .reading-pane blockquote {
   border-left: 3px solid rgba(229, 9, 20, 0.7);
   background: rgba(255, 255, 255, 0.05);
