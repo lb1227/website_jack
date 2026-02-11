@@ -3179,8 +3179,9 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell--studio {
-  width: min(74vw, 1220px);
-  max-width: min(74vw, 1220px);
+  position: relative;
+  width: min(var(--chat-shell-width, 74vw), 1320px);
+  max-width: min(var(--chat-shell-width, 74vw), 1320px);
   height: 100vh;
   max-height: 100vh;
   border-radius: 0 28px 28px 0;
@@ -3245,9 +3246,52 @@ body.creator-fullscreen-open {
   transform: translateY(-1px);
 }
 
+
+
 .chat-shell-body--studio {
-  grid-template-columns: minmax(172px, 210px) minmax(280px, 340px) minmax(0, 1fr);
+  grid-template-columns:
+    minmax(150px, var(--chat-spaces-width, 210px))
+    10px
+    minmax(240px, var(--chat-conversations-width, 320px))
+    10px
+    minmax(340px, var(--chat-detail-width, 520px))
+    10px;
   background: rgba(7, 12, 22, 0.92);
+  overflow-x: auto;
+  align-items: stretch;
+}
+
+.chat-resize-handle {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(180deg, rgba(158, 180, 255, 0.1), rgba(132, 220, 230, 0.14));
+  border-radius: 999px;
+  cursor: ew-resize;
+  align-self: stretch;
+  width: 6px;
+  justify-self: center;
+  opacity: 0.55;
+  transition: opacity 0.18s ease, box-shadow 0.18s ease;
+}
+
+.chat-resize-handle:hover {
+  opacity: 1;
+  box-shadow: 0 0 0 1px rgba(176, 212, 255, 0.32);
+}
+
+.chat-shell-edge-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 8px;
+  height: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(180deg, rgba(190, 208, 255, 0.55), rgba(112, 228, 236, 0.55));
+  cursor: ew-resize;
+  z-index: 3;
 }
 
 .chat-spaces {
@@ -3323,7 +3367,7 @@ body.creator-fullscreen-open {
   text-overflow: ellipsis;
 }
 
-.chat-space-card span {
+.chat-space-card > div span {
   display: block;
   color: rgba(235, 242, 255, 0.63);
   font-size: 0.69rem;
@@ -3333,15 +3377,18 @@ body.creator-fullscreen-open {
 }
 
 .chat-space-logo {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
   display: grid;
   place-items: center;
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
-  font-weight: 700;
-  font-size: 0.7rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-indent: 0.12em;
+  line-height: 1;
 }
 
 .chat-space-arrow {
@@ -3679,6 +3726,7 @@ body.creator-fullscreen-open {
   cursor: pointer;
 }
 
+
 body.chat-overlay-open {
   overflow: hidden;
 }
@@ -3686,6 +3734,11 @@ body.chat-overlay-open {
 @media (max-width: 900px) {
   .chat-shell-body--studio {
     grid-template-columns: 1fr;
+  }
+
+  .chat-resize-handle,
+  .chat-shell-edge-handle {
+    display: none;
   }
 
   .chat-shell--studio {
