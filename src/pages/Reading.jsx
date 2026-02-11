@@ -45,6 +45,8 @@ const chapterData = [
 export default function Reading() {
   const [selectedChapterId, setSelectedChapterId] = useState(1);
   const [hasPurchasedBook, setHasPurchasedBook] = useState(false);
+  const [bookmarkedChapterIds, setBookmarkedChapterIds] = useState([]);
+  const [listedChapterIds, setListedChapterIds] = useState([]);
 
   const selectedChapter = useMemo(
     () => chapterData.find((chapter) => chapter.id === selectedChapterId) ?? chapterData[0],
@@ -52,9 +54,27 @@ export default function Reading() {
   );
 
   const isLockedChapter = selectedChapter.access === "paid" && !hasPurchasedBook;
+  const isBookmarked = bookmarkedChapterIds.includes(selectedChapter.id);
+  const isInList = listedChapterIds.includes(selectedChapter.id);
 
   const handlePurchase = () => {
     setHasPurchasedBook(true);
+  };
+
+  const toggleBookmark = () => {
+    setBookmarkedChapterIds((prev) =>
+      prev.includes(selectedChapter.id)
+        ? prev.filter((chapterId) => chapterId !== selectedChapter.id)
+        : [...prev, selectedChapter.id]
+    );
+  };
+
+  const toggleList = () => {
+    setListedChapterIds((prev) =>
+      prev.includes(selectedChapter.id)
+        ? prev.filter((chapterId) => chapterId !== selectedChapter.id)
+        : [...prev, selectedChapter.id]
+    );
   };
 
   return (
@@ -89,6 +109,14 @@ export default function Reading() {
             <div>
               <h2>{selectedChapter.title}</h2>
               <p>{isLockedChapter ? "Preview ended. Purchase required." : "Reading preview"}</p>
+            </div>
+            <div className="reading-tools">
+              <button className="btn ghost" type="button" onClick={toggleBookmark}>
+                {isBookmarked ? "✓ Bookmarked" : "+ Add bookmark"}
+              </button>
+              <button className="btn ghost" type="button" onClick={toggleList}>
+                {isInList ? "✓ Added to list" : "+ Add to list"}
+              </button>
             </div>
           </header>
 
