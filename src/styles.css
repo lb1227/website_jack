@@ -3924,7 +3924,19 @@ body.chat-overlay-open {
     radial-gradient(circle at 88% 12%, rgba(0, 212, 255, 0.18), transparent 38%);
 }
 
+.hero-bookmarks {
+  background:
+    radial-gradient(circle at 12% 2%, rgba(52, 148, 255, 0.26), transparent 44%),
+    radial-gradient(circle at 90% 8%, rgba(255, 107, 175, 0.2), transparent 42%);
+}
+
 .lists-page-section {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.bookmarks-page-section {
   display: grid;
   gap: 22px;
   grid-template-columns: 280px minmax(0, 1fr);
@@ -3942,11 +3954,32 @@ body.chat-overlay-open {
   gap: 14px;
 }
 
+.bookmarks-sidebar {
+  align-self: start;
+  position: sticky;
+  top: 96px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+}
+
 .lists-sidebar p {
   color: var(--muted);
 }
 
+.bookmarks-sidebar p {
+  color: var(--muted);
+}
+
 .lists-sidebar-stats {
+  display: grid;
+  gap: 8px;
+}
+
+.bookmarks-sidebar-stats {
   display: grid;
   gap: 8px;
 }
@@ -3960,12 +3993,30 @@ body.chat-overlay-open {
   gap: 2px;
 }
 
+.bookmarks-sidebar-stats article {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 10px;
+  display: grid;
+  gap: 2px;
+}
+
 .lists-sidebar-stats span {
   color: var(--muted);
   font-size: 0.8rem;
 }
 
+.bookmarks-sidebar-stats span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .lists-sidebar-stats strong {
+  font-size: 0.92rem;
+}
+
+.bookmarks-sidebar-stats strong {
   font-size: 0.92rem;
 }
 
@@ -4013,7 +4064,25 @@ body.chat-overlay-open {
   gap: 8px;
 }
 
+.bookmark-filter-row {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .lists-filter-chip {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.bookmark-filter-chip {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
   padding: 6px 12px;
@@ -4028,7 +4097,18 @@ body.chat-overlay-open {
   background: rgba(255, 255, 255, 0.12);
 }
 
+.bookmark-filter-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
 .lists-hero-metrics {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.bookmark-hero-metrics {
   margin-top: 24px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -4044,7 +4124,20 @@ body.chat-overlay-open {
   gap: 4px;
 }
 
+.bookmark-hero-metrics article {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 12px;
+  display: grid;
+  gap: 4px;
+}
+
 .lists-hero-metrics strong {
+  font-size: 1.2rem;
+}
+
+.bookmark-hero-metrics strong {
   font-size: 1.2rem;
 }
 
@@ -4052,6 +4145,12 @@ body.chat-overlay-open {
   font-size: 0.84rem;
   color: var(--muted);
 }
+
+.bookmark-hero-metrics span {
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
 .list-grid,
 .bookmark-list {
   display: grid;
@@ -4067,6 +4166,46 @@ body.chat-overlay-open {
   padding: 16px;
   display: grid;
   gap: 8px;
+}
+
+.bookmark-enhanced-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 210px;
+  padding: 18px;
+  gap: 14px;
+}
+
+.bookmark-enhanced-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.18), transparent 55%);
+  opacity: 0.5;
+}
+
+.bookmark-enhanced-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.bookmark-enhanced-card header,
+.bookmark-enhanced-card footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.bookmark-card-body {
+  display: grid;
+  gap: 8px;
+}
+
+.bookmark-enhanced-card footer div {
+  display: grid;
+  gap: 2px;
 }
 
 .list-card {
@@ -4154,6 +4293,22 @@ body.chat-overlay-open {
   background: radial-gradient(circle at 8% 0%, rgba(255, 153, 61, 0.34), rgba(18, 18, 18, 0.95));
 }
 
+.bookmark-theme-cobalt {
+  background: radial-gradient(circle at 8% 0%, rgba(69, 146, 255, 0.34), rgba(18, 18, 18, 0.95));
+}
+
+.bookmark-theme-rose {
+  background: radial-gradient(circle at 10% 0%, rgba(255, 99, 167, 0.34), rgba(18, 18, 18, 0.95));
+}
+
+.bookmark-theme-aurora {
+  background: radial-gradient(circle at 8% 0%, rgba(0, 214, 193, 0.34), rgba(18, 18, 18, 0.95));
+}
+
+.bookmark-theme-sunset {
+  background: radial-gradient(circle at 8% 0%, rgba(255, 153, 61, 0.34), rgba(18, 18, 18, 0.95));
+}
+
 .list-card p,
 .bookmark-card p {
   color: var(--muted);
@@ -4164,7 +4319,15 @@ body.chat-overlay-open {
     grid-template-columns: 1fr;
   }
 
+  .bookmarks-page-section {
+    grid-template-columns: 1fr;
+  }
+
   .lists-sidebar {
+    position: static;
+  }
+
+  .bookmarks-sidebar {
     position: static;
   }
 }
@@ -4176,6 +4339,10 @@ body.chat-overlay-open {
   }
 
   .lists-hero-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .bookmark-hero-metrics {
     grid-template-columns: 1fr;
   }
 }
