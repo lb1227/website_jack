@@ -637,13 +637,13 @@ export default function Profile() {
             {isEditing ? (
               <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
                 <label className="profile-inline-field">
-                  <span>Display name</span>
+                  <span>Username</span>
                   <div className="profile-inline-input-with-color">
                     <input
                       type="text"
                       name="name"
                       data-profile-input="name"
-                      placeholder="Add your display name"
+                      placeholder="Add your username"
                       value={formValues.name}
                       onChange={handleInputChange}
                       disabled={isLocked}
@@ -662,7 +662,7 @@ export default function Profile() {
                   </div>
                 </label>
                 <label className="profile-inline-field">
-                  <span>Genres & tags</span>
+                  <span>Tags</span>
                   <div className="profile-inline-input-with-color">
                     <input
                       type="text"
