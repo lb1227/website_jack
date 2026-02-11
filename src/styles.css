@@ -1818,6 +1818,56 @@ input {
   height: 28px;
 }
 
+
+.profile-hero-card.is-editing {
+  outline: 1px dashed rgba(255, 255, 255, 0.35);
+  outline-offset: 8px;
+}
+
+.profile-banner-edit {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.profile-banner-overlay {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 10, 10, 0.45);
+  color: rgba(230, 230, 230, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.profile-banner-edit.is-editable {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.profile-banner-edit.is-editable .profile-banner-overlay {
+  opacity: 1;
+}
+
+.profile-banner-edit.is-editable:hover .profile-banner-overlay {
+  transform: translateY(-2px);
+}
+
+.profile-banner-edit.is-editable:focus-visible {
+  outline: 2px solid rgba(255, 59, 59, 0.7);
+  outline-offset: 4px;
+}
+
 .profile-file-input {
   display: none;
 }
@@ -1894,6 +1944,60 @@ input {
 
 .profile-inline-field input[type="file"] {
   padding: 8px 10px;
+}
+
+.profile-inline-input-with-color {
+  position: relative;
+}
+
+.profile-inline-input-with-color input,
+.profile-inline-input-with-color textarea {
+  padding-right: 50px;
+}
+
+.profile-color-wheel {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background: conic-gradient(
+    #ff4d4d,
+    #ff9f43,
+    #ffe066,
+    #7bed9f,
+    #70a1ff,
+    #a29bfe,
+    #ff6bcb,
+    #ff4d4d
+  );
+}
+
+.profile-color-wheel::-webkit-color-swatch-wrapper {
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.profile-color-wheel::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.profile-color-wheel::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.profile-inline-textarea-with-color .profile-color-wheel {
+  top: 12px;
+  transform: none;
 }
 
 .profile-hero-card.is-locked .profile-inline-form {
