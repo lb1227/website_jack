@@ -407,6 +407,13 @@ export default function ChatOverlay() {
               </section>
 
             </div>
+
+            <button
+              className="chat-shell-edge-handle"
+              type="button"
+              aria-label="Resize chat container"
+              onMouseDown={startResize("shell")}
+            />
           </div>
         </div>
       ) : null}
