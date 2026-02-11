@@ -12,6 +12,9 @@ const EMPTY_PROFILE = {
   name: "Username",
   tags: "empty · empty · empty",
   bio: "Nothing here yet:(",
+  nameColor: "#f5f7ff",
+  tagsColor: "#f5f7ff",
+  bioColor: "#f5f7ff",
   avatar: "",
   background: "",
   counts: {
@@ -323,6 +326,13 @@ export default function Profile() {
     avatarInputRef.current?.click();
   };
 
+  const handleBannerClick = () => {
+    if (!isEditing || isLocked) {
+      return;
+    }
+    backgroundInputRef.current?.click();
+  };
+
   const handleImageUpload = (file, onLoad) => {
     if (!file) {
       return;
@@ -360,21 +370,6 @@ export default function Profile() {
     });
   };
 
-  const handleClearBackground = () => {
-    if (!isAuthenticated) {
-      setAuthStatus("Sign in to update your background.");
-      return;
-    }
-    setFormValues((current) => ({
-      ...current,
-      background: "",
-    }));
-    if (backgroundInputRef.current) {
-      backgroundInputRef.current.value = "";
-    }
-    setStatus("Background cleared. Save changes to apply.");
-  };
-
   const handleSave = (event) => {
     event.preventDefault();
     if (!isAuthenticated) {
@@ -410,24 +405,6 @@ export default function Profile() {
     if (backgroundInputRef.current) {
       backgroundInputRef.current.value = "";
     }
-  };
-
-  const handleReset = () => {
-    if (!isAuthenticated) {
-      setAuthStatus("Sign in to reset your profile.");
-      return;
-    }
-    if (avatarInputRef.current) {
-      avatarInputRef.current.value = "";
-    }
-    if (backgroundInputRef.current) {
-      backgroundInputRef.current.value = "";
-    }
-    setFormValues(EMPTY_PROFILE);
-    setProfile(EMPTY_PROFILE);
-    persistProfile(EMPTY_PROFILE);
-    setIsEditing(false);
-    setStatus("Profile reset.");
   };
 
   const handleAuthSubmit = (event) => {
@@ -603,17 +580,52 @@ export default function Profile() {
               aria-label="Upload profile photo"
               disabled={isLocked || !isEditing}
             />
+            <input
+              ref={backgroundInputRef}
+              className="profile-file-input"
+              type="file"
+              accept="image/*"
+              onChange={handleBackgroundChange}
+              aria-label="Upload profile banner"
+              disabled={isLocked || !isEditing}
+            />
+            <button
+              className={`profile-banner-edit ${isEditing ? "is-editable" : ""}`.trim()}
+              type="button"
+              aria-label="Update profile banner"
+              disabled={isLocked || !isEditing}
+              onClick={handleBannerClick}
+            >
+              <span className="profile-banner-overlay" aria-hidden="true">
+                <svg className="profile-avatar-icon" viewBox="0 0 24 24" role="presentation" focusable="false">
+                  <path
+                    d="M3 17.25V21h3.75l11.1-11.1-3.75-3.75L3 17.25Zm17.71-10.04c.39-.39.39-1.02 0-1.41l-2.51-2.51a1 1 0 0 0-1.41 0l-1.96 1.96 3.75 3.75 2.13-2.13Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+            </button>
             {!isEditing ? (
               <div className="profile-summary" data-profile-summary>
-                <h1 className="profile-summary-name" data-profile-display="name">
+                <h1
+                  className="profile-summary-name"
+                  data-profile-display="name"
+                  style={displayProfile?.nameColor ? { color: displayProfile.nameColor } : undefined}
+                >
                   {displayProfile?.name}
                 </h1>
                 <p className="profile-summary-type">{profileContext.label}</p>
-                <p className="profile-summary-tags" data-profile-display="tags">
+                <p
+                  className="profile-summary-tags"
+                  data-profile-display="tags"
+                  style={displayProfile?.tagsColor ? { color: displayProfile.tagsColor } : undefined}
+                >
                   {displayProfile?.tags}
                 </p>
                 <p className="profile-summary-bio" data-profile-display="bio">
-                  {displayProfile?.bio}
+                  <span style={displayProfile?.bioColor ? { color: displayProfile.bioColor } : undefined}>
+                    {displayProfile?.bio}
+                  </span>
                 </p>
                 <p className="profile-summary-context">{profileContext.description}</p>
                 {isViewingCreator ? (
@@ -627,53 +639,78 @@ export default function Profile() {
               <form className="profile-inline-form" data-profile-form onSubmit={handleSave}>
                 <label className="profile-inline-field">
                   <span>Display name</span>
-                  <input
-                    type="text"
-                    name="name"
-                    data-profile-input="name"
-                    placeholder="Add your display name"
-                    value={formValues.name}
-                    onChange={handleInputChange}
-                    disabled={isLocked}
-                  />
+                  <div className="profile-inline-input-with-color">
+                    <input
+                      type="text"
+                      name="name"
+                      data-profile-input="name"
+                      placeholder="Add your display name"
+                      value={formValues.name}
+                      onChange={handleInputChange}
+                      disabled={isLocked}
+                    />
+                    <label className="profile-color-wheel" aria-label="Display name text color">
+                      <input
+                        type="color"
+                        name="nameColor"
+                        data-profile-input="nameColor"
+                        value={formValues.nameColor}
+                        onChange={handleInputChange}
+                        disabled={isLocked}
+                      />
+                      <span className="profile-color-wheel-icon" aria-hidden="true"></span>
+                    </label>
+                  </div>
                 </label>
                 <label className="profile-inline-field">
                   <span>Genres & tags</span>
-                  <input
-                    type="text"
-                    name="tags"
-                    data-profile-input="tags"
-                    placeholder="e.g. Fantasy · Cozy · Found family"
-                    value={formValues.tags}
-                    onChange={handleInputChange}
-                    disabled={isLocked}
-                  />
+                  <div className="profile-inline-input-with-color">
+                    <input
+                      type="text"
+                      name="tags"
+                      data-profile-input="tags"
+                      placeholder="e.g. Fantasy · Cozy · Found family"
+                      value={formValues.tags}
+                      onChange={handleInputChange}
+                      disabled={isLocked}
+                    />
+                    <label className="profile-color-wheel" aria-label="Genres and tags text color">
+                      <input
+                        type="color"
+                        name="tagsColor"
+                        data-profile-input="tagsColor"
+                        value={formValues.tagsColor}
+                        onChange={handleInputChange}
+                        disabled={isLocked}
+                      />
+                      <span className="profile-color-wheel-icon" aria-hidden="true"></span>
+                    </label>
+                  </div>
                 </label>
                 <label className="profile-inline-field">
                   <span>Bio</span>
-                  <textarea
-                    name="bio"
-                    rows="3"
-                    data-profile-input="bio"
-                    placeholder="Tell readers about your writing focus."
-                    value={formValues.bio}
-                    onChange={handleInputChange}
-                    disabled={isLocked}
-                  ></textarea>
-                </label>
-                <label className="profile-inline-field">
-                  <span>Profile background</span>
-                  <input
-                    ref={backgroundInputRef}
-                    type="file"
-                    name="background"
-                    accept="image/*"
-                    onChange={handleBackgroundChange}
-                    disabled={isLocked}
-                  />
-                  <span className="profile-inline-hint">
-                    This background is stored locally in your browser.
-                  </span>
+                  <div className="profile-inline-input-with-color profile-inline-textarea-with-color">
+                    <textarea
+                      name="bio"
+                      rows="3"
+                      data-profile-input="bio"
+                      placeholder="Tell readers about your writing focus."
+                      value={formValues.bio}
+                      onChange={handleInputChange}
+                      disabled={isLocked}
+                    ></textarea>
+                    <label className="profile-color-wheel" aria-label="Bio text color">
+                      <input
+                        type="color"
+                        name="bioColor"
+                        data-profile-input="bioColor"
+                        value={formValues.bioColor}
+                        onChange={handleInputChange}
+                        disabled={isLocked}
+                      />
+                      <span className="profile-color-wheel-icon" aria-hidden="true"></span>
+                    </label>
+                  </div>
                 </label>
                 <div className="profile-form-actions">
                   <button className="btn primary" type="submit" disabled={isLocked}>
@@ -687,23 +724,6 @@ export default function Profile() {
                     disabled={isLocked}
                   >
                     Cancel
-                  </button>
-                  <button
-                    className="btn ghost"
-                    type="button"
-                    data-profile-reset
-                    onClick={handleReset}
-                    disabled={isLocked}
-                  >
-                    Reset
-                  </button>
-                  <button
-                    className="btn ghost"
-                    type="button"
-                    onClick={handleClearBackground}
-                    disabled={isLocked}
-                  >
-                    Clear background
                   </button>
                 </div>
               </form>
