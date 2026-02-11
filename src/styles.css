@@ -10,8 +10,8 @@
 
   --profile-card-min-width: clamp(220px, 24vw, 280px);
   --profile-category-min-width: var(--profile-card-min-width);
-  --chat-spaces-min-width: clamp(220px, 24vw, 340px);
-  --chat-conversations-min-width: clamp(220px, 24vw, 340px);
+  --chat-spaces-min-width: clamp(110px, 12vw, 170px);
+  --chat-conversations-min-width: clamp(110px, 12vw, 170px);
 }
 
 * {
@@ -3209,7 +3209,7 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell-body--studio {
-  grid-template-columns: minmax(var(--chat-spaces-min-width, 200px), 220px) minmax(var(--chat-conversations-min-width, 200px), 220px) minmax(0, 1fr);
+  grid-template-columns: minmax(var(--chat-spaces-min-width, 110px), var(--chat-spaces-min-width, 110px)) minmax(var(--chat-conversations-min-width, 110px), var(--chat-conversations-min-width, 110px)) minmax(0, 1fr);
   background: rgba(14, 16, 22, 0.95);
 }
 
@@ -3240,8 +3240,7 @@ body.creator-fullscreen-open {
 .chat-spaces-list {
   display: grid;
   gap: 8px;
-  grid-auto-rows: minmax(95px, 95px);
-  justify-items: start;
+  grid-auto-rows: minmax(92px, 92px);
   overflow-y: auto;
 }
 
@@ -3257,8 +3256,8 @@ body.creator-fullscreen-open {
   align-items: center;
   cursor: pointer;
   text-align: left;
-  width: 50%;
-  min-height: 95px;
+  width: 100%;
+  min-height: 92px;
 }
 
 .chat-space-card p {
@@ -3356,8 +3355,7 @@ body.creator-fullscreen-open {
   padding: 0 12px 12px;
   display: grid;
   gap: 8px;
-  grid-auto-rows: minmax(91px, 91px);
-  justify-items: start;
+  grid-auto-rows: minmax(92px, 92px);
   overflow-y: auto;
 }
 
@@ -3372,8 +3370,8 @@ body.creator-fullscreen-open {
   align-items: center;
   text-align: left;
   cursor: pointer;
-  width: 50%;
-  min-height: 91px;
+  width: 100%;
+  min-height: 92px;
 }
 
 .chat-conversation-item p {
