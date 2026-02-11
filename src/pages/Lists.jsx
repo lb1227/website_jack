@@ -47,7 +47,6 @@ export default function Lists() {
       <section className="hero hero-lists">
         <div className="hero-content">
           <span className="pill">Your Lists</span>
-          <h1>Your personal reading dashboard</h1>
           <p className="hero-copy">
             Organize by mood, track what&apos;s hot, and jump right back into the perfect read.
           </p>
@@ -77,8 +76,7 @@ export default function Lists() {
 
       <section className="section utility-page-section lists-page-section">
         <aside className="lists-sidebar" aria-label="Lists stats and shortcuts">
-          <h2>Collection control</h2>
-          <p>Design shelves like a storefront: vibes up top, deep cuts below.</p>
+          <h2>Your Collection</h2>
           <div className="lists-sidebar-stats">
             <article>
               <span>Most followed</span>
