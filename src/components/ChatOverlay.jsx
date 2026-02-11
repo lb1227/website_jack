@@ -199,16 +199,9 @@ export default function ChatOverlay() {
           <div className="chat-shell chat-shell--studio" role="dialog" aria-modal="true" aria-label="PensUp chat">
             <header className="chat-shell-header chat-shell-header--studio">
               <div>
-                <p className="chat-shell-title">Studio Comms</p>
-                <p className="chat-shell-subtitle">A cleaner, calmer inbox for your creative team</p>
+                <p className="chat-shell-title">PensUp Comms</p>
               </div>
               <div className="chat-shell-header-actions">
-                <button className="chat-shell-pill" type="button">
-                  Focus mode
-                </button>
-                <button className="chat-shell-pill chat-shell-pill--ghost" type="button">
-                  Schedule
-                </button>
                 <button
                   className="chat-shell-close"
                   type="button"
