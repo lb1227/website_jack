@@ -3209,7 +3209,7 @@ body.creator-fullscreen-open {
 }
 
 .chat-shell-body--studio {
-  grid-template-columns: minmax(var(--chat-spaces-min-width, 110px), var(--chat-spaces-min-width, 110px)) minmax(var(--chat-conversations-min-width, 110px), var(--chat-conversations-min-width, 110px)) minmax(0, 1fr);
+  grid-template-columns: var(--chat-spaces-min-width, 110px) var(--chat-conversations-min-width, 110px) minmax(0, 1fr);
   background: rgba(14, 16, 22, 0.95);
 }
 
