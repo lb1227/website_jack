@@ -268,7 +268,6 @@ export default function Profile() {
     }
     return {
       label: "Reader profile",
-      description: "Track who you follow and join reader conversations.",
       counts: [
         { key: "followers", label: "Followers" },
         { key: "following", label: "Following" },
