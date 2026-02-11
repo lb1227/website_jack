@@ -1,90 +1,21 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-const SERVERS = [
+const INITIAL_STUDIOS = [
   {
-    id: "direct",
-    title: "Direct Messages",
-    status: "3 online",
-    logo: "DM",
-    channels: [
-      { id: "sam", label: "Sam", unread: true },
-      { id: "riley", label: "Riley" },
-      { id: "jordan", label: "Jordan", unread: true },
-    ],
-    members: [
-      { id: "sam", name: "Sam", status: "online" },
-      { id: "riley", name: "Riley", status: "online" },
-      { id: "jordan", name: "Jordan", status: "online" },
-    ],
+    id: "main-studio",
+    title: "Main Studio",
+    status: "1 online",
+    logo: "MS",
+    channels: [{ id: "general", label: "general" }],
+    members: [{ id: "you", name: "username", status: "online" }],
     messages: [
-      { author: "Sam", text: "Can we sync on chapter swaps tonight?" },
-      { author: "Jordan", text: "I can do a quick pass on chapter 4 after lunch." },
-      { author: "You", text: "Perfect — sending notes in 10." },
-    ],
-  },
-  {
-    id: "writer-circle",
-    title: "Writer Circle",
-    status: "3 online",
-    logo: "WC",
-    channels: [
-      { id: "announcements", label: "announcements" },
-      { id: "sprints", label: "sprint-planning", unread: true },
-      { id: "lounge", label: "lounge" },
-      { id: "resources", label: "resources" },
-    ],
-    members: [
-      { id: "priya", name: "Priya", status: "online" },
-      { id: "kai", name: "Kai", status: "online" },
-      { id: "noah", name: "Noah", status: "idle" },
-    ],
-    messages: [
-      { author: "Priya", text: "Anyone else hosting a reading sprint this weekend?" },
-      { author: "You", text: "I’m in for Saturday afternoon if you’re free." },
-    ],
-  },
-  {
-    id: "launch-crew",
-    title: "Launch Crew",
-    status: "8 online",
-    logo: "LC",
-    channels: [
-      { id: "general", label: "general" },
-      { id: "marketing", label: "marketing" },
-      { id: "media", label: "media-drop", unread: true },
-      { id: "logistics", label: "logistics" },
-    ],
-    members: [
-      { id: "alex", name: "Alex", status: "online" },
-      { id: "sera", name: "Sera", status: "idle" },
-      { id: "tomas", name: "Tomas", status: "offline" },
-      { id: "jo", name: "Jo", status: "online" },
-    ],
-    messages: [
-      { author: "Kai", text: "Trailer drop is scheduled for 10am tomorrow." },
-      { author: "You", text: "Copy is ready for socials. I’ll queue the post." },
-    ],
-  },
-  {
-    id: "critique-lab",
-    title: "Critique Lab",
-    status: "2 online",
-    logo: "CL",
-    channels: [
-      { id: "workshop", label: "workshop" },
-      { id: "feedback", label: "feedback-lab" },
-      { id: "archive", label: "archive" },
-    ],
-    members: [
-      { id: "mira", name: "Mira", status: "online" },
-      { id: "joel", name: "Joel", status: "offline" },
-    ],
-    messages: [
-      { author: "Mira", text: "Loved the pacing in act two — we should chat." },
-      { author: "You", text: "Thanks! I can review your notes after lunch." },
+      { author: "System", text: "Welcome to your studio chat." },
+      { author: "You", text: "Ready to build something new." },
     ],
   },
 ];
+
+const CURRENT_USERNAME = "username";
 
 const THREAD_PREVIEWS = [
   "Draft links, edits, and approvals",
@@ -107,41 +38,54 @@ const getInitials = (name) =>
 
 export default function ChatOverlay() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeServerId, setActiveServerId] = useState(SERVERS[0].id);
-  const [activeChannelId, setActiveChannelId] = useState(SERVERS[0].channels[0].id);
+  const [studios, setStudios] = useState(INITIAL_STUDIOS);
+  const [activeServerId, setActiveServerId] = useState(INITIAL_STUDIOS[0].id);
+  const [activeChannelId, setActiveChannelId] = useState(INITIAL_STUDIOS[0].channels[0].id);
   const [messageDraft, setMessageDraft] = useState("");
+  const [showCreateStudioModal, setShowCreateStudioModal] = useState(false);
+  const [newStudioName, setNewStudioName] = useState("");
   const [spacesWidth, setSpacesWidth] = useState(210);
   const [conversationsWidth, setConversationsWidth] = useState(320);
   const feedRef = useRef(null);
 
   const [messagesByServer, setMessagesByServer] = useState(() =>
-    SERVERS.reduce((acc, server) => {
+    INITIAL_STUDIOS.reduce((acc, server) => {
       acc[server.id] = server.messages;
       return acc;
     }, {})
   );
 
   const activeServer = useMemo(
-    () => SERVERS.find((server) => server.id === activeServerId) || SERVERS[0],
-    [activeServerId]
+    () => studios.find((server) => server.id === activeServerId) || studios[0],
+    [activeServerId, studios]
   );
 
   const activeChannel = useMemo(
-    () => activeServer.channels.find((channel) => channel.id === activeChannelId) || activeServer.channels[0],
+    () => activeServer?.channels.find((channel) => channel.id === activeChannelId) || activeServer?.channels[0],
     [activeChannelId, activeServer]
   );
 
   const onlineCount = useMemo(
-    () => activeServer.members.filter((member) => member.status === "online").length,
+    () => activeServer?.members.filter((member) => member.status === "online").length || 0,
     [activeServer]
   );
 
   const unreadCount = useMemo(
-    () => activeServer.channels.filter((channel) => channel.unread).length,
+    () => activeServer?.channels.filter((channel) => channel.unread).length || 0,
     [activeServer]
   );
 
-  const isDirectMessages = activeServer.id === "direct";
+  useEffect(() => {
+    if (!activeServer && studios.length > 0) {
+      setActiveServerId(studios[0].id);
+      setActiveChannelId(studios[0].channels[0].id);
+      return;
+    }
+
+    if (activeServer && !activeChannel) {
+      setActiveChannelId(activeServer.channels[0].id);
+    }
+  }, [activeChannel, activeServer, studios]);
 
   useEffect(() => {
     document.body.classList.toggle("chat-overlay-open", isOpen);
@@ -212,9 +156,42 @@ export default function ChatOverlay() {
 
     setMessagesByServer((prev) => ({
       ...prev,
-      [activeServer.id]: [...prev[activeServer.id], { author: "You", text: trimmedMessage }],
+      [activeServer.id]: [...(prev[activeServer.id] || []), { author: "You", text: trimmedMessage }],
     }));
     setMessageDraft("");
+  };
+
+  const handleCreateStudio = (event) => {
+    event.preventDefault();
+    const trimmedName = newStudioName.trim();
+
+    if (!trimmedName) {
+      return;
+    }
+
+    const studioId = `studio-${Date.now()}`;
+    const studioLabel = trimmedName
+      .split(" ")
+      .join("-")
+      .replace(/[^a-zA-Z0-9-]/g, "")
+      .toLowerCase() || "general";
+
+    const newStudio = {
+      id: studioId,
+      title: trimmedName,
+      status: "1 online",
+      logo: getInitials(trimmedName),
+      channels: [{ id: `${studioLabel}-general`, label: "general" }],
+      members: [{ id: "you", name: CURRENT_USERNAME, status: "online" }],
+      messages: [{ author: "System", text: `${trimmedName} created.` }],
+    };
+
+    setStudios((prev) => [...prev, newStudio]);
+    setMessagesByServer((prev) => ({ ...prev, [studioId]: newStudio.messages }));
+    setActiveServerId(studioId);
+    setActiveChannelId(newStudio.channels[0].id);
+    setNewStudioName("");
+    setShowCreateStudioModal(false);
   };
 
   return (
@@ -266,10 +243,10 @@ export default function ChatOverlay() {
               <aside className="chat-spaces">
                 <div className="chat-spaces-header">
                   <p>Studios</p>
-                  <span>{SERVERS.length} active</span>
+                  <span>{studios.length} active</span>
                 </div>
                 <div className="chat-spaces-list" role="list" aria-label="Spaces list">
-                  {SERVERS.map((server) => (
+                  {studios.map((server) => (
                     <button
                       key={server.id}
                       className={`chat-space-card${server.id === activeServerId ? " active" : ""}`}
@@ -292,7 +269,7 @@ export default function ChatOverlay() {
                   ))}
                 </div>
                 <div className="chat-spaces-footer">
-                  <button type="button">＋ New studio</button>
+                  <button type="button" onClick={() => setShowCreateStudioModal(true)}>＋ New studio</button>
                   <button type="button">Invite</button>
                 </div>
               </aside>
@@ -311,12 +288,12 @@ export default function ChatOverlay() {
                     <span>{activeServer.status}</span>
                   </div>
                   <div className="chat-conversations-search">
-                    <input type="text" placeholder={isDirectMessages ? "Search friends" : "Search threads"} readOnly />
+                    <input type="text" placeholder="Search threads" readOnly />
                   </div>
                 </div>
 
                 <div className="chat-conversations-list" role="list" aria-label="Thread list">
-                  {activeServer.channels.map((channel, index) => (
+                  {activeServer?.channels.map((channel, index) => (
                     <button
                       key={channel.id}
                       className={`chat-conversation-item${channel.id === activeChannel.id ? " active" : ""}`}
@@ -325,8 +302,8 @@ export default function ChatOverlay() {
                       onClick={() => setActiveChannelId(channel.id)}
                     >
                       <div>
-                        <p>{isDirectMessages ? channel.label : `#${channel.label}`}</p>
-                        <span>{isDirectMessages ? "Direct conversation" : THREAD_PREVIEWS[index % THREAD_PREVIEWS.length]}</span>
+                        <p>{`#${channel.label}`}</p>
+                        <span>{THREAD_PREVIEWS[index % THREAD_PREVIEWS.length]}</span>
                       </div>
                       <div className="chat-conversation-meta">
                         <span>{TIMESTAMPS[index % TIMESTAMPS.length]}</span>
@@ -338,7 +315,7 @@ export default function ChatOverlay() {
 
                 <div className="chat-conversations-footer">
                   <div>
-                    <p>Luke Harper</p>
+                    <p>{CURRENT_USERNAME}</p>
                     <span>Creative lead</span>
                   </div>
                   <button type="button">Update status</button>
@@ -355,7 +332,7 @@ export default function ChatOverlay() {
               <section className="chat-detail">
                 <div className="chat-detail-header">
                   <div>
-                    <p>{isDirectMessages ? activeChannel.label : `#${activeChannel.label}`}</p>
+                    <p>{activeChannel ? `#${activeChannel.label}` : "#general"}</p>
                     <span>{activeServer.title}</span>
                   </div>
                   <div className="chat-detail-header-chips">
@@ -396,7 +373,7 @@ export default function ChatOverlay() {
                   <span className="chat-input-prefix">✦</span>
                   <input
                     type="text"
-                    placeholder={isDirectMessages ? `Message ${activeChannel.label}` : `Message #${activeChannel.label}`}
+                    placeholder={activeChannel ? `Message #${activeChannel.label}` : "Message #general"}
                     value={messageDraft}
                     onChange={(event) => setMessageDraft(event.target.value)}
                   />
@@ -415,6 +392,27 @@ export default function ChatOverlay() {
               onMouseDown={startResize("shell")}
             />
           </div>
+        </div>
+      ) : null}
+      {showCreateStudioModal ? (
+        <div className="chat-create-studio-modal" role="dialog" aria-modal="true" aria-label="Create new studio">
+          <form className="chat-create-studio-panel" onSubmit={handleCreateStudio}>
+            <h3>Create new studio</h3>
+            <p>Give your studio a name to get started.</p>
+            <input
+              type="text"
+              value={newStudioName}
+              onChange={(event) => setNewStudioName(event.target.value)}
+              placeholder="Studio name"
+              autoFocus
+            />
+            <div>
+              <button type="button" onClick={() => setShowCreateStudioModal(false)}>
+                Cancel
+              </button>
+              <button type="submit">Create studio</button>
+            </div>
+          </form>
         </div>
       ) : null}
     </div>
