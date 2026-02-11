@@ -3539,6 +3539,69 @@ body.creator-fullscreen-open {
   cursor: pointer;
 }
 
+.chat-create-studio-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1295;
+  background: rgba(5, 9, 17, 0.64);
+  backdrop-filter: blur(3px);
+  display: grid;
+  place-items: center;
+}
+
+.chat-create-studio-panel {
+  width: min(420px, calc(100vw - 40px));
+  background: linear-gradient(180deg, rgba(18, 25, 38, 0.98), rgba(10, 15, 24, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+  color: #fff;
+}
+
+.chat-create-studio-panel h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.chat-create-studio-panel p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(227, 236, 255, 0.72);
+}
+
+.chat-create-studio-panel input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 13, 22, 0.9);
+  color: #fff;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+}
+
+.chat-create-studio-panel > div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.chat-create-studio-panel button {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f2f6ff;
+  padding: 8px 12px;
+  font-size: 0.74rem;
+  cursor: pointer;
+}
+
+.chat-create-studio-panel button[type="submit"] {
+  border-color: rgba(122, 163, 255, 0.8);
+  background: linear-gradient(140deg, rgba(100, 132, 255, 0.38), rgba(82, 186, 228, 0.3));
+}
+
 .chat-detail {
   display: grid;
   grid-template-rows: auto auto 1fr auto;
