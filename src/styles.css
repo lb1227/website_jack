@@ -3180,8 +3180,8 @@ body.creator-fullscreen-open {
 
 .chat-shell--studio {
   position: relative;
-  width: min(75vw, 1320px);
-  max-width: min(75vw, 1320px);
+  width: 75vw;
+  max-width: 75vw;
   height: 100vh;
   max-height: 100vh;
   border-radius: 0 28px 28px 0;
