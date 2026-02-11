@@ -8,6 +8,9 @@ const ACCOUNTS_KEY = "pensup.accounts";
 const PROFILE_TYPE_KEY = "pensup.profileType";
 const AUTHOR_APPROVED_KEY = "pensup.authorApproved";
 const MAX_IMAGE_BYTES = 800 * 1024;
+const MAX_DISPLAY_NAME_CHARS = 20;
+const MAX_BIO_CHARS = 150;
+const MAX_TAGS = 5;
 const EMPTY_PROFILE = {
   name: "Username",
   tags: "empty · empty · empty",
@@ -104,6 +107,22 @@ const persistAccounts = (accounts) => {
     return;
   }
   safeSetItem(ACCOUNTS_KEY, JSON.stringify(accounts));
+};
+
+const parseTagTokens = (value) =>
+  value
+    .split(/[·,]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+const tagsInputToDisplay = (value) => {
+  const tokens = parseTagTokens(value).slice(0, MAX_TAGS);
+  return tokens.length ? tokens.join(" · ") : EMPTY_PROFILE.tags;
+};
+
+const displayTagsToInput = (value) => {
+  const tokens = parseTagTokens(value).slice(0, MAX_TAGS);
+  return tokens.join(", ");
 };
 
 export default function Profile() {
@@ -306,15 +325,27 @@ export default function Profile() {
       return;
     }
     setIsEditing(true);
-    setFormValues(profile);
+    setFormValues({
+      ...profile,
+      name: profile.name.slice(0, MAX_DISPLAY_NAME_CHARS),
+      bio: profile.bio.slice(0, MAX_BIO_CHARS),
+      tags: displayTagsToInput(profile.tags),
+    });
     setStatus("");
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    const constrainedValue =
+      name === "name"
+        ? value.slice(0, MAX_DISPLAY_NAME_CHARS)
+        : name === "bio"
+          ? value.slice(0, MAX_BIO_CHARS)
+          : value;
+
     setFormValues((current) => ({
       ...current,
-      [name]: value,
+      [name]: constrainedValue,
     }));
   };
 
@@ -375,9 +406,16 @@ export default function Profile() {
       setAuthStatus("Sign in to save changes.");
       return;
     }
-    setProfile(formValues);
-    setFormValues(formValues);
-    const { stored, reduced } = persistProfile(formValues);
+    const normalizedProfile = {
+      ...formValues,
+      name: formValues.name.slice(0, MAX_DISPLAY_NAME_CHARS),
+      bio: formValues.bio.slice(0, MAX_BIO_CHARS),
+      tags: tagsInputToDisplay(formValues.tags),
+    };
+
+    setProfile(normalizedProfile);
+    setFormValues(normalizedProfile);
+    const { stored, reduced } = persistProfile(normalizedProfile);
     if (!stored) {
       setStatus("Profile saved locally. Some details may not persist due to storage limits.");
     } else if (reduced) {
@@ -395,7 +433,7 @@ export default function Profile() {
   };
 
   const handleCancel = () => {
-    setFormValues(profile);
+    setFormValues({ ...profile, tags: displayTagsToInput(profile.tags) });
     setIsEditing(false);
     setStatus("Edits discarded.");
     if (avatarInputRef.current) {
@@ -668,7 +706,7 @@ export default function Profile() {
                       type="text"
                       name="tags"
                       data-profile-input="tags"
-                      placeholder="e.g. Fantasy · Cozy · Found family"
+                      placeholder="Enter tags, comma separated"
                       value={formValues.tags}
                       onChange={handleInputChange}
                       disabled={isLocked}
@@ -685,6 +723,7 @@ export default function Profile() {
                       <span className="profile-color-wheel-icon" aria-hidden="true"></span>
                     </label>
                   </div>
+                  <span className="profile-inline-hint">Up to {MAX_TAGS} tags.</span>
                 </label>
                 <label className="profile-inline-field">
                   <span>Bio</span>
@@ -694,6 +733,7 @@ export default function Profile() {
                       rows="3"
                       data-profile-input="bio"
                       placeholder="Tell readers about your writing focus."
+                      maxLength={MAX_BIO_CHARS}
                       value={formValues.bio}
                       onChange={handleInputChange}
                       disabled={isLocked}
@@ -710,6 +750,7 @@ export default function Profile() {
                       <span className="profile-color-wheel-icon" aria-hidden="true"></span>
                     </label>
                   </div>
+                  <span className="profile-inline-hint">{formValues.bio.length}/{MAX_BIO_CHARS} characters</span>
                 </label>
                 <div className="profile-form-actions">
                   <button className="btn primary" type="submit" disabled={isLocked}>
