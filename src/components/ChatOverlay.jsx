@@ -259,10 +259,6 @@ export default function ChatOverlay() {
                     <p>{activeChannel.label}</p>
                     <span>{activeServer.title}</span>
                   </div>
-                  <div className="chat-detail-actions">
-                    <button type="button">Schedule</button>
-                    <button type="button">Share</button>
-                  </div>
                 </div>
                 <div className="chat-detail-feed" ref={feedRef}>
                   <div className="chat-detail-welcome">
