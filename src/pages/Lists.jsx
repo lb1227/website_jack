@@ -1,5 +1,7 @@
 import React from "react";
 
+const quickFilters = ["Trending now", "Romance", "Fantasy", "Sci-fi", "Thriller", "Completed"];
+
 const curatedLists = [
   {
     title: "Late Night Mind-Benders",
@@ -42,13 +44,12 @@ const curatedLists = [
 export default function Lists() {
   return (
     <main className="page-shell">
-      <section className="hero">
+      <section className="hero hero-lists">
         <div className="hero-content">
           <span className="pill">Your Lists</span>
-          <h1>Build reading lanes for every mood</h1>
+          <h1>Your personal reading dashboard</h1>
           <p className="hero-copy">
-            Keep your TBR organized with custom shelves so you can jump into the right story
-            instantly.
+            Organize by mood, track what&apos;s hot, and jump right back into the perfect read.
           </p>
           <div className="lists-hero-metrics" aria-label="Collection overview">
             <article>
@@ -64,38 +65,69 @@ export default function Lists() {
               <span>Combined followers</span>
             </article>
           </div>
+          <div className="lists-filter-row" aria-label="List filters">
+            {quickFilters.map((filter) => (
+              <button key={filter} type="button" className="lists-filter-chip">
+                {filter}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="section utility-page-section lists-page-section">
-        <div className="lists-header-row">
-          <h2>Saved collections</h2>
-          <button type="button" className="outline-button">
-            + New list
-          </button>
-        </div>
-        <div className="list-grid">
-          {curatedLists.map((list) => (
-            <article className={`list-card ${list.gradient}`} key={list.title}>
-              <header>
-                <span className="list-card-pill">{list.vibe}</span>
-                <small>{list.updated}</small>
-              </header>
-              <div className="list-card-body">
-                <h3>{list.title}</h3>
-                <p>{list.description}</p>
-              </div>
-              <footer>
-                <div>
-                  <strong>{list.count}</strong>
-                  <small>{list.followers}</small>
-                </div>
-                <button type="button" className="list-card-link" aria-label={`Open ${list.title}`}>
-                  Open →
-                </button>
-              </footer>
+        <aside className="lists-sidebar" aria-label="Lists stats and shortcuts">
+          <h2>Collection control</h2>
+          <p>Design shelves like a storefront: vibes up top, deep cuts below.</p>
+          <div className="lists-sidebar-stats">
+            <article>
+              <span>Most followed</span>
+              <strong>Worldbuilding Gold</strong>
             </article>
-          ))}
+            <article>
+              <span>Fastest growing</span>
+              <strong>Late Night Mind-Benders</strong>
+            </article>
+            <article>
+              <span>Unread queue</span>
+              <strong>9 chapters waiting</strong>
+            </article>
+          </div>
+          <button type="button" className="outline-button">
+            + Create new list
+          </button>
+        </aside>
+
+        <div>
+          <div className="lists-header-row">
+            <h2>Saved collections</h2>
+            <button type="button" className="text-button">
+              Manage all
+            </button>
+          </div>
+          <div className="list-grid">
+            {curatedLists.map((list) => (
+              <article className={`list-card ${list.gradient}`} key={list.title}>
+                <header>
+                  <span className="list-card-pill">{list.vibe}</span>
+                  <small>{list.updated}</small>
+                </header>
+                <div className="list-card-body">
+                  <h3>{list.title}</h3>
+                  <p>{list.description}</p>
+                </div>
+                <footer>
+                  <div>
+                    <strong>{list.count}</strong>
+                    <small>{list.followers}</small>
+                  </div>
+                  <button type="button" className="list-card-link" aria-label={`Open ${list.title}`}>
+                    Open →
+                  </button>
+                </footer>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
     </main>
