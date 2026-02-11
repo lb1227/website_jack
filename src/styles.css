@@ -1826,17 +1826,18 @@ input {
 
 .profile-banner-edit {
   position: absolute;
-  inset: 0;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
   border: 0;
   background: transparent;
   padding: 0;
+  border-radius: 999px;
   pointer-events: none;
 }
 
 .profile-banner-overlay {
-  position: absolute;
-  top: 12px;
-  right: 12px;
   width: 36px;
   height: 36px;
   border-radius: 999px;
@@ -1961,24 +1962,36 @@ input {
   width: 30px;
   height: 30px;
   transform: translateY(-50%);
-  border: 0;
+  border: 1px solid rgba(255, 255, 255, 0.45);
   padding: 0;
   border-radius: 50%;
-  background: none;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background: conic-gradient(
+    #ff4d4d,
+    #ff9f43,
+    #ffe066,
+    #7bed9f,
+    #70a1ff,
+    #a29bfe,
+    #ff6bcb,
+    #ff4d4d
+  );
 }
 
 .profile-color-wheel::-webkit-color-swatch-wrapper {
-  padding: 0;
+  padding: 5px;
+  border-radius: 50%;
 }
 
 .profile-color-wheel::-webkit-color-swatch {
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: none;
   border-radius: 50%;
 }
 
 .profile-color-wheel::-moz-color-swatch {
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: none;
   border-radius: 50%;
 }
 
