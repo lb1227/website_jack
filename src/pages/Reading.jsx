@@ -42,8 +42,6 @@ const chapterData = [
   }
 ];
 
-const totalChapters = chapterData.length;
-
 export default function Reading() {
   const [selectedChapterId, setSelectedChapterId] = useState(1);
   const [hasPurchasedBook, setHasPurchasedBook] = useState(false);
@@ -55,114 +53,59 @@ export default function Reading() {
 
   const isLockedChapter = selectedChapter.access === "paid" && !hasPurchasedBook;
 
-  const handleChapterSelect = (chapterId) => {
-    setSelectedChapterId(chapterId);
-  };
-
   const handlePurchase = () => {
     setHasPurchasedBook(true);
   };
 
   return (
     <main className="page-shell">
-      <section className="reader" id="reading">
-        <article className="reader-hero">
-          <div className="reader-hero-main">
-            <span className="pill">Reading Room</span>
-            <h1>Rhapsody of Ember</h1>
-            <p className="hero-subtitle">Free preview: first chapter unlocked</p>
-            <p className="hero-copy">
-              Read the opening chapter now. Purchase the full book to unlock all remaining chapters
-              and continue where the story gets darker.
-            </p>
-            <div className="chapter-progress" aria-label="Book progress">
-              <div className="chapter-progress-track" role="presentation">
-                <span style={{ width: `${(selectedChapter.id / totalChapters) * 100}%` }} />
-              </div>
+      <section className="reader-layout" id="reading">
+        <aside className="chapter-list" aria-label="Chapter selection">
+          <h2>Chapters</h2>
+          <ul>
+            {chapterData.map((chapter) => {
+              const isLocked = chapter.access === "paid" && !hasPurchasedBook;
+              const isActive = chapter.id === selectedChapter.id;
+
+              return (
+                <li key={chapter.id} className={isActive ? "active" : ""}>
+                  <button
+                    type="button"
+                    className={`chapter-select-btn ${isLocked ? "locked" : ""}`}
+                    onClick={() => setSelectedChapterId(chapter.id)}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    <span>{chapter.title}</span>
+                    {isLocked && <small>Locked</small>}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </aside>
+
+        <article className="reading-pane" aria-live="polite">
+          <header className="reading-header">
+            <div>
+              <h2>{selectedChapter.title}</h2>
+              <p>{isLockedChapter ? "Preview ended. Purchase required." : "Reading preview"}</p>
+            </div>
+          </header>
+
+          {isLockedChapter ? (
+            <>
               <p>
-                Chapter {selectedChapter.id} of {totalChapters}
+                You’ve reached the end of the free first chapter. Buy the full book to unlock this
+                chapter and all remaining chapters.
               </p>
-            </div>
-            <div className="reader-actions">
               <button className="btn primary" type="button" onClick={handlePurchase}>
-                {hasPurchasedBook ? "✓ Book Purchased" : "Buy full book"}
+                Buy full book
               </button>
-              <button className="btn ghost" type="button">
-                Save preview
-              </button>
-            </div>
-          </div>
-          <aside className="reader-meta" aria-label="Book stats">
-            <div>
-              <strong>Author</strong>
-              <p>Aria Vale</p>
-            </div>
-            <div>
-              <strong>Genre</strong>
-              <p>Epic fantasy</p>
-            </div>
-            <div>
-              <strong>Access</strong>
-              <p>{hasPurchasedBook ? "Full book unlocked" : "Preview mode"}</p>
-            </div>
-          </aside>
+            </>
+          ) : (
+            selectedChapter.content.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
+          )}
         </article>
-
-        <section className="reader-layout">
-          <aside className="chapter-list" aria-label="Chapter selection">
-            <h2>Chapters</h2>
-            <ul>
-              {chapterData.map((chapter) => {
-                const isLocked = chapter.access === "paid" && !hasPurchasedBook;
-                const isActive = chapter.id === selectedChapter.id;
-                return (
-                  <li key={chapter.id} className={isActive ? "active" : ""}>
-                    <button
-                      type="button"
-                      className={`chapter-select-btn ${isLocked ? "locked" : ""}`}
-                      onClick={() => handleChapterSelect(chapter.id)}
-                      aria-current={isActive ? "true" : undefined}
-                    >
-                      <span>{chapter.title}</span>
-                      {isLocked && <small>Locked</small>}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </aside>
-
-          <article className="reading-pane" aria-live="polite">
-            <header className="reading-header">
-              <div>
-                <h2>{selectedChapter.title}</h2>
-                <p>{isLockedChapter ? "Purchase required to continue." : "Now reading."}</p>
-              </div>
-              <div className="reading-tools">
-                <button className="btn ghost" type="button">
-                  A-
-                </button>
-                <button className="btn ghost" type="button">
-                  A+
-                </button>
-              </div>
-            </header>
-
-            {isLockedChapter ? (
-              <>
-                <p>
-                  You’ve reached the end of the free preview. Buy the full book to unlock this
-                  chapter and every chapter after it.
-                </p>
-                <button className="btn primary" type="button" onClick={handlePurchase}>
-                  Unlock all chapters
-                </button>
-              </>
-            ) : (
-              selectedChapter.content.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
-            )}
-          </article>
-        </section>
       </section>
     </main>
   );
