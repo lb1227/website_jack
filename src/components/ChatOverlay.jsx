@@ -86,6 +86,24 @@ const SERVERS = [
   },
 ];
 
+const THREAD_PREVIEWS = [
+  "Draft links, edits, and approvals",
+  "Planning updates and next steps",
+  "Voice notes and chapter comments",
+  "Assets, docs, and quick handoffs",
+];
+
+const TIMESTAMPS = ["2m", "15m", "42m", "1h", "3h"];
+
+const getInitials = (name) =>
+  name
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
 export default function ChatOverlay() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeServerId, setActiveServerId] = useState(SERVERS[0].id);
@@ -104,9 +122,19 @@ export default function ChatOverlay() {
     () => SERVERS.find((server) => server.id === activeServerId) || SERVERS[0],
     [activeServerId]
   );
+
   const activeChannel = useMemo(
     () => activeServer.channels.find((channel) => channel.id === activeChannelId) || activeServer.channels[0],
     [activeChannelId, activeServer]
+  );
+
+  const onlineCount = useMemo(
+    () => activeServer.members.filter((member) => member.status === "online").length,
+    [activeServer]
+  );
+  const unreadCount = useMemo(
+    () => activeServer.channels.filter((channel) => channel.unread).length,
+    [activeServer]
   );
 
   useEffect(() => {
@@ -171,9 +199,16 @@ export default function ChatOverlay() {
           <div className="chat-shell chat-shell--studio" role="dialog" aria-modal="true" aria-label="PensUp chat">
             <header className="chat-shell-header chat-shell-header--studio">
               <div>
-                <p className="chat-shell-title">Studio Inbox</p>
+                <p className="chat-shell-title">Studio Comms</p>
+                <p className="chat-shell-subtitle">A cleaner, calmer inbox for your creative team</p>
               </div>
               <div className="chat-shell-header-actions">
+                <button className="chat-shell-pill" type="button">
+                  Focus mode
+                </button>
+                <button className="chat-shell-pill chat-shell-pill--ghost" type="button">
+                  Schedule
+                </button>
                 <button
                   className="chat-shell-close"
                   type="button"
@@ -184,10 +219,11 @@ export default function ChatOverlay() {
                 </button>
               </div>
             </header>
+
             <div className="chat-shell-body chat-shell-body--studio">
               <aside className="chat-spaces">
                 <div className="chat-spaces-header">
-                  <p>Spaces</p>
+                  <p>Studios</p>
                   <span>{SERVERS.length} active</span>
                 </div>
                 <div className="chat-spaces-list" role="list" aria-label="Spaces list">
@@ -208,19 +244,20 @@ export default function ChatOverlay() {
                         <span>{server.status}</span>
                       </div>
                       <span className="chat-space-arrow" aria-hidden="true">
-                        →
+                        ⌁
                       </span>
                     </button>
                   ))}
                 </div>
                 <div className="chat-spaces-footer">
-                  <button type="button">＋ New space</button>
-                  <button type="button">Manage</button>
+                  <button type="button">＋ New studio</button>
+                  <button type="button">Invite</button>
                 </div>
               </aside>
+
               <section className="chat-conversations">
                 <div className="chat-conversations-header">
-                  <div>
+                  <div className="chat-conversations-heading">
                     <p>{activeServer.title}</p>
                     <span>{activeServer.status}</span>
                   </div>
@@ -228,8 +265,9 @@ export default function ChatOverlay() {
                     <input type="text" placeholder="Search threads" readOnly />
                   </div>
                 </div>
+
                 <div className="chat-conversations-list" role="list" aria-label="Thread list">
-                  {activeServer.channels.map((channel) => (
+                  {activeServer.channels.map((channel, index) => (
                     <button
                       key={channel.id}
                       className={`chat-conversation-item${channel.id === activeChannel.id ? " active" : ""}`}
@@ -238,48 +276,71 @@ export default function ChatOverlay() {
                       onClick={() => setActiveChannelId(channel.id)}
                     >
                       <div>
-                        <p>{channel.label}</p>
-                        <span>Shared notes and files</span>
+                        <p>#{channel.label}</p>
+                        <span>{THREAD_PREVIEWS[index % THREAD_PREVIEWS.length]}</span>
                       </div>
-                      {channel.unread ? <span className="chat-conversation-unread">New</span> : null}
+                      <div className="chat-conversation-meta">
+                        <span>{TIMESTAMPS[index % TIMESTAMPS.length]}</span>
+                        {channel.unread ? <span className="chat-conversation-unread">New</span> : null}
+                      </div>
                     </button>
                   ))}
                 </div>
+
                 <div className="chat-conversations-footer">
                   <div>
-                    <p>Luke</p>
+                    <p>Luke Harper</p>
                     <span>Creative lead</span>
                   </div>
                   <button type="button">Update status</button>
                 </div>
               </section>
+
               <section className="chat-detail">
                 <div className="chat-detail-header">
                   <div>
-                    <p>{activeChannel.label}</p>
+                    <p>#{activeChannel.label}</p>
                     <span>{activeServer.title}</span>
                   </div>
-                </div>
-                <div className="chat-detail-feed" ref={feedRef}>
-                  <div className="chat-detail-welcome">
-                    <h2>{activeChannel.label}</h2>
-                    <p>Kick off a new update or drop a file for the team.</p>
+                  <div className="chat-detail-header-chips">
+                    <span>{onlineCount} online</span>
+                    <span>{unreadCount} unread</span>
                   </div>
-                  {(messagesByServer[activeServer.id] || []).map((message, index) => (
-                    <div className="chat-detail-message" key={`${message.author}-${index}`}>
-                      <div className="chat-detail-message-meta">
-                        <strong>{message.author}</strong>
-                        <span>Just now</span>
-                      </div>
-                      <p>{message.text}</p>
-                    </div>
-                  ))}
                 </div>
+
+                <div className="chat-detail-highlight">
+                  <p>Today’s sprint objective</p>
+                  <strong>Finalize scene polish + handoff notes before 7:00 PM.</strong>
+                </div>
+
+                <div className="chat-detail-feed" ref={feedRef}>
+                  {(messagesByServer[activeServer.id] || []).map((message, index) => {
+                    const isCurrentUser = message.author === "You";
+                    return (
+                      <article
+                        className={`chat-detail-message${isCurrentUser ? " is-current-user" : ""}`}
+                        key={`${message.author}-${index}`}
+                      >
+                        <span className={`chat-detail-avatar${isCurrentUser ? " is-current-user" : ""}`}>
+                          {getInitials(message.author)}
+                        </span>
+                        <div>
+                          <div className="chat-detail-message-meta">
+                            <strong>{message.author}</strong>
+                            <span>{TIMESTAMPS[index % TIMESTAMPS.length]} ago</span>
+                          </div>
+                          <p>{message.text}</p>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+
                 <form className="chat-detail-input" onSubmit={handleSubmit}>
                   <span className="chat-input-prefix">✦</span>
                   <input
                     type="text"
-                    placeholder={`Message ${activeChannel.label}`}
+                    placeholder={`Message #${activeChannel.label}`}
                     value={messageDraft}
                     onChange={(event) => setMessageDraft(event.target.value)}
                   />
