@@ -3180,8 +3180,8 @@ body.creator-fullscreen-open {
 
 .chat-shell--studio {
   position: relative;
-  width: min(var(--chat-shell-width, 74vw), 1320px);
-  max-width: min(var(--chat-shell-width, 74vw), 1320px);
+  width: min(75vw, 1320px);
+  max-width: min(75vw, 1320px);
   height: 100vh;
   max-height: 100vh;
   border-radius: 0 28px 28px 0;
@@ -3254,8 +3254,7 @@ body.creator-fullscreen-open {
     10px
     minmax(240px, var(--chat-conversations-width, 320px))
     10px
-    minmax(340px, var(--chat-detail-width, 520px))
-    10px;
+    minmax(0, 1fr);
   background: rgba(7, 12, 22, 0.92);
   overflow-x: auto;
   align-items: stretch;
@@ -3280,19 +3279,7 @@ body.creator-fullscreen-open {
   box-shadow: 0 0 0 1px rgba(176, 212, 255, 0.32);
 }
 
-.chat-shell-edge-handle {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 8px;
-  height: 100%;
-  border: none;
-  padding: 0;
-  margin: 0;
-  background: linear-gradient(180deg, rgba(190, 208, 255, 0.55), rgba(112, 228, 236, 0.55));
-  cursor: ew-resize;
-  z-index: 3;
-}
+
 
 .chat-spaces {
   padding: 14px;
@@ -3736,8 +3723,7 @@ body.chat-overlay-open {
     grid-template-columns: 1fr;
   }
 
-  .chat-resize-handle,
-  .chat-shell-edge-handle {
+  .chat-resize-handle {
     display: none;
   }
 

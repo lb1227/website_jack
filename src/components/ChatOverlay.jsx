@@ -104,17 +104,14 @@ const getInitials = (name) =>
     .slice(0, 2)
     .toUpperCase();
 
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 export default function ChatOverlay() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeServerId, setActiveServerId] = useState(SERVERS[0].id);
   const [activeChannelId, setActiveChannelId] = useState(SERVERS[0].channels[0].id);
   const [messageDraft, setMessageDraft] = useState("");
-  const [shellWidth, setShellWidth] = useState(74);
   const [spacesWidth, setSpacesWidth] = useState(210);
   const [conversationsWidth, setConversationsWidth] = useState(320);
-  const [detailWidth, setDetailWidth] = useState(520);
   const feedRef = useRef(null);
 
   const [messagesByServer, setMessagesByServer] = useState(() =>
@@ -184,29 +181,18 @@ export default function ChatOverlay() {
   const startResize = (target) => (event) => {
     event.preventDefault();
     const startX = event.clientX;
-    const initialShell = shellWidth;
     const initialSpaces = spacesWidth;
     const initialConversations = conversationsWidth;
-    const initialDetail = detailWidth;
 
     const onMouseMove = (moveEvent) => {
       const delta = moveEvent.clientX - startX;
 
-      if (target === "shell") {
-        const nextShellWidth = initialShell + (delta / window.innerWidth) * 100;
-        setShellWidth(clamp(nextShellWidth, 58, 92));
-      }
-
       if (target === "spaces") {
-        setSpacesWidth(clamp(initialSpaces + delta, 150, 320));
+        setSpacesWidth(Math.min(320, Math.max(150, initialSpaces + delta)));
       }
 
       if (target === "conversations") {
-        setConversationsWidth(clamp(initialConversations + delta, 240, 460));
-      }
-
-      if (target === "detail") {
-        setDetailWidth(clamp(initialDetail + delta, 340, 760));
+        setConversationsWidth(Math.min(460, Math.max(240, initialConversations + delta)));
       }
     };
 
@@ -249,16 +235,14 @@ export default function ChatOverlay() {
             aria-modal="true"
             aria-label="PensUp chat"
             style={{
-              "--chat-shell-width": `${shellWidth}vw`,
               "--chat-spaces-width": `${spacesWidth}px`,
               "--chat-conversations-width": `${conversationsWidth}px`,
-              "--chat-detail-width": `${detailWidth}px`,
             }}
           >
             <header className="chat-shell-header chat-shell-header--studio">
               <div>
                 <p className="chat-shell-title">Studio Comms</p>
-                <p className="chat-shell-subtitle">Drag the vertical edges to resize each panel</p>
+                <p className="chat-shell-subtitle">Focused team chat for your studio</p>
               </div>
               <div className="chat-shell-header-actions">
                 <button className="chat-shell-pill" type="button">
@@ -421,13 +405,6 @@ export default function ChatOverlay() {
                   </button>
                 </form>
               </section>
-
-              <button
-                className="chat-resize-handle"
-                type="button"
-                aria-label="Resize messages panel"
-                onMouseDown={startResize("detail")}
-              />
 
             </div>
 
