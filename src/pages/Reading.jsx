@@ -46,7 +46,18 @@ export default function Reading() {
   const [selectedChapterId, setSelectedChapterId] = useState(1);
   const [hasPurchasedBook, setHasPurchasedBook] = useState(false);
   const [bookmarkedChapterIds, setBookmarkedChapterIds] = useState([]);
-  const [listedChapterIds, setListedChapterIds] = useState([]);
+  const [isListPickerOpen, setIsListPickerOpen] = useState(false);
+  const [collections, setCollections] = useState([
+    {
+      id: 1,
+      name: "Temp collection",
+      cover:
+        "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80"
+    }
+  ]);
+  const [chapterCollectionMap, setChapterCollectionMap] = useState({});
+  const [newCollectionName, setNewCollectionName] = useState("");
+  const [newCollectionCover, setNewCollectionCover] = useState("");
 
   const selectedChapter = useMemo(
     () => chapterData.find((chapter) => chapter.id === selectedChapterId) ?? chapterData[0],
@@ -55,7 +66,8 @@ export default function Reading() {
 
   const isLockedChapter = selectedChapter.access === "paid" && !hasPurchasedBook;
   const isBookmarked = bookmarkedChapterIds.includes(selectedChapter.id);
-  const isInList = listedChapterIds.includes(selectedChapter.id);
+  const chapterCollectionIds = chapterCollectionMap[selectedChapter.id] ?? [];
+  const isInList = chapterCollectionIds.length > 0;
 
   const handlePurchase = () => {
     setHasPurchasedBook(true);
@@ -69,12 +81,44 @@ export default function Reading() {
     );
   };
 
-  const toggleList = () => {
-    setListedChapterIds((prev) =>
-      prev.includes(selectedChapter.id)
-        ? prev.filter((chapterId) => chapterId !== selectedChapter.id)
-        : [...prev, selectedChapter.id]
-    );
+  const toggleCollectionForChapter = (collectionId) => {
+    setChapterCollectionMap((prev) => {
+      const currentCollectionIds = prev[selectedChapter.id] ?? [];
+      const isSelected = currentCollectionIds.includes(collectionId);
+
+      return {
+        ...prev,
+        [selectedChapter.id]: isSelected
+          ? currentCollectionIds.filter((id) => id !== collectionId)
+          : [...currentCollectionIds, collectionId]
+      };
+    });
+  };
+
+  const handleCreateCollection = (event) => {
+    event.preventDefault();
+
+    const trimmedName = newCollectionName.trim();
+    const trimmedCover = newCollectionCover.trim();
+
+    if (!trimmedName) {
+      return;
+    }
+
+    const newCollection = {
+      id: Date.now(),
+      name: trimmedName,
+      cover: trimmedCover
+    };
+
+    setCollections((prev) => [...prev, newCollection]);
+    setChapterCollectionMap((prev) => ({
+      ...prev,
+      [selectedChapter.id]: [...(prev[selectedChapter.id] ?? []), newCollection.id]
+    }));
+    setNewCollectionName("");
+    setNewCollectionCover("");
+    setIsListPickerOpen(true);
   };
 
   return (
@@ -114,11 +158,80 @@ export default function Reading() {
               <button className="btn ghost" type="button" onClick={toggleBookmark}>
                 {isBookmarked ? "✓ Bookmarked" : "+ Add bookmark"}
               </button>
-              <button className="btn ghost" type="button" onClick={toggleList}>
-                {isInList ? "✓ Added to list" : "+ Add to list"}
+              <button
+                className={`btn ghost ${isListPickerOpen ? "active" : ""}`}
+                type="button"
+                onClick={() => setIsListPickerOpen((prev) => !prev)}
+                aria-expanded={isListPickerOpen}
+                aria-controls="collection-picker"
+              >
+                {isInList ? `✓ In ${chapterCollectionIds.length} collection(s)` : "+ Add to list"}
               </button>
             </div>
           </header>
+
+          {isListPickerOpen && (
+            <section className="collection-picker" id="collection-picker" aria-label="Add to collection">
+              <div className="collection-picker-heading">
+                <h3>Add to collection</h3>
+                <p>Pick collections for this chapter or make a new one.</p>
+              </div>
+
+              <ul>
+                {collections.map((collection) => {
+                  const isSelected = chapterCollectionIds.includes(collection.id);
+
+                  return (
+                    <li key={collection.id}>
+                      <button
+                        type="button"
+                        className={`collection-item ${isSelected ? "selected" : ""}`}
+                        onClick={() => toggleCollectionForChapter(collection.id)}
+                      >
+                        <span className="collection-cover" aria-hidden="true">
+                          {collection.cover ? (
+                            <img src={collection.cover} alt="" loading="lazy" />
+                          ) : (
+                            <span>{collection.name[0]?.toUpperCase() ?? "C"}</span>
+                          )}
+                        </span>
+                        <span className="collection-name">{collection.name}</span>
+                        <span className="collection-check" aria-hidden="true">
+                          {isSelected ? "✓" : "+"}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <form className="collection-create" onSubmit={handleCreateCollection}>
+                <h4>Create new collection</h4>
+                <label>
+                  Collection name
+                  <input
+                    type="text"
+                    value={newCollectionName}
+                    onChange={(event) => setNewCollectionName(event.target.value)}
+                    placeholder="e.g. Cozy fantasy"
+                    required
+                  />
+                </label>
+                <label>
+                  Collection picture URL
+                  <input
+                    type="url"
+                    value={newCollectionCover}
+                    onChange={(event) => setNewCollectionCover(event.target.value)}
+                    placeholder="https://..."
+                  />
+                </label>
+                <button className="btn primary" type="submit">
+                  Create collection
+                </button>
+              </form>
+            </section>
+          )}
 
           {isLockedChapter ? (
             <>
