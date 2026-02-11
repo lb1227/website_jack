@@ -649,16 +649,17 @@ export default function Profile() {
                       onChange={handleInputChange}
                       disabled={isLocked}
                     />
-                    <input
-                      className="profile-color-wheel"
-                      type="color"
-                      name="nameColor"
-                      data-profile-input="nameColor"
-                      aria-label="Display name text color"
-                      value={formValues.nameColor}
-                      onChange={handleInputChange}
-                      disabled={isLocked}
-                    />
+                    <label className="profile-color-wheel" aria-label="Display name text color">
+                      <input
+                        type="color"
+                        name="nameColor"
+                        data-profile-input="nameColor"
+                        value={formValues.nameColor}
+                        onChange={handleInputChange}
+                        disabled={isLocked}
+                      />
+                      <span className="profile-color-wheel-icon" aria-hidden="true"></span>
+                    </label>
                   </div>
                 </label>
                 <label className="profile-inline-field">
@@ -673,16 +674,17 @@ export default function Profile() {
                       onChange={handleInputChange}
                       disabled={isLocked}
                     />
-                    <input
-                      className="profile-color-wheel"
-                      type="color"
-                      name="tagsColor"
-                      data-profile-input="tagsColor"
-                      aria-label="Genres and tags text color"
-                      value={formValues.tagsColor}
-                      onChange={handleInputChange}
-                      disabled={isLocked}
-                    />
+                    <label className="profile-color-wheel" aria-label="Genres and tags text color">
+                      <input
+                        type="color"
+                        name="tagsColor"
+                        data-profile-input="tagsColor"
+                        value={formValues.tagsColor}
+                        onChange={handleInputChange}
+                        disabled={isLocked}
+                      />
+                      <span className="profile-color-wheel-icon" aria-hidden="true"></span>
+                    </label>
                   </div>
                 </label>
                 <label className="profile-inline-field">
@@ -697,16 +699,17 @@ export default function Profile() {
                       onChange={handleInputChange}
                       disabled={isLocked}
                     ></textarea>
-                    <input
-                      className="profile-color-wheel"
-                      type="color"
-                      name="bioColor"
-                      data-profile-input="bioColor"
-                      aria-label="Bio text color"
-                      value={formValues.bioColor}
-                      onChange={handleInputChange}
-                      disabled={isLocked}
-                    />
+                    <label className="profile-color-wheel" aria-label="Bio text color">
+                      <input
+                        type="color"
+                        name="bioColor"
+                        data-profile-input="bioColor"
+                        value={formValues.bioColor}
+                        onChange={handleInputChange}
+                        disabled={isLocked}
+                      />
+                      <span className="profile-color-wheel-icon" aria-hidden="true"></span>
+                    </label>
                   </div>
                 </label>
                 <div className="profile-form-actions">
