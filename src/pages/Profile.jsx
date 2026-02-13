@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { creatorProfileById } from "../data/creatorProfiles.js";
+import { fetchCreatorProfileById } from "../lib/supabase.js";
 
 const STORAGE_KEY = "pensup.profile";
 const AUTH_KEY = "pensup.authenticated";
@@ -142,8 +143,47 @@ export default function Profile() {
   const userMenuRef = useRef(null);
   const avatarInputRef = useRef(null);
   const backgroundInputRef = useRef(null);
-  const creatorProfile = useMemo(() => creatorProfileById(creatorId), [creatorId]);
+  const [creatorProfile, setCreatorProfile] = useState(null);
+  const [creatorLoadStatus, setCreatorLoadStatus] = useState("idle");
   const isViewingCreator = Boolean(creatorId && creatorProfile);
+
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    if (!creatorId) {
+      setCreatorProfile(null);
+      setCreatorLoadStatus("idle");
+      return;
+    }
+
+    const localProfile = creatorProfileById(creatorId);
+    setCreatorProfile(localProfile ?? null);
+    setCreatorLoadStatus("loading");
+
+    fetchCreatorProfileById(creatorId)
+      .then((remoteProfile) => {
+        if (isCancelled) {
+          return;
+        }
+        if (remoteProfile) {
+          setCreatorProfile(remoteProfile);
+          setCreatorLoadStatus("success");
+          return;
+        }
+        setCreatorLoadStatus(localProfile ? "success" : "not_found");
+      })
+      .catch(() => {
+        if (isCancelled) {
+          return;
+        }
+        setCreatorLoadStatus(localProfile ? "fallback" : "error");
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [creatorId]);
 
   useEffect(() => {
     const stored = loadProfile();
@@ -811,7 +851,12 @@ export default function Profile() {
               )}
             </div>
             <p className="profile-status" data-profile-status>
-              {isViewingCreator ? creatorActionStatus || "Creator profile preview." : statusMessage}
+              {isViewingCreator
+                ? creatorActionStatus ||
+                  (creatorLoadStatus === "loading"
+                    ? "Loading creator profile..."
+                    : "Creator profile preview.")
+                : statusMessage}
             </p>
           </div>
         </div>
