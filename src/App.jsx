@@ -10,6 +10,7 @@ import Leaderboard from "./pages/Leaderboard.jsx";
 import Lists from "./pages/Lists.jsx";
 import Bookmarks from "./pages/Bookmarks.jsx";
 import History from "./pages/History.jsx";
+import Coins from "./pages/Coins.jsx";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/creator/:creatorId" element={<Profile />} />
         <Route path="/publish" element={<Publish />} />
+        <Route path="/coins" element={<Coins />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

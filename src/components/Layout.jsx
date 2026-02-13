@@ -117,6 +117,10 @@ export default function Layout() {
           </nav>
         </div>
         <div className="header-right">
+          <Link className="coin-balance" to="/coins" aria-label="Go to coins page">
+            <span aria-hidden="true">🪙</span>
+            <span>250</span>
+          </Link>
           {isHome ? (
             <div className="search" data-search>
               <span className="icon"></span>
