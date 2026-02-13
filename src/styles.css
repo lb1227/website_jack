@@ -574,27 +574,60 @@ input {
 }
 
 .card {
+  --book-spine: clamp(12px, 1.2vw, 16px);
+  --book-edge: rgba(255, 255, 255, 0.22);
+  --book-shadow: rgba(0, 0, 0, 0.52);
   background-image:
     linear-gradient(0deg, rgba(11, 15, 35, 0.92) 0%, rgba(11, 15, 35, 0.1) 65%),
     var(--card-image, linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)));
   background-size: cover;
   background-position: center;
-  border-radius: 10px;
-  min-height: 360px;
-  padding: 18px;
+  border-radius: 7px 14px 14px 7px;
+  min-height: 390px;
+  padding: 20px 20px 20px calc(20px + var(--book-spine));
   position: relative;
   display: grid;
   align-items: end;
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    -14px 14px 24px -16px var(--book-shadow),
+    0 16px 30px -22px var(--book-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease, filter 0.25s ease;
   scroll-snap-align: start;
+  overflow: hidden;
+}
+
+.card::before,
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.card::before {
+  left: 0;
+  width: var(--book-spine);
+  border-radius: 7px 0 0 7px;
+  background: linear-gradient(180deg, rgba(255, 246, 224, 0.78), rgba(214, 181, 134, 0.58));
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.26);
+}
+
+.card::after {
+  left: calc(var(--book-spine) - 1px);
+  right: 0;
+  background:
+    linear-gradient(105deg, rgba(255, 255, 255, 0.16), transparent 28%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.34) 0%, transparent 16%);
 }
 
 .card-cover-link {
   position: absolute;
   inset: 0;
-  border-radius: 10px;
+  border-radius: 7px 14px 14px 7px;
   z-index: 1;
 }
 
@@ -626,14 +659,18 @@ input {
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-8px) rotateY(-2.2deg);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    -20px 22px 32px -20px rgba(0, 0, 0, 0.62),
+    0 22px 44px -26px rgba(0, 0, 0, 0.68);
+  border-color: rgba(255, 255, 255, 0.22);
+  filter: saturate(1.05);
 }
 
 .top-ten .ranked {
   position: relative;
-  padding-left: 88px;
+  padding-left: calc(88px + var(--book-spine));
   border: 1px solid rgba(229, 9, 20, 0.35);
   background-image:
     linear-gradient(0deg, rgba(15, 5, 5, 0.94) 0%, rgba(15, 5, 5, 0.18) 65%),
