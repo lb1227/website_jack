@@ -10,7 +10,7 @@ export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
-  const [searchQuery, setSearchQuery] = useState("");
+  const searchQuery = "";
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isWaffleOpen, setIsWaffleOpen] = useState(false);
   const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
@@ -107,6 +107,14 @@ export default function Layout() {
         </div>
         <div className="header-center">
           <nav className="main-nav">
+            {isHome ? (
+              <button className="nav-search-icon" type="button" aria-label="Search">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="11" cy="11" r="6" />
+                  <path d="M16 16l5 5" />
+                </svg>
+              </button>
+            ) : null}
             <NavLink to="/">Explore</NavLink>
             <NavLink to="/feed">Feed</NavLink>
             <NavLink to="/leaderboard">Leaderboard</NavLink>
@@ -121,17 +129,6 @@ export default function Layout() {
             <span aria-hidden="true">🪙</span>
             <span>250</span>
           </Link>
-          {isHome ? (
-            <div className="search" data-search>
-              <span className="icon"></span>
-              <input
-                type="text"
-                placeholder="Titles, genres, creators"
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-              />
-            </div>
-          ) : null}
           {isAuthenticated ? (
             <div className="waffle-menu" ref={menuRef}>
               <button
