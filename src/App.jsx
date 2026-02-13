@@ -25,7 +25,7 @@ export default function App() {
         <Route path="/bookmarks" element={<Bookmarks />} />
         <Route path="/history" element={<History />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/creator/:creatorId" element={<Profile />} />
+        <Route path="/creator/:username" element={<Profile />} />
         <Route path="/publish" element={<Publish />} />
         <Route path="/coins" element={<Coins />} />
         <Route path="/search" element={<Search />} />

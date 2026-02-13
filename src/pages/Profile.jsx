@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { creatorProfileById } from "../data/creatorProfiles.js";
-import { fetchCreatorProfileById } from "../lib/supabase.js";
+import { fetchCreatorProfileByUsername } from "../lib/supabase.js";
 
 const STORAGE_KEY = "pensup.profile";
 const AUTH_KEY = "pensup.authenticated";
@@ -128,7 +128,8 @@ const displayTagsToInput = (value) => {
 
 export default function Profile() {
   const location = useLocation();
-  const { creatorId } = useParams();
+  const { username } = useParams();
+  const creatorSlug = username;
   const [profile, setProfile] = useState(EMPTY_PROFILE);
   const [formValues, setFormValues] = useState(EMPTY_PROFILE);
   const [isEditing, setIsEditing] = useState(false);
@@ -145,7 +146,45 @@ export default function Profile() {
   const backgroundInputRef = useRef(null);
   const [creatorProfile, setCreatorProfile] = useState(null);
   const [creatorLoadStatus, setCreatorLoadStatus] = useState("idle");
-  const isViewingCreator = Boolean(creatorId && creatorProfile);
+  const isViewingCreator = Boolean(creatorSlug && creatorProfile);
+
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    if (!creatorSlug) {
+      setCreatorProfile(null);
+      setCreatorLoadStatus("idle");
+      return;
+    }
+
+    const localProfile = creatorProfileById(creatorSlug);
+    setCreatorProfile(localProfile ?? null);
+    setCreatorLoadStatus("loading");
+
+    fetchCreatorProfileByUsername(creatorSlug)
+      .then((remoteProfile) => {
+        if (isCancelled) {
+          return;
+        }
+        if (remoteProfile) {
+          setCreatorProfile(remoteProfile);
+          setCreatorLoadStatus("success");
+          return;
+        }
+        setCreatorLoadStatus(localProfile ? "success" : "not_found");
+      })
+      .catch(() => {
+        if (isCancelled) {
+          return;
+        }
+        setCreatorLoadStatus(localProfile ? "fallback" : "error");
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [creatorSlug]);
 
 
   useEffect(() => {

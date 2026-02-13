@@ -1,41 +1,52 @@
-# Supabase setup (Pensup)
+# Supabase backend setup (Pensup)
 
 ## 1) Environment variables
 
-Create a `.env.local` file in the project root:
+Create `.env.local` in project root:
 
 ```env
 VITE_SUPABASE_URL=https://kqplmxnskmozyshgmxjs.supabase.co
 VITE_SUPABASE_ANON_KEY=...
 ```
 
-Get the anon key from **Supabase Dashboard → Project Settings → API**.
+Get anon key from **Supabase Dashboard → Project Settings → API**.
 
-> Do not put your `service_role` key in frontend env files.
+> Never put `service_role` keys in frontend env files.
 
-## 2) Create schema + policy + seed creators
+## 2) Apply schema + RLS policies
 
-Run `supabase/creator_profiles.sql` in the Supabase SQL editor.
+Run this SQL file in Supabase SQL editor:
 
-This script:
-- creates `public.creator_profiles`
-- enables RLS
-- adds a public read policy
-- inserts/upserts the starter creator rows used by the app
+- `supabase/app_schema.sql`
 
-## 3) Start app
+This creates:
+- `public.profiles`
+- `public.works`
+- `public.bookmarks`
+- `public.reading_history`
+- `public.follows`
 
-```bash
-npm run dev
-```
+It also enables RLS and applies policies for public read / owner-only writes.
 
-Navigate to `#/creator/ariela-ross` etc.
-The profile page will:
-- use Supabase data first,
-- and fallback to local mock data if no row exists or Supabase is unreachable.
+## 3) Route design
 
-## 4) Security follow-up (recommended)
+Use creator username routes:
 
-- Rotate any keys that were exposed in chat/history.
-- Keep frontend on anon key only.
-- Reserve `service_role` for server-side functions only.
+- `/creator/:username`
+
+The app resolves:
+- profile from `public.profiles` by `username`
+- creator works from `public.works` by `author_id` with `status='published'`
+
+## 4) Publishing logic
+
+To publish from client, update your work row:
+- `status = 'published'`
+- `published_at = now()`
+
+RLS protects this so only the author can update their own works.
+
+## 5) Legacy file
+
+- `supabase/creator_profiles.sql` is kept only for the earlier denormalized prototype.
+- Prefer `supabase/app_schema.sql` for all new setup.
