@@ -2,18 +2,12 @@ import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { CREATOR_PROFILES } from "../data/creatorProfiles.js";
 
-const SEARCH_INDEX = [
-  { id: "story-1", type: "Story", name: "Harborlight", href: "/reading" },
-  { id: "story-2", type: "Story", name: "Neon Caravan", href: "/reading" },
-  { id: "story-3", type: "Story", name: "The Silent Archive", href: "/reading" },
-  { id: "story-4", type: "Story", name: "Mythic Rewrites", href: "/reading" },
-  ...CREATOR_PROFILES.map((creator) => ({
-    id: `creator-${creator.id}`,
-    type: "Creator",
-    name: creator.name,
-    href: `/creator/${creator.id}`,
-  })),
-];
+const SEARCH_INDEX = CREATOR_PROFILES.map((creator) => ({
+  id: `creator-${creator.id}`,
+  type: "Creator",
+  name: creator.name,
+  href: `/creator/${creator.id}`,
+}));
 
 export default function Search() {
   const [query, setQuery] = useState("");
@@ -28,15 +22,15 @@ export default function Search() {
     <main className="search-page">
       <section className="search-page-hero">
         <h1>Search PensUp</h1>
-        <p>Find stories and creators fast.</p>
+        <p>Book results were removed. You can still search creators.</p>
       </section>
 
       <label className="search-page-input-wrap" htmlFor="global-search-input">
-        <span className="sr-only">Search stories and creators</span>
+        <span className="sr-only">Search creators</span>
         <input
           id="global-search-input"
           type="search"
-          placeholder="Search for a story or creator"
+          placeholder="Search for a creator"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
