@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { creatorProfileById } from "../data/creatorProfiles.js";
+import { fetchCreatorProfileByUsername } from "../lib/supabase.js";
 
 const STORAGE_KEY = "pensup.profile";
 const AUTH_KEY = "pensup.authenticated";
@@ -127,7 +128,8 @@ const displayTagsToInput = (value) => {
 
 export default function Profile() {
   const location = useLocation();
-  const { creatorId } = useParams();
+  const { username } = useParams();
+  const creatorSlug = username;
   const [profile, setProfile] = useState(EMPTY_PROFILE);
   const [formValues, setFormValues] = useState(EMPTY_PROFILE);
   const [isEditing, setIsEditing] = useState(false);
@@ -142,8 +144,47 @@ export default function Profile() {
   const userMenuRef = useRef(null);
   const avatarInputRef = useRef(null);
   const backgroundInputRef = useRef(null);
-  const creatorProfile = useMemo(() => creatorProfileById(creatorId), [creatorId]);
-  const isViewingCreator = Boolean(creatorId && creatorProfile);
+  const [creatorProfile, setCreatorProfile] = useState(null);
+  const [creatorLoadStatus, setCreatorLoadStatus] = useState("idle");
+  const isViewingCreator = Boolean(creatorSlug && creatorProfile);
+
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    if (!creatorSlug) {
+      setCreatorProfile(null);
+      setCreatorLoadStatus("idle");
+      return;
+    }
+
+    const localProfile = creatorProfileById(creatorSlug);
+    setCreatorProfile(localProfile ?? null);
+    setCreatorLoadStatus("loading");
+
+    fetchCreatorProfileByUsername(creatorSlug)
+      .then((remoteProfile) => {
+        if (isCancelled) {
+          return;
+        }
+        if (remoteProfile) {
+          setCreatorProfile(remoteProfile);
+          setCreatorLoadStatus("success");
+          return;
+        }
+        setCreatorLoadStatus(localProfile ? "success" : "not_found");
+      })
+      .catch(() => {
+        if (isCancelled) {
+          return;
+        }
+        setCreatorLoadStatus(localProfile ? "fallback" : "error");
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [creatorSlug]);
 
   useEffect(() => {
     const stored = loadProfile();
@@ -447,15 +488,15 @@ export default function Profile() {
   const handleAuthSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const username = formData.get("signinUsername")?.toString().trim();
+    const email = formData.get("signinEmail")?.toString().trim().toLowerCase();
     const password = formData.get("signinPassword")?.toString();
-    if (!username || !password) {
-      setAuthStatus("Enter your username and password to sign in.");
+    if (!email || !password) {
+      setAuthStatus("Enter your email and password to sign in.");
       return;
     }
     const accounts = loadAccounts();
     const match = accounts.find(
-      (account) => account.username === username && account.password === password,
+      (account) => account.email === email && account.password === password,
     );
     if (!match) {
       setAuthStatus("Account not found. Create an account to continue.");
@@ -472,15 +513,15 @@ export default function Profile() {
   const handleCreateAccount = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const username = formData.get("createUsername")?.toString().trim();
+    const email = formData.get("createEmail")?.toString().trim().toLowerCase();
     const password = formData.get("createPassword")?.toString();
-    if (!username || !password) {
-      setAuthStatus("Choose a username and password to create an account.");
+    if (!email || !password) {
+      setAuthStatus("Choose an email and password to create an account.");
       return;
     }
     const accounts = loadAccounts();
-    const updatedAccounts = [...accounts.filter((account) => account.username !== username), {
-      username,
+    const updatedAccounts = [...accounts.filter((account) => account.email !== email), {
+      email,
       password,
     }];
     persistAccounts(updatedAccounts);
@@ -489,7 +530,7 @@ export default function Profile() {
     }
     const nextProfile = {
       ...profile,
-      name: username,
+      name: email.split("@")[0] || "Username",
     };
     setProfile(nextProfile);
     setFormValues(nextProfile);
@@ -811,7 +852,12 @@ export default function Profile() {
               )}
             </div>
             <p className="profile-status" data-profile-status>
-              {isViewingCreator ? creatorActionStatus || "Creator profile preview." : statusMessage}
+              {isViewingCreator
+                ? creatorActionStatus ||
+                  (creatorLoadStatus === "loading"
+                    ? "Loading creator profile..."
+                    : "Creator profile preview.")
+                : statusMessage}
             </p>
           </div>
         </div>
@@ -824,13 +870,13 @@ export default function Profile() {
                 <form className="auth-card" data-auth-form="signin" onSubmit={handleAuthSubmit}>
                   <h3>Sign in</h3>
                   <label>
-                    Username
+                    Email
                     <input
-                      type="text"
-                      name="signinUsername"
-                      autoComplete="username"
+                      type="email"
+                      name="signinEmail"
+                      autoComplete="email"
                       required
-                      data-auth-input="signin-username"
+                      data-auth-input="signin-email"
                     />
                   </label>
                   <label>
@@ -863,13 +909,13 @@ export default function Profile() {
                 <form className="auth-card" data-auth-form="create" onSubmit={handleCreateAccount}>
                   <h3>Create account</h3>
                   <label>
-                    Username
+                    Email
                     <input
-                      type="text"
-                      name="createUsername"
-                      autoComplete="username"
+                      type="email"
+                      name="createEmail"
+                      autoComplete="email"
                       required
-                      data-auth-input="create-username"
+                      data-auth-input="create-email"
                     />
                   </label>
                   <label>
