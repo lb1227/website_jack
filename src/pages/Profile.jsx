@@ -186,6 +186,44 @@ export default function Profile() {
     };
   }, [creatorSlug]);
 
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    if (!creatorId) {
+      setCreatorProfile(null);
+      setCreatorLoadStatus("idle");
+      return;
+    }
+
+    const localProfile = creatorProfileById(creatorId);
+    setCreatorProfile(localProfile ?? null);
+    setCreatorLoadStatus("loading");
+
+    fetchCreatorProfileById(creatorId)
+      .then((remoteProfile) => {
+        if (isCancelled) {
+          return;
+        }
+        if (remoteProfile) {
+          setCreatorProfile(remoteProfile);
+          setCreatorLoadStatus("success");
+          return;
+        }
+        setCreatorLoadStatus(localProfile ? "success" : "not_found");
+      })
+      .catch(() => {
+        if (isCancelled) {
+          return;
+        }
+        setCreatorLoadStatus(localProfile ? "fallback" : "error");
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [creatorId]);
+
   useEffect(() => {
     const stored = loadProfile();
     setProfile(stored);
