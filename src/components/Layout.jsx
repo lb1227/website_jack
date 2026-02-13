@@ -9,7 +9,6 @@ const INTRO_MODAL_KEY = "pensup.introSeen";
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const isHome = location.pathname === "/";
   const searchQuery = "";
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isWaffleOpen, setIsWaffleOpen] = useState(false);
@@ -107,14 +106,12 @@ export default function Layout() {
         </div>
         <div className="header-center">
           <nav className="main-nav">
-            {isHome ? (
-              <button className="nav-search-icon" type="button" aria-label="Search">
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <circle cx="11" cy="11" r="6" />
-                  <path d="M16 16l5 5" />
-                </svg>
-              </button>
-            ) : null}
+            <NavLink className="nav-search-icon" to="/search" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6" />
+                <path d="M16 16l5 5" />
+              </svg>
+            </NavLink>
             <NavLink to="/">Explore</NavLink>
             <NavLink to="/feed">Feed</NavLink>
             <NavLink to="/leaderboard">Leaderboard</NavLink>

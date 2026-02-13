@@ -11,6 +11,7 @@ import Lists from "./pages/Lists.jsx";
 import Bookmarks from "./pages/Bookmarks.jsx";
 import History from "./pages/History.jsx";
 import Coins from "./pages/Coins.jsx";
+import Search from "./pages/Search.jsx";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/creator/:creatorId" element={<Profile />} />
         <Route path="/publish" element={<Publish />} />
         <Route path="/coins" element={<Coins />} />
+        <Route path="/search" element={<Search />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
