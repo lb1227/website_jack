@@ -186,44 +186,6 @@ export default function Profile() {
     };
   }, [creatorSlug]);
 
-
-  useEffect(() => {
-    let isCancelled = false;
-
-    if (!creatorId) {
-      setCreatorProfile(null);
-      setCreatorLoadStatus("idle");
-      return;
-    }
-
-    const localProfile = creatorProfileById(creatorId);
-    setCreatorProfile(localProfile ?? null);
-    setCreatorLoadStatus("loading");
-
-    fetchCreatorProfileById(creatorId)
-      .then((remoteProfile) => {
-        if (isCancelled) {
-          return;
-        }
-        if (remoteProfile) {
-          setCreatorProfile(remoteProfile);
-          setCreatorLoadStatus("success");
-          return;
-        }
-        setCreatorLoadStatus(localProfile ? "success" : "not_found");
-      })
-      .catch(() => {
-        if (isCancelled) {
-          return;
-        }
-        setCreatorLoadStatus(localProfile ? "fallback" : "error");
-      });
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [creatorId]);
-
   useEffect(() => {
     const stored = loadProfile();
     setProfile(stored);
@@ -526,15 +488,15 @@ export default function Profile() {
   const handleAuthSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const username = formData.get("signinUsername")?.toString().trim();
+    const email = formData.get("signinEmail")?.toString().trim().toLowerCase();
     const password = formData.get("signinPassword")?.toString();
-    if (!username || !password) {
-      setAuthStatus("Enter your username and password to sign in.");
+    if (!email || !password) {
+      setAuthStatus("Enter your email and password to sign in.");
       return;
     }
     const accounts = loadAccounts();
     const match = accounts.find(
-      (account) => account.username === username && account.password === password,
+      (account) => account.email === email && account.password === password,
     );
     if (!match) {
       setAuthStatus("Account not found. Create an account to continue.");
@@ -551,15 +513,15 @@ export default function Profile() {
   const handleCreateAccount = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const username = formData.get("createUsername")?.toString().trim();
+    const email = formData.get("createEmail")?.toString().trim().toLowerCase();
     const password = formData.get("createPassword")?.toString();
-    if (!username || !password) {
-      setAuthStatus("Choose a username and password to create an account.");
+    if (!email || !password) {
+      setAuthStatus("Choose an email and password to create an account.");
       return;
     }
     const accounts = loadAccounts();
-    const updatedAccounts = [...accounts.filter((account) => account.username !== username), {
-      username,
+    const updatedAccounts = [...accounts.filter((account) => account.email !== email), {
+      email,
       password,
     }];
     persistAccounts(updatedAccounts);
@@ -568,7 +530,7 @@ export default function Profile() {
     }
     const nextProfile = {
       ...profile,
-      name: username,
+      name: email.split("@")[0] || "Username",
     };
     setProfile(nextProfile);
     setFormValues(nextProfile);
@@ -908,13 +870,13 @@ export default function Profile() {
                 <form className="auth-card" data-auth-form="signin" onSubmit={handleAuthSubmit}>
                   <h3>Sign in</h3>
                   <label>
-                    Username
+                    Email
                     <input
-                      type="text"
-                      name="signinUsername"
-                      autoComplete="username"
+                      type="email"
+                      name="signinEmail"
+                      autoComplete="email"
                       required
-                      data-auth-input="signin-username"
+                      data-auth-input="signin-email"
                     />
                   </label>
                   <label>
@@ -947,13 +909,13 @@ export default function Profile() {
                 <form className="auth-card" data-auth-form="create" onSubmit={handleCreateAccount}>
                   <h3>Create account</h3>
                   <label>
-                    Username
+                    Email
                     <input
-                      type="text"
-                      name="createUsername"
-                      autoComplete="username"
+                      type="email"
+                      name="createEmail"
+                      autoComplete="email"
                       required
-                      data-auth-input="create-username"
+                      data-auth-input="create-email"
                     />
                   </label>
                   <label>

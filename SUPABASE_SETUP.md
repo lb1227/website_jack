@@ -26,7 +26,15 @@ This creates:
 - `public.reading_history`
 - `public.follows`
 
-It also enables RLS and applies policies for public read / owner-only writes.
+It also enables RLS, applies policies for public read / owner-only writes, and sets an auth trigger for profile bootstrap.
+
+
+## 2.1) Auth requirement (email + password)
+
+Enable **Email** provider in Supabase Auth settings.
+
+The schema file includes an `auth.users` trigger that auto-creates a `public.profiles` row on signup,
+so a new user can sign up with email/password and immediately have a profile row.
 
 ## 3) Route design
 
